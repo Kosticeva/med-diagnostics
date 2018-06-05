@@ -41,4 +41,15 @@ public class Chart {
 		this.intensiveCare = intensiveCare;
 	}
 	
+	@Override
+	public String toString() {
+		String retVal = "Patient: " + patient.toString();
+		for(Examination m: examinations) {
+			retVal += "\n-----------------------------\n";
+			retVal += m.toString();
+		}
+		
+		return retVal;
+	}
+	
 }

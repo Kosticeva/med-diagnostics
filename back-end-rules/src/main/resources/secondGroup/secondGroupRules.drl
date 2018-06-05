@@ -16,7 +16,7 @@ rule "Hipertenzija"
     when
     	$chart: Chart($exams: examinations)
     	$exam: Examination(disease == null) from $exams
-        eval(countBloodPressures($chart))
+        eval(countBloodPressures($chart, $exam))
     then
        Disease d = new Disease(4, "Hipertenzija", 1, null);
     	$exam.setDisease(d);
@@ -43,13 +43,18 @@ rule "Dijabetes"
 
 end
 
-function boolean countBloodPressures(Chart chart) {
+function boolean countBloodPressures(Chart chart, Examination exam) {
 
 	int count = 0;
 	Date d = new Date();
 	for (Examination m: chart.getExaminations()){
-		if((d.getTime() - m.getDate().getTime())/(1000*60*60*24) < 180){
-			count++;
+		if((exam.getDate().getTime() - m.getDate().getTime())/(1000*60*60*24) < 180 && exam.getDate().getTime() - m.getDate().getTime() >= 0){
+			for(Symptom s: m.getSymptoms()){
+				if(s.getName().equals("Povisen krvni pritisak")){
+					count++;
+					break;
+				}
+			}
 		}
 	}
 	

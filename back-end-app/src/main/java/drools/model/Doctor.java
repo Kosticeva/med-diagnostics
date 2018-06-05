@@ -73,4 +73,9 @@ public class Doctor {
 	public void setType(DoctorType type) {
 		this.type = type;
 	}
+	
+	@Override
+	public String toString() {
+		return "Dr. " + firstName + " " + lastName + ", " + licenceId ;
+	}
 }

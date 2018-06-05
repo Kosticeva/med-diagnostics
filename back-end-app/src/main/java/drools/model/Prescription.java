@@ -39,4 +39,8 @@ public class Prescription {
 		this.drug = drug;
 	}
 	
+	@Override
+	public String toString() {
+		return drug.getName() + "[" + drug.getDrugType() + "]" + ", " + plan;
+	}
 }

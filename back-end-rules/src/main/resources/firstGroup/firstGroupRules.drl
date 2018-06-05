@@ -83,9 +83,14 @@ rule "Sinusna infekcija"
 end
 
 function boolean checkLastColdFever(Chart chart, Examination exam) {
+	System.out.println("Poredjenje pregleda " + exam.getId() + " sa ostatkom");
 	for(Examination m: chart.getExaminations()) {
-		if((exam.getDate().getTime() - m.getDate().getTime()) / (60*60*24*1000) < 60)
-			return true;
+		System.out.println(exam.getId() + " vs " + m.getId());
+		if(m.getDisease()!= null && (m.getDisease().getName().equals("Prehlada") || m.getDisease().getName().equals("Groznica"))){
+			System.out.println("***** " + m.getId() + " je prehlada/groznica");
+			if((exam.getDate().getTime() - m.getDate().getTime()) / (60*60*24*1000) < 60)
+				return true;
+		}
 	}
 	
 	return false;

@@ -73,4 +73,22 @@ public class Examination {
 		this.prescription = prescription;
 	}
 	
+	@Override
+	public String toString() {
+		String retVal = "\t-Date: "+date+
+				"\n\t-Doctor: "+doctor.toString()+
+				"\n\t-Symptoms: ";
+		for(Symptom s: symptoms) {
+			retVal += "\n\t\t*"+s.getName();
+		}
+		if(disease != null) {
+			retVal += "\n\t-Diagnose: "+disease.getName();
+		}
+		if(prescription != null) {
+			retVal += "\n\t-Therapy: "+prescription.toString();
+		}
+		
+		return retVal;
+	}
+	
 }

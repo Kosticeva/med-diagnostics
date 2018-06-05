@@ -53,4 +53,8 @@ public class Patient{
 		this.allergens = allergens;
 	}
 	
+	@Override
+	public String toString() {
+		return lastName + ", " + firstName;
+	}
 }
