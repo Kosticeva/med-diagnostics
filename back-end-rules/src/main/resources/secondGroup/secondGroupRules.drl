@@ -1,0 +1,61 @@
+//created on: Jun 4, 2018
+package secondGroup
+
+//list any import classes here.
+import drools.model.Chart;
+import drools.model.Examination;
+import drools.model.Symptom;
+import drools.model.Disease;
+import java.util.Date;
+
+
+//declare any global variables here
+
+
+rule "Hipertenzija"
+    when
+    	$chart: Chart($exams: examinations)
+    	$exam: Examination(disease == null) from $exams
+        eval(countBloodPressures($chart))
+    then
+       Disease d = new Disease(4, "Hipertenzija", 1, null);
+    	$exam.setDisease(d);
+    	update($chart);
+		System.out.println("U pitanju je hipertenzija");
+
+end
+
+rule "Dijabetes"
+    //include attributes such as "salience" here...
+    when
+       	$chart: Chart($exams: examinations)
+    	$exam: Examination(disease == null, $symptoms: symptoms) from $exams
+    	Number(intValue == 4) from accumulate (
+    		Symptom(name=="Cesto uriniranje" || name=="Gubitak telesne tezine"
+    			|| name=="Zamor" || name=="Mucnina i povracanje") from $symptoms,
+    		count(1)
+    	)
+    then
+        Disease d = new Disease(5, "Dijabetes", 1, null);
+    	$exam.setDisease(d);
+    	update($chart);
+		System.out.println("U pitanju je dijabetes");
+
+end
+
+function boolean countBloodPressures(Chart chart) {
+
+	int count = 0;
+	Date d = new Date();
+	for (Examination m: chart.getExaminations()){
+		if((d.getTime() - m.getDate().getTime())/(1000*60*60*24) < 180){
+			count++;
+		}
+	}
+	
+	if(count >= 10){
+		return true;
+	}
+	
+	return false;
+}

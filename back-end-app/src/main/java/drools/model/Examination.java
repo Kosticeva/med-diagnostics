@@ -9,19 +9,19 @@ public class Examination {
 	private Date date;
 	private Doctor doctor;
 	private List<Symptom> symptoms;
-	private Diagnose diagnose;
+	private Disease disease;
 	private Prescription prescription;
 	
 	public Examination() {}
 
-	public Examination(int id, Date date, Doctor doctor, List<Symptom> symptoms, Diagnose diagnose,
+	public Examination(int id, Date date, Doctor doctor, List<Symptom> symptoms, Disease disease,
 			Prescription prescription) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.doctor = doctor;
 		this.symptoms = symptoms;
-		this.diagnose = diagnose;
+		this.disease = disease;
 		this.prescription = prescription;
 	}
 
@@ -57,12 +57,12 @@ public class Examination {
 		this.symptoms = symptoms;
 	}
 
-	public Diagnose getDiagnose() {
-		return diagnose;
+	public Disease getDisease() {
+		return disease;
 	}
 
-	public void setDiagnose(Diagnose diagnose) {
-		this.diagnose = diagnose;
+	public void setDisease(Disease disease) {
+		this.disease = disease;
 	}
 
 	public Prescription getPrescription() {

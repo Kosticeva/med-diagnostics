@@ -1,25 +1,35 @@
 package drools.model;
 
-import java.util.HashMap;
+import java.util.List;
 
 public class Chart {
 
-	private HashMap<Integer, Examination> examinations;
+	private List<Examination> examinations;
 	private IntensiveCare intensiveCare;
+	private Patient patient;
 	
 	public Chart() {}
 
-	public Chart(HashMap<Integer, Examination> examinations, IntensiveCare intensiveCare) {
+	public Chart(List<Examination> examinations, IntensiveCare intensiveCare, Patient patient) {
 		super();
 		this.examinations = examinations;
 		this.intensiveCare = intensiveCare;
+		this.patient = patient;
 	}
 
-	public HashMap<Integer, Examination> getExaminations() {
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public List<Examination> getExaminations() {
 		return examinations;
 	}
 
-	public void setExaminations(HashMap<Integer, Examination> examinations) {
+	public void setExaminations(List<Examination> examinations) {
 		this.examinations = examinations;
 	}
 

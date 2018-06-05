@@ -1,0 +1,107 @@
+//created on: Jun 4, 2018
+package thirdGroup
+
+//list any import classes here.
+import drools.model.Chart;
+import drools.model.Examination;
+import drools.model.Symptom;
+import drools.model.Disease;
+import java.util.Date;
+import drools.model.Prescription;
+import drools.model.enums.DrugType;
+
+
+//declare any global variables here
+
+rule "Hronicna bubrezna bolest"
+
+    when
+        $chart: Chart($exams: examinations)
+    	$exam: Examination(disease == null, $symptoms: symptoms) from $exams
+    	Number(intValue > 1) from accumulate (
+    		Symptom(name=="Zamor" || name=="Nocturia" || 
+    			name=="Otoci nogu i zglobova" || name=="Gusenje" || 
+    			name=="Bol u grudima") from $symptoms,
+    		count(1)
+    	)
+    	$diabetes: Number(intValue > -1) from accumulate (
+    			Examination($dis: disease) from $exams and
+    			Disease(name == "Dijabetes") from $dis,
+    		count(1)
+    	)
+    	eval($diabetes.intValue() + checkHypertension($chart) > 0)
+    then
+        Disease d = new Disease(6, "Hronicna bubrezna bolest", 2, null);
+    	$exam.setDisease(d);
+    	update($chart);
+        System.out.println("U pitanju je hronicna bubrezna bolest");
+
+end
+
+
+rule "Akutna bubrezna povreda"
+    //include attributes such as "salience" here...
+    when
+        $chart: Chart($exams: examinations)
+    	$exam: Examination(disease == null, $symptoms: symptoms) from $exams
+    	Number(intValue > 1) from accumulate (
+    		Symptom(name=="Zamor" || name=="Dijareja" || 
+    			name=="Otoci nogu i zglobova" || name=="Gusenje" || 
+    			name=="Bol u grudima") from $symptoms,
+    		count(1)
+    	)
+    	$postOp: Number(intValue > 0) from accumulate (
+    		Symptom(name=="Oporavlja se od operacije") from $symptoms,
+    		count(1)
+    	)
+    	eval(checkHighTemperatureDisease($chart) + checkAntibiotics($chart) + $postOp.intValue()> 0)
+    then
+        Disease d = new Disease(7, "Akutna bubrezna povreda", 2, null);
+    	$exam.setDisease(d);
+    	update($chart);
+        System.out.println("U pitanju je akutna bubrezna povreda");
+
+end
+
+function int checkHypertension(Chart chart){
+	
+	Date d = new Date();
+	for(Examination m: chart.getExaminations()) {
+		if(m.getDisease() != null && m.getDisease().getName().equals("Hipertenzija")){
+			if((d.getTime() - m.getDate().getTime())/(1000*60*60*24) > 30*6 ){
+				return 1;
+			}
+		}
+	}
+	
+	return 0;
+}
+
+function int checkHighTemperatureDisease(Chart chart){
+	Date d = new Date();
+	for(Examination m: chart.getExaminations()) {
+		for(Symptom s: m.getDisease().getSymptoms()){
+			if(s.getName().equals("Temperatura veca od 38") ||
+				s.getName().equals("Temperatura od 40 do 41")){
+				if((d.getTime() - m.getDate().getTime())/(1000*60*60*24) < 14) {
+					return 1;
+				}
+			}
+		}
+	}
+	
+	return 0;
+}
+
+function int checkAntibiotics(Chart chart){
+	Date d = new Date();
+	for(Examination m: chart.getExaminations()) {
+		if(m.getPrescription().getDrug().getDrugType() == DrugType.ANTIBIOTIC){
+			if((d.getTime() - m.getDate().getTime())/(1000*60*60*24) < 21) {
+				return 1;
+			}
+		}
+	}
+	
+	return 0;
+}
