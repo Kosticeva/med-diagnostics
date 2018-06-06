@@ -28,10 +28,58 @@ public class SampleApp {
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(SampleApp.class, args);
         
-        doStuff();
+        //doStuff();
 		//doStuff1();
 		//doStuff2();
+		doStuff3();
 	}
+	
+	public static void doStuff3() {
+		KieSession ks = kieContainer().newKieSession();
+		ks.getAgenda().getAgendaGroup("reports").setFocus();
+		
+		Chart prehlada = new Chart();
+		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
+		prehlada.setPatient(p);
+		prehlada.setExaminations(new ArrayList<Examination>());
+		
+		Doctor dd = new Doctor("Kiki", "Riki", "aa124", "aa124", "xxx", DoctorType.REGULAR);
+		
+		Disease d = new Disease(23, "Dijabetes", 0, null);
+		
+		try {
+			for(int i=0; i<6; i++) {
+				Examination e = new Examination();
+				e.setSymptoms(new ArrayList<Symptom>());
+				e.setDoctor(dd);
+				e.setDisease(d);
+				e.setId(i*56);
+				e.setDate(new Date());
+				prehlada.getExaminations().add(e);
+				Thread.sleep(i*1000);
+			}
+		}catch(Exception e) {
+			
+		}
+		
+		Examination eee = new Examination(23, new Date(), null, null, null, null);
+		ks.setGlobal("noww", eee);
+		
+		for(int i=0; i<prehlada.getExaminations().size(); i++) {
+			System.out.println(eee.getDate().getTime()-prehlada.getExaminations().get(i).getDate().getTime());
+		}
+		
+		FactHandle f = ks.insert(prehlada);
+		
+		System.out.println(ks.fireAllRules());
+		
+		ks.delete(f);
+		
+		System.out.println(prehlada);
+		
+		
+	}
+	
 	
 	@Bean
     public static KieContainer kieContainer() {
@@ -45,6 +93,9 @@ public class SampleApp {
 	public static void doStuff() {
 		KieSession ks = kieContainer().newKieSession();
 		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
+		
+		Date dz = new Date();
+		ks.setGlobal("currDate", dz);
 		
 		Chart prehlada = new Chart();
 		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());

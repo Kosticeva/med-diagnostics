@@ -3,6 +3,11 @@ package drools.model;
 import java.util.Date;
 import java.util.List;
 
+import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Timestamp;
+
+@Role(Role.Type.EVENT)
+@Timestamp("date")
 public class Examination {
 
 	private int id;

@@ -1,0 +1,64 @@
+//created on: Jun 6, 2018
+package reports
+
+import java.util.Date;
+import drools.model.Chart;
+import drools.model.Examination;
+import drools.model.Disease;
+import drools.model.Prescription;
+import drools.model.enums.DrugType;
+import drools.model.Drug;
+
+global Examination noww
+
+rule "Hronicna oboljenja"
+	agenda-group "reports"
+    when
+        Chart($exams: examinations, $patient: patient)
+        $c1: Number(intValue > 5) from accumulate(
+	        $ex: Examination($disease: disease, this before[0d, 730d] noww) from $exams and
+	        Disease(name!= "Prehlada", name!= "Groznica", $dName: name) from $disease and
+        	Examination($dis: disease, this before[0d, 730d] noww) from $exams and
+        	Disease(name == $dName) from $dis,
+	        count(1)
+	    )
+    then
+        System.out.println($patient+" moguce boluje od hronicne bolesti "+$c1.intValue());
+end
+
+rule "Zavisnici"
+	agenda-group "reports"
+    when
+        Chart($exams: examinations, $patient: patient)
+        Number(intValue > 5) from accumulate(
+	        Examination($pres: prescription) from $exams and//, currDate.getTime() - date.getTime() < 6*30*24*60*60*1000) from $exams and
+	        Prescription($drug: drug) from $pres and
+	        Drug(drugType == DrugType.ANALGESIC) from $drug,
+	        count(1)
+	    )	
+    then
+        System.out.println($patient+" je moguci zavisnik");
+
+end
+
+rule "Oslabljen imunitet"
+    agenda-group "reports"
+    when
+        Chart($exams: examinations, $patient: patient)
+        $allDis: Number(intValue > -1) from accumulate(
+	        Examination() from $exams,//currDate.getTime() - date.getTime() < 12*30*24*60*60*1000) from $exams,
+	        count(1)
+	    )
+	    $anTher: Number(intValue > -1) from accumulate(
+	    	Examination($pres: prescription) from $exams and//, currDate.getTime() - date.getTime() < 12*30*24*60*60*1000) from $exams and
+	    	Prescription($drug: drug) from $pres and
+	        Drug(drugType == DrugType.ANTIBIOTIC) from $drug,
+	        count(1)
+	    )
+	    eval($allDis == $anTher)
+    then
+        System.out.println($patient+" moguce ima oslabljen imunitet");
+
+end
+
+
