@@ -26,11 +26,11 @@ rule "Hipertenzija"
 end
 
 rule "Dijabetes"
-    //include attributes such as "salience" here...
+    salience $count.intValue()*100/4
     when
        	$chart: Chart($exams: examinations)
     	$exam: Examination(disease == null, $symptoms: symptoms) from $exams
-    	Number(intValue == 4) from accumulate (
+    	$count: Number(intValue == 4) from accumulate (
     		Symptom(name=="Cesto uriniranje" || name=="Gubitak telesne tezine"
     			|| name=="Zamor" || name=="Mucnina i povracanje") from $symptoms,
     		count(1)
@@ -46,7 +46,6 @@ end
 function boolean countBloodPressures(Chart chart, Examination exam) {
 
 	int count = 0;
-	Date d = new Date();
 	for (Examination m: chart.getExaminations()){
 		if((exam.getDate().getTime() - m.getDate().getTime())/(1000*60*60*24) < 180 && exam.getDate().getTime() - m.getDate().getTime() >= 0){
 			for(Symptom s: m.getSymptoms()){

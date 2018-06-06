@@ -17,6 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import drools.model.enums.DoctorType;
+import drools.model.enums.DrugType;
 
 
 @SpringBootApplication
@@ -27,9 +28,9 @@ public class SampleApp {
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(SampleApp.class, args);
         
-        //doStuff();
+        doStuff();
 		//doStuff1();
-		doStuff2();
+		//doStuff2();
 	}
 	
 	@Bean
@@ -62,12 +63,17 @@ public class SampleApp {
 		Symptom s3 = new Symptom("Kasalj", 3);
 		Symptom s4 = new Symptom("Bol u grlu", 4);
 		Symptom s5 = new Symptom("Dijareja", 5);
+		Symptom s66 = new Symptom("Temperatura veca od 38", 77);
+		Symptom s67 = new Symptom("Curenje iz nosa", 654);
+		Symptom s77 = new Symptom("Drhvatica", 614);
 		
 		sysms.add(s1);
 		sysms.add(s2);
 		sysms.add(s3);
 		sysms.add(s4);
-		sysms.add(s5);
+		sysms.add(s66);
+		sysms.add(s67);
+		sysms.add(s77);
 		
 		m.setSymptoms(sysms);
 		
@@ -165,7 +171,7 @@ public class SampleApp {
 			Examination e2 = new Examination(22, new Date(), dd, new ArrayList<Symptom>(), null, null);
 			Thread.sleep(5000);
 			Examination e3 = new Examination(32, new Date(), dd, new ArrayList<Symptom>(), null, null);
-			/*Thread.sleep(5000);
+			Thread.sleep(5000);
 			Examination e4 = new Examination(42, new Date(), dd, new ArrayList<Symptom>(), null, null);
 			Thread.sleep(5000);
 			Examination e5 = new Examination(52, new Date(), dd, new ArrayList<Symptom>(), null, null);
@@ -179,28 +185,28 @@ public class SampleApp {
 			Examination e9 = new Examination(92, new Date(), dd, new ArrayList<Symptom>(), null, null);
 			Thread.sleep(5000);
 			Examination e0 = new Examination(02, new Date(), dd, new ArrayList<Symptom>(), null, null);
-			*/
+			
 			e1.getSymptoms().add(s);
 			e2.getSymptoms().add(s);
 			e3.getSymptoms().add(s);
-			/*e4.getSymptoms().add(s);
+			e4.getSymptoms().add(s);
 			e5.getSymptoms().add(s);
 			e6.getSymptoms().add(s);
 			e7.getSymptoms().add(s);
 			e8.getSymptoms().add(s);
 			e9.getSymptoms().add(s);
-			e0.getSymptoms().add(s);*/
+			e0.getSymptoms().add(s);
 			
 			prehlada.getExaminations().add(e1);
 			prehlada.getExaminations().add(e2);
 			prehlada.getExaminations().add(e3);
-			/*prehlada.getExaminations().add(e4);
+			prehlada.getExaminations().add(e4);
 			prehlada.getExaminations().add(e5);
 			prehlada.getExaminations().add(e6);
 			prehlada.getExaminations().add(e7);
 			prehlada.getExaminations().add(e8);
 			prehlada.getExaminations().add(e9);
-			prehlada.getExaminations().add(e0);*/
+			prehlada.getExaminations().add(e0);
 		
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -244,7 +250,74 @@ public class SampleApp {
 		Chart prehlada = new Chart();
 		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
 		prehlada.setPatient(p);
+		prehlada.setExaminations(new ArrayList<Examination>());
 		
 		Doctor dd = new Doctor("Kiki", "Riki", "aa124", "aa124", "xxx", DoctorType.REGULAR);
+	
+		//za dijabetes
+		Examination mmm = new Examination(231, new Date(), dd, new ArrayList<Symptom>(), null, null);
+		
+		Symptom s1 = new Symptom("Cesto uriniranje", 123);
+		Symptom s2 = new Symptom("Gubitak telesne tezine", 333);
+		Symptom s3 = new Symptom("Mucnina i povracanje", 223);
+		Symptom s4 = new Symptom("Zamor", 423);
+		
+		mmm.getSymptoms().add(s1);
+		mmm.getSymptoms().add(s2);
+		mmm.getSymptoms().add(s3);
+		mmm.getSymptoms().add(s4);
+		
+		prehlada.getExaminations().add(mmm);
+		
+		FactHandle f = ks.insert(prehlada);
+		
+		System.out.println(ks.fireAllRules());
+		
+		ks.delete(f);
+		
+		Ingredient ii = new Ingredient(2, "Metil-ultra-sulfat");
+		
+		Drug d = new Drug(321, "Penicilin", new ArrayList<Ingredient>(), DrugType.ANTIBIOTIC);
+		d.getIngredients().add(ii);
+		
+		Prescription pp = new Prescription(312, "2 puta dnevno po 2", d);
+		mmm.setPrescription(pp);
+		
+		Examination m = new Examination(222, new Date(), dd, new ArrayList<Symptom>(), null, null);
+		
+		Symptom s5 = new Symptom("Nocturia", 124);
+		Symptom s6 = new Symptom("Otoci nogu i zglobova", 125);
+		Symptom s7 = new Symptom("Gusenje", 241);
+		Symptom s8 = new Symptom("Dijareja", 31);
+		
+		m.getSymptoms().add(s7);
+		m.getSymptoms().add(s5);
+		//m.getSymptoms().add(s6);
+		
+		prehlada.getExaminations().add(m);
+		
+		f = ks.insert(prehlada);
+		
+		System.out.println(ks.fireAllRules());
+		
+		ks.delete(f);
+		
+		System.out.println(prehlada);
+		
+		Examination mM = new Examination(223, new Date(), dd, new ArrayList<Symptom>(), null, null);
+		
+		mM.getSymptoms().add(s4);
+		mM.getSymptoms().add(s8);
+		///mM.getSymptoms().add(s7);
+		
+		prehlada.getExaminations().add(mM);
+		
+		f = ks.insert(prehlada);
+		
+		System.out.println(ks.fireAllRules());
+		
+		ks.delete(f);
+		
+		System.out.println(prehlada);
 	}
 }

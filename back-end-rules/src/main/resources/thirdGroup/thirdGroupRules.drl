@@ -14,11 +14,12 @@ import drools.model.enums.DrugType;
 //declare any global variables here
 
 rule "Hronicna bubrezna bolest"
-
+	salience $count.intValue()*100/7+$diabetes.intValue()*100/7+100/7
+	activation-group "y"
     when
         $chart: Chart($exams: examinations)
     	$exam: Examination(disease == null, $symptoms: symptoms) from $exams
-    	Number(intValue > 1) from accumulate (
+    	$count: Number(intValue > 1) from accumulate (
     		Symptom(name=="Zamor" || name=="Nocturia" || 
     			name=="Otoci nogu i zglobova" || name=="Gusenje" || 
     			name=="Bol u grudima") from $symptoms,
@@ -29,7 +30,7 @@ rule "Hronicna bubrezna bolest"
     			Disease(name == "Dijabetes") from $dis,
     		count(1)
     	)
-    	eval($diabetes.intValue() + checkHypertension($chart) > 0)
+    	eval($diabetes.intValue() + checkHypertension($chart, $exam) > 0)
     then
         Disease d = new Disease(6, "Hronicna bubrezna bolest", 2, null);
     	$exam.setDisease(d);
@@ -41,20 +42,22 @@ end
 
 rule "Akutna bubrezna povreda"
     //include attributes such as "salience" here...
+    salience $count.intValue()*100/8+$postOp.intValue()*100/8+100/8
+    activation-group "y"
     when
         $chart: Chart($exams: examinations)
     	$exam: Examination(disease == null, $symptoms: symptoms) from $exams
-    	Number(intValue > 1) from accumulate (
+    	$count: Number(intValue > 1) from accumulate (
     		Symptom(name=="Zamor" || name=="Dijareja" || 
     			name=="Otoci nogu i zglobova" || name=="Gusenje" || 
     			name=="Bol u grudima") from $symptoms,
     		count(1)
     	)
-    	$postOp: Number(intValue > 0) from accumulate (
+    	$postOp: Number(intValue > -1) from accumulate (
     		Symptom(name=="Oporavlja se od operacije") from $symptoms,
     		count(1)
     	)
-    	eval(checkHighTemperatureDisease($chart) + checkAntibiotics($chart) + $postOp.intValue()> 0)
+    	eval(checkHighTemperatureDisease($chart, $exam) + checkAntibiotics($chart, $exam) + $postOp.intValue()> 0)
     then
         Disease d = new Disease(7, "Akutna bubrezna povreda", 2, null);
     	$exam.setDisease(d);
@@ -63,12 +66,10 @@ rule "Akutna bubrezna povreda"
 
 end
 
-function int checkHypertension(Chart chart){
-	
-	Date d = new Date();
+function int checkHypertension(Chart chart, Examination e){
 	for(Examination m: chart.getExaminations()) {
 		if(m.getDisease() != null && m.getDisease().getName().equals("Hipertenzija")){
-			if((d.getTime() - m.getDate().getTime())/(1000*60*60*24) > 30*6 ){
+			if((e.getDate().getTime() - m.getDate().getTime())/(1000*60*60*24) > 30*6 ){
 				return 1;
 			}
 		}
@@ -77,13 +78,12 @@ function int checkHypertension(Chart chart){
 	return 0;
 }
 
-function int checkHighTemperatureDisease(Chart chart){
-	Date d = new Date();
+function int checkHighTemperatureDisease(Chart chart, Examination e){
 	for(Examination m: chart.getExaminations()) {
-		for(Symptom s: m.getDisease().getSymptoms()){
+		for(Symptom s: m.getSymptoms()){
 			if(s.getName().equals("Temperatura veca od 38") ||
 				s.getName().equals("Temperatura od 40 do 41")){
-				if((d.getTime() - m.getDate().getTime())/(1000*60*60*24) < 14) {
+				if((e.getDate().getTime() - m.getDate().getTime())/(1000*60*60*24) < 14) {
 					return 1;
 				}
 			}
@@ -93,11 +93,10 @@ function int checkHighTemperatureDisease(Chart chart){
 	return 0;
 }
 
-function int checkAntibiotics(Chart chart){
-	Date d = new Date();
+function int checkAntibiotics(Chart chart, Examination e){
 	for(Examination m: chart.getExaminations()) {
-		if(m.getPrescription().getDrug().getDrugType() == DrugType.ANTIBIOTIC){
-			if((d.getTime() - m.getDate().getTime())/(1000*60*60*24) < 21) {
+		if(m.getPrescription() != null && m.getPrescription().getDrug().getDrugType() == DrugType.ANTIBIOTIC){
+			if((e.getDate().getTime() - m.getDate().getTime())/(1000*60*60*24) < 21) {
 				return 1;
 			}
 		}

@@ -11,7 +11,8 @@ import java.util.Date;
 //declare any global variables here
 
 rule "Prehlada"
-
+	salience $count.intValue()*100/5
+	activation-group "x"
     when
         $chart: Chart($exams: examinations)
         $exam: Examination(disease == null, $symptoms: symptoms) from $exams
@@ -30,6 +31,8 @@ end
 
 
 rule "Groznica"
+	salience $count.intValue()*100/7
+	activation-group "x"
 	when
 		$chart: Chart($exams: examinations)
         $exam: Examination(disease == null, $symptoms: symptoms) from $exams
@@ -47,7 +50,8 @@ rule "Groznica"
 end
 
 rule "Upala krajnika"
-    //include attributes such as "salience" here...
+    salience $count.intValue()*100/8
+    activation-group "x"
     when
         $chart: Chart($exams: examinations)
         $exam: Examination(disease == null, $symptoms: symptoms) from $exams
@@ -66,6 +70,8 @@ rule "Upala krajnika"
 end
 
 rule "Sinusna infekcija"
+	salience $count.intValue()*100/7
+	activation-group "x"
 	when
 		$chart: Chart($exams: examinations)
         $exam: Examination(disease == null, $symptoms: symptoms) from $exams
@@ -83,11 +89,8 @@ rule "Sinusna infekcija"
 end
 
 function boolean checkLastColdFever(Chart chart, Examination exam) {
-	System.out.println("Poredjenje pregleda " + exam.getId() + " sa ostatkom");
 	for(Examination m: chart.getExaminations()) {
-		System.out.println(exam.getId() + " vs " + m.getId());
 		if(m.getDisease()!= null && (m.getDisease().getName().equals("Prehlada") || m.getDisease().getName().equals("Groznica"))){
-			System.out.println("***** " + m.getId() + " je prehlada/groznica");
 			if((exam.getDate().getTime() - m.getDate().getTime()) / (60*60*24*1000) < 60)
 				return true;
 		}
