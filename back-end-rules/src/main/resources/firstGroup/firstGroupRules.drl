@@ -13,6 +13,7 @@ import java.util.Date;
 rule "Prehlada"
 	salience $count.intValue()*100/5
 	activation-group "x"
+	agenda-group "diagnose"
     when
         $chart: Chart($exams: examinations)
         $exam: Examination(disease == null, $symptoms: symptoms) from $exams
@@ -33,6 +34,7 @@ end
 rule "Groznica"
 	salience $count.intValue()*100/7
 	activation-group "x"
+	agenda-group "diagnose"
 	when
 		$chart: Chart($exams: examinations)
         $exam: Examination(disease == null, $symptoms: symptoms) from $exams
@@ -52,6 +54,7 @@ end
 rule "Upala krajnika"
     salience $count.intValue()*100/8
     activation-group "x"
+    agenda-group "diagnose"
     when
         $chart: Chart($exams: examinations)
         $exam: Examination(disease == null, $symptoms: symptoms) from $exams
@@ -72,6 +75,7 @@ end
 rule "Sinusna infekcija"
 	salience $count.intValue()*100/7
 	activation-group "x"
+	agenda-group "diagnose"
 	when
 		$chart: Chart($exams: examinations)
         $exam: Examination(disease == null, $symptoms: symptoms) from $exams

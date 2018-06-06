@@ -44,6 +44,7 @@ public class SampleApp {
 	
 	public static void doStuff() {
 		KieSession ks = kieContainer().newKieSession();
+		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		
 		Chart prehlada = new Chart();
 		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
@@ -85,6 +86,7 @@ public class SampleApp {
 		System.out.println(ks.fireAllRules());
 		
 		ks.delete(f);
+		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		
 		System.out.println(prehlada);
 		
@@ -122,6 +124,7 @@ public class SampleApp {
 		ks.delete(f);
 		
 		System.out.println(prehlada);
+		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		
 		//sinusna infekcija
 		Examination MM = new Examination();
@@ -142,6 +145,26 @@ public class SampleApp {
 		MM.setSymptoms(sysms2);
 		
 		prehlada.getExaminations().add(MM);
+		
+		f = ks.insert(prehlada);
+		
+		System.out.println(ks.fireAllRules());
+		
+		ks.delete(f);
+		
+		System.out.println(prehlada);
+		
+		ks.getAgenda().getAgendaGroup("allergy-warning").setFocus();
+		
+		Ingredient ii = new Ingredient(2, "Metil-ultra-sulfat");
+		
+		Drug d = new Drug(321, "Penicilin", new ArrayList<Ingredient>(), DrugType.ANTIBIOTIC);
+		d.getIngredients().add(ii);
+		
+		p.getAllergens().add(ii);
+		
+		Prescription pp = new Prescription(312, "2 puta dnevno po 2", d);
+		MM.setPrescription(pp);
 		
 		f = ks.insert(prehlada);
 		
