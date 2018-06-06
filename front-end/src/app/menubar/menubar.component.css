@@ -1,0 +1,13 @@
+a.nav-link{
+    color: white;
+    display: inline;
+}
+
+nav{
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+i{
+    color: white;
+}

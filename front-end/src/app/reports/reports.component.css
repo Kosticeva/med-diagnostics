@@ -1,0 +1,8 @@
+.row{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.card-header{
+   background-color : lightgreen;
+}
