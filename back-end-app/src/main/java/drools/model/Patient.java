@@ -2,13 +2,28 @@ package drools.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+@Entity
 public class Patient{
 
+	@Column(nullable = false)
 	private String firstName;
+	
+	@Column(nullable = false)
 	private String lastName;
 	
-	private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Allergen> allergens;
 	
 	public Patient() {}
@@ -37,7 +52,7 @@ public class Patient{
 		this.lastName = lastName;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	

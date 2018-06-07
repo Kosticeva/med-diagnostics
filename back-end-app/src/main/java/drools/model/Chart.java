@@ -2,19 +2,37 @@ package drools.model;
 
 import java.util.List;
 
-public class Chart {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+@Entity
+public class Chart{
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "chart")
 	private List<Examination> examinations;
-	private IntensiveCare intensiveCare;
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@Column(nullable = false)
 	private Patient patient;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	
 	public Chart() {}
 
-	public Chart(List<Examination> examinations, IntensiveCare intensiveCare, Patient patient) {
+	public Chart(List<Examination> examinations, Patient patient, Integer id) {
 		super();
 		this.examinations = examinations;
-		this.intensiveCare = intensiveCare;
 		this.patient = patient;
+		this.id = id;
 	}
 
 	public Patient getPatient() {
@@ -33,14 +51,14 @@ public class Chart {
 		this.examinations = examinations;
 	}
 
-	public IntensiveCare getIntensiveCare() {
-		return intensiveCare;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setIntensiveCare(IntensiveCare intensiveCare) {
-		this.intensiveCare = intensiveCare;
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	
+
 	@Override
 	public String toString() {
 		String retVal = "Patient: " + patient.toString();

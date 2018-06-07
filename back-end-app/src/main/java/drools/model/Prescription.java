@@ -1,8 +1,13 @@
 package drools.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Prescription {
 
-	private int id;
+	@Id
+	private Integer id;
 	private String plan;
 	private Drug drug;
 	
@@ -15,7 +20,7 @@ public class Prescription {
 		this.drug = drug;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	

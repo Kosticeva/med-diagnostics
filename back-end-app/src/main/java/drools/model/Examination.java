@@ -3,18 +3,46 @@ package drools.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import org.kie.api.definition.type.Role;
 import org.kie.api.definition.type.Timestamp;
 
+@Entity
 @Role(Role.Type.EVENT)
 @Timestamp("date")
 public class Examination {
 
-	private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
+	@Column(nullable = false)
+	@Temporal(TemporalType.DATE)
 	private Date date;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@Column(nullable = false)
 	private Doctor doctor;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "chart")
 	private List<Symptom> symptoms;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Disease disease;
+	
+	@OneToOne(fetch = FetchType.LAZY)
 	private Prescription prescription;
 	
 	public Examination() {}
@@ -30,7 +58,7 @@ public class Examination {
 		this.prescription = prescription;
 	}
 
-	public int getId() {
+	public  Integer getId() {
 		return id;
 	}
 

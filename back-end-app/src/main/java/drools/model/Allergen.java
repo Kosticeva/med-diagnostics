@@ -1,20 +1,21 @@
 package drools.model;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class Allergen {
 	
-	protected int id;
+	@Column(nullable = false)
 	protected String name;
 	
 	public Allergen() {}
 
-	public Allergen(int id, String name) {
-		this.id = id;
+	public Allergen(String name) {
 		this.name = name;
 	}
 	
 	public abstract String getName();
-	public abstract int getId();
 	
 	public abstract void setName(String name);
-	public abstract void setId(int id);
 }

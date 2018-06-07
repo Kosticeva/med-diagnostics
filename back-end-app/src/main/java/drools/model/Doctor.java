@@ -1,21 +1,38 @@
 package drools.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+
 import drools.model.enums.DoctorType;
 
-public class Doctor {
+@Entity
+public class Doctor{
 	
+	@Column(nullable = false)
 	private String firstName;
+	
+	@Column(nullable = false)
 	private String lastName;
 	
-	private String licenceId;
+	@Id
+	private Integer licenceId;
+	
+	@Column(nullable = false)
 	private String username;
+	
+	@Column(nullable = false)
 	private String password;
 	
+	@Column(nullable = false)
+	@Enumerated(EnumType.ORDINAL)
 	private DoctorType type;
 	
 	public Doctor() {}
 
-	public Doctor(String firstName, String lastName, String licenceId, String username, String password,
+	public Doctor(String firstName, String lastName, Integer licenceId, String username, String password,
 			DoctorType type) {
 		super();
 		this.firstName = firstName;
@@ -42,11 +59,11 @@ public class Doctor {
 		this.lastName = lastName;
 	}
 
-	public String getLicenceId() {
+	public Integer getLicenceId() {
 		return licenceId;
 	}
 
-	public void setLicenceId(String licenceId) {
+	public void setLicenceId(Integer licenceId) {
 		this.licenceId = licenceId;
 	}
 

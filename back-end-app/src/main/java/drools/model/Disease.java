@@ -2,24 +2,38 @@ package drools.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Disease {
 
-	private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
+	@Column(nullable = false)
 	private String name;
-	private int type;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "disease")
 	private List<Symptom> symptoms;
 	
 	public Disease() {}
 
-	public Disease(int id, String name, int type, List<Symptom> symptoms) {
+	public Disease(int id, String name, List<Symptom> symptoms) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.type = type;
 		this.symptoms = symptoms;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -34,10 +48,6 @@ public class Disease {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public int getType() {
-		return type;
-	}
 	
 	public List<Symptom> getSymptoms(){
 		return this.symptoms;
@@ -47,8 +57,5 @@ public class Disease {
 		this.symptoms = symptoms;
 	}
 
-	public void setType(int type) {
-		this.type = type;
-	}
 
 }

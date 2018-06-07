@@ -1,9 +1,17 @@
 package drools.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Symptom {
 
+	@Column(nullable = false)
 	private String name;
-	private int id;
+	
+	@Id
+	private Integer id;
 	
 	public Symptom() {}
 
@@ -21,7 +29,7 @@ public class Symptom {
 		this.name = name;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 

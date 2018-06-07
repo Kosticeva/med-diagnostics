@@ -16,7 +16,7 @@ rule "Hronicna oboljenja"
     when
         Chart($exams: examinations, $patient: patient)
         $c1: Number(intValue > 5) from accumulate(
-	        $ex: Examination($disease: disease, this before[0d, 730d] noww) from $exams and
+	        $ex: Examination($disease: disease, this before[0m, 730m] noww) from $exams and
 	        Disease(name!= "Prehlada", name!= "Groznica", $dName: name) from $disease and
         	Examination($dis: disease, this before[0d, 730d] noww) from $exams and
         	Disease(name == $dName) from $dis,
