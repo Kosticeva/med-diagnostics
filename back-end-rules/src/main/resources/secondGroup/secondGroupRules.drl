@@ -19,7 +19,7 @@ rule "Hipertenzija"
     	$exam: Examination(disease == null) from $exams
         eval(countBloodPressures($chart, $exam))
     then
-       Disease d = new Disease(4, "Hipertenzija", 1, null);
+       Disease d = new Disease(4, "Hipertenzija", null);
     	$exam.setDisease(d);
     	update($chart);
 		System.out.println("U pitanju je hipertenzija");
@@ -38,7 +38,7 @@ rule "Dijabetes"
     		count(1)
     	)
     then
-        Disease d = new Disease(5, "Dijabetes", 1, null);
+        Disease d = new Disease(5, "Dijabetes", null);
     	$exam.setDisease(d);
     	update($chart);
 		System.out.println("U pitanju je dijabetes");

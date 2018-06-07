@@ -11,6 +11,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -18,6 +19,15 @@ import org.springframework.context.annotation.Bean;
 
 import drools.model.enums.DoctorType;
 import drools.model.enums.DrugType;
+import drools.repository.ChartRepository;
+import drools.repository.DiseaseRepository;
+import drools.repository.DoctorRepository;
+import drools.repository.DrugRepository;
+import drools.repository.ExaminationRepository;
+import drools.repository.IngredientRepository;
+import drools.repository.PatientRepository;
+import drools.repository.PrescriptionRepository;
+import drools.repository.SymptomRepository;
 
 
 @SpringBootApplication
@@ -28,10 +38,10 @@ public class SampleApp {
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(SampleApp.class, args);
         
-        //doStuff();
+        doStuff();
 		//doStuff1();
 		//doStuff2();
-		doStuff3();
+		//doStuff3();
 	}
 	
 	public static void doStuff3() {
@@ -43,9 +53,9 @@ public class SampleApp {
 		prehlada.setPatient(p);
 		prehlada.setExaminations(new ArrayList<Examination>());
 		
-		Doctor dd = new Doctor("Kiki", "Riki", "aa124", "aa124", "xxx", DoctorType.REGULAR);
+		Doctor dd = new Doctor("Kiki", "Riki", 1234, "aa124", "xxx", DoctorType.REGULAR);
 		
-		Disease d = new Disease(23, "Dijabetes", 0, null);
+		Disease d = new Disease(23, "Dijabetes", null);
 		
 		try {
 			for(int i=0; i<6; i++) {
@@ -94,14 +104,14 @@ public class SampleApp {
 		KieSession ks = kieContainer().newKieSession();
 		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		
-		Date dz = new Date();
-		ks.setGlobal("currDate", dz);
+		/*Date dz = new Date();
+		ks.setGlobal("currDate", dz);*/
 		
 		Chart prehlada = new Chart();
 		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
 		prehlada.setPatient(p);
 		
-		Doctor dd = new Doctor("Kiki", "Riki", "aa124", "aa124", "xxx", DoctorType.REGULAR);
+		Doctor dd = new Doctor("Kiki", "Riki", 1234, "aa124", "xxx", DoctorType.REGULAR);
 		//prehlada
 		
 		Examination m = new Examination();
@@ -235,7 +245,7 @@ public class SampleApp {
 		prehlada.setPatient(p);
 		prehlada.setExaminations(new ArrayList<Examination>());
 		
-		Doctor dd = new Doctor("Kiki", "Riki", "aa124", "aa124", "xxx", DoctorType.REGULAR);
+		Doctor dd = new Doctor("Kiki", "Riki", 1234, "aa124", "xxx", DoctorType.REGULAR);
 		
 		Symptom s = new Symptom("Povisen krvni pritisak", 123);
 		
@@ -326,7 +336,7 @@ public class SampleApp {
 		prehlada.setPatient(p);
 		prehlada.setExaminations(new ArrayList<Examination>());
 		
-		Doctor dd = new Doctor("Kiki", "Riki", "aa124", "aa124", "xxx", DoctorType.REGULAR);
+		Doctor dd = new Doctor("Kiki", "Riki", 1234, "aa124", "xxx", DoctorType.REGULAR);
 	
 		//za dijabetes
 		Examination mmm = new Examination(231, new Date(), dd, new ArrayList<Symptom>(), null, null);

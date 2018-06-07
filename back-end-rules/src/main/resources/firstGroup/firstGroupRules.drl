@@ -23,7 +23,7 @@ rule "Prehlada"
         	count(1)
         )
     then
-    	Disease d = new Disease(0, "Prehlada", 0, null);
+    	Disease d = new Disease(0, "Prehlada", null);
     	$exam.setDisease(d);
     	update($chart);
         System.out.println("U pitanju je prehlada");
@@ -45,7 +45,7 @@ rule "Groznica"
         	count(1)
         )
 	then
-		Disease d = new Disease(1, "Groznica", 0, null);
+		Disease d = new Disease(1, "Groznica", null);
     	$exam.setDisease(d);
     	update($chart);
 		System.out.println("U pitanju je groznica");
@@ -65,7 +65,7 @@ rule "Upala krajnika"
         	count(1)
         )
     then
-        Disease d = new Disease(2, "Upala krajnika", 0, null);
+        Disease d = new Disease(2, "Upala krajnika", null);
     	$exam.setDisease(d);
     	update($chart);
 		System.out.println("U pitanju je upala krajnika");
@@ -86,7 +86,7 @@ rule "Sinusna infekcija"
         )
         eval(checkLastColdFever($chart, $exam))
 	then
-		Disease d = new Disease(2, "Sinusna infekcija", 0, null);
+		Disease d = new Disease(2, "Sinusna infekcija", null);
     	$exam.setDisease(d);
     	update($chart);
 		System.out.println("U pitanju je sinusna infekcija");

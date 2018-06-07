@@ -33,10 +33,9 @@ public class Examination {
 	private Date date;
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@Column(nullable = false)
 	private Doctor doctor;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "chart")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Symptom> symptoms;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

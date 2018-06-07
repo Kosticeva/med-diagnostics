@@ -1,24 +1,16 @@
 package drools.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
 public class Ingredient extends Allergen{
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 	
 	public Ingredient() {
 		super();
 	}
 	
 	public Ingredient(int id, String name) {
-		super(name);
-		this.id = id;
+		super(id, name);
 	}
 	
 	@Override
@@ -31,11 +23,13 @@ public class Ingredient extends Allergen{
 		this.name = name;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	@Override
+	public void setId(int id) {
 		this.id = id;
 	}
 

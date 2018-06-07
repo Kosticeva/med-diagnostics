@@ -15,11 +15,10 @@ import javax.persistence.OneToOne;
 @Entity
 public class Chart{
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "chart")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Examination> examinations;
 	
 	@OneToOne(fetch = FetchType.EAGER)
-	@Column(nullable = false)
 	private Patient patient;
 	
 	@Id

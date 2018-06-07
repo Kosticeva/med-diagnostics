@@ -8,9 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import drools.model.enums.DrugType;
@@ -18,9 +15,7 @@ import drools.model.enums.DrugType;
 @Entity
 public class Drug extends Allergen{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Ingredient> ingredients;
@@ -34,8 +29,7 @@ public class Drug extends Allergen{
 	}
 	
 	public Drug(int id, String name, List<Ingredient> ingredients, DrugType drugType) {
-		super(name);
-		this.id = id;
+		super(id, name);
 		this.ingredients = ingredients;
 		this.drugType = drugType;
 	}
@@ -66,11 +60,13 @@ public class Drug extends Allergen{
 		this.name = name;
 	}
 
+	@Override
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	@Override
+	public void setId(int id) {
 		this.id = id;
 	}
 

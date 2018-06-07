@@ -33,7 +33,7 @@ rule "Hronicna bubrezna bolest"
     	)
     	eval($diabetes.intValue() + checkHypertension($chart, $exam) > 0)
     then
-        Disease d = new Disease(6, "Hronicna bubrezna bolest", 2, null);
+        Disease d = new Disease(6, "Hronicna bubrezna bolest", null);
     	$exam.setDisease(d);
     	update($chart);
         System.out.println("U pitanju je hronicna bubrezna bolest");
@@ -61,7 +61,7 @@ rule "Akutna bubrezna povreda"
     	)
     	eval(checkHighTemperatureDisease($chart, $exam) + checkAntibiotics($chart, $exam) + $postOp.intValue()> 0)
     then
-        Disease d = new Disease(7, "Akutna bubrezna povreda", 2, null);
+        Disease d = new Disease(7, "Akutna bubrezna povreda", null);
     	$exam.setDisease(d);
     	update($chart);
         System.out.println("U pitanju je akutna bubrezna povreda");

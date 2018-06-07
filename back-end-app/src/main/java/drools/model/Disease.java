@@ -21,7 +21,7 @@ public class Disease {
 	@Column(nullable = false)
 	private String name;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "disease")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Symptom> symptoms;
 	
 	public Disease() {}
