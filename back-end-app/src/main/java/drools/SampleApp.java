@@ -1,6 +1,7 @@
-package drools.model;
+package drools;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -11,23 +12,23 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import drools.model.Allergen;
+import drools.model.Chart;
+import drools.model.Disease;
+import drools.model.Doctor;
+import drools.model.Drug;
+import drools.model.Examination;
+import drools.model.Ingredient;
+import drools.model.Patient;
+import drools.model.Prescription;
+import drools.model.Symptom;
 import drools.model.enums.DoctorType;
 import drools.model.enums.DrugType;
-import drools.repository.ChartRepository;
-import drools.repository.DiseaseRepository;
-import drools.repository.DoctorRepository;
-import drools.repository.DrugRepository;
-import drools.repository.ExaminationRepository;
-import drools.repository.IngredientRepository;
-import drools.repository.PatientRepository;
-import drools.repository.PrescriptionRepository;
-import drools.repository.SymptomRepository;
 
 
 @SpringBootApplication
@@ -37,7 +38,14 @@ public class SampleApp {
 
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(SampleApp.class, args);
-        
+		String[] beanNames = ctx.getBeanDefinitionNames();
+        Arrays.sort(beanNames);
+
+        StringBuilder sb = new StringBuilder("Application beans:\n");
+        for (String beanName : beanNames) {
+            sb.append(beanName + "\n");
+        }
+        log.info(sb.toString());
         doStuff();
 		//doStuff1();
 		//doStuff2();
