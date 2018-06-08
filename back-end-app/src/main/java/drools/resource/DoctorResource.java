@@ -2,11 +2,12 @@ package drools.resource;
 
 import java.util.List;
 
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import drools.model.Doctor;
 import drools.service.DoctorService;
 
 @RestController
+@Scope(value="session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class DoctorResource {
 
 	@Autowired

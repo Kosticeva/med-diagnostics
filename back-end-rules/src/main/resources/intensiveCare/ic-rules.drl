@@ -1,0 +1,118 @@
+//created on: Jun 8, 2018
+package intensiveCare
+
+import drools.model.reports.HeartBeatEvent;
+import drools.model.reports.DialysisEvent;
+import drools.model.reports.OxygenEvent;
+import drools.model.Chart;
+import drools.model.IntensiveCareReport;
+import drools.model.Examination;
+import drools.model.Disease;
+import java.util.Date;
+
+rule "Try Oxygen"
+	agenda-group "alerts"
+	when
+		$ol1: OxygenEvent($lvl: oxygenBloodLevel, oxygenBloodLevel < 70.0, $chart: chart)
+	then
+		System.out.println("**LEVEL LESS THAN 70, DROP FROM RULE**");
+end
+
+rule "Try Heart"
+	agenda-group "alerts"
+	when
+		$hb1: HeartBeatEvent($chart: chart)
+	then
+		System.out.println("**A BEAT FROM RULE**");
+end
+
+rule "Try Urin"
+	agenda-group "alerts"
+	when
+		$dl1: DialysisEvent($chart: chart)
+    	Number(doubleValue < 100.0) from accumulate (
+    		$dl2: DialysisEvent(
+    			this != $dl1,
+    			chart == $chart,
+    			this meets [12h] $dl1,
+    			$q: urineQuantity
+    		),
+    		sum($q)
+    	)
+	then
+		System.out.println("**LVL SUM LESS THAN 100 -> URIN FROM RULE");
+end
+
+rule "Oxygen Level Alert"
+	no-loop
+    when
+    	$ol1: OxygenEvent($lvl: oxygenBloodLevel, oxygenBloodLevel < 70, $chart: chart)
+    	$icReport: IntensiveCareReport(chart == $chart)
+    	Number(intValue == 0) from accumulate (
+    		$ol2: OxygenEvent(
+    			this != $ol1,
+    			chart == $chart,
+    			oxygenBloodLevel < $lvl,
+    			this meets[15m] $ol1
+    		),
+    		count(1)
+    	)
+    then
+        System.out.println("Patinent's oxygen blood level has dropped below 70mmHg and is still dropping -> "+$chart.getPatient());
+        $icReport.setTimeStamp(new Date());
+       	$icReport.setOxygenOk(false);
+       	update($icReport);
+end
+
+rule "Tachycardia"
+	no-loop
+    when
+    	$hb1: HeartBeatEvent($chart: chart)
+    	$icReport: IntensiveCareReport(chart == $chart)
+        Number(intValue >= 25) from accumulate(
+        	$hb2: HeartBeatEvent(
+        		this != $hb1,
+        		chart == $chart,
+        		this meets[10s] $hb2
+        	),
+        	count(1)
+        )
+    then
+        System.out.println("There were more that 25 hbts in less than 10s -> "+$chart.getPatient());
+        $icReport.setTimeStamp(new Date());
+       	$icReport.setHeartOk(false);
+       	update($icReport);
+end
+
+rule "Urgent  dialysis"
+	no-loop
+    when
+    	$dl1: DialysisEvent($chart: chart)
+    	Number(doubleValue < 100) from accumulate (
+    		$dl2: DialysisEvent(
+    			this != $dl1,
+    			chart == $chart,
+    			this meets [12h] $dl1,
+    			$q: urineQuantity
+    		),
+    		sum($q)
+    	)
+    	$hb1: HeartBeatEvent(chart == $chart)
+        Number(intValue >= 10) from accumulate(
+        	$hb2: HeartBeatEvent(
+        		this != $hb1,
+        		chart == $chart,
+        		this meets[10s] $hb1
+        	),
+        	count(1)
+        )
+        $icReport: IntensiveCareReport(chart == $chart)
+        Chart($exams: examinations) from $chart
+        $exam: Examination($diag: disease, disease != null) from $exams
+        Disease(name == "Hronicna bubrezna bolest") from $diag
+    then
+        System.out.println("Patient " + $chart.getPatient() + " needs dialysis!");
+        $icReport.setTimeStamp(new Date());
+       	$icReport.setUrinOk(false);
+       	update($icReport);
+end

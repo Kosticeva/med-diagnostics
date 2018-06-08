@@ -29,24 +29,18 @@ import drools.model.Prescription;
 import drools.model.Symptom;
 import drools.model.enums.DoctorType;
 import drools.model.enums.DrugType;
+import drools.resource.IntensiveCareResource;
 
 
 @SpringBootApplication
 public class SampleApp {
 	
 	private static Logger log = LoggerFactory.getLogger(SampleApp.class);
-
+	
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(SampleApp.class, args);
-		String[] beanNames = ctx.getBeanDefinitionNames();
-        Arrays.sort(beanNames);
-
-        StringBuilder sb = new StringBuilder("Application beans:\n");
-        for (String beanName : beanNames) {
-            sb.append(beanName + "\n");
-        }
-        log.info(sb.toString());
-        doStuff();
+		
+        //doStuff();
 		//doStuff1();
 		//doStuff2();
 		//doStuff3();
