@@ -9,16 +9,14 @@ import drools.model.Prescription;
 import drools.model.enums.DrugType;
 import drools.model.Drug;
 
-global Examination noww
-
 rule "Hronicna oboljenja"
 	agenda-group "reports"
     when
         Chart($exams: examinations, $patient: patient)
         $c1: Number(intValue > 5) from accumulate(
-	        $ex: Examination($disease: disease, $idd: id, this before[0s, 1000s] noww) from $exams and
+	        $ex: Examination($disease: disease) from $exams and
 	        Disease(name!= "Prehlada", name!= "Groznica", $dName: name) from $disease and
-        	Examination($dis: disease, id != $idd) from $exams and
+        	Examination($dis: disease, this!= $ex, this meets[730d] $ex) from $exams and
         	Disease(name == $dName) from $dis,
 	        count(1)
 	    )
@@ -31,9 +29,10 @@ rule "Zavisnici"
     when
         Chart($exams: examinations, $patient: patient)
         Number(intValue > 5) from accumulate(
-	        Examination($pres: prescription) from $exams and//, currDate.getTime() - date.getTime() < 6*30*24*60*60*1000) from $exams and
-	        Prescription($drug: drug) from $pres and
-	        Drug(drugType == DrugType.ANALGESIC) from $drug,
+	        $ex: Examination() from $exams and
+	        Examination(this != $ex, this meets[180d] $ex, $pres1: prescription) from $exams and
+	        Prescription($drug1: drug) from $pres1 and
+	        Drug(drugType == DrugType.ANALGESIC) from $drug1,
 	        count(1)
 	    )	
     then
@@ -45,17 +44,19 @@ rule "Oslabljen imunitet"
     agenda-group "reports"
     when
         Chart($exams: examinations, $patient: patient)
-        $allDis: Number(intValue > -1) from accumulate(
-	        Examination() from $exams,//currDate.getTime() - date.getTime() < 12*30*24*60*60*1000) from $exams,
-	        count(1)
-	    )
-	    $anTher: Number(intValue > -1) from accumulate(
-	    	Examination($pres: prescription) from $exams and//, currDate.getTime() - date.getTime() < 12*30*24*60*60*1000) from $exams and
-	    	Prescription($drug: drug) from $pres and
-	        Drug(drugType == DrugType.ANTIBIOTIC) from $drug,
-	        count(1)
-	    )
-	    eval($allDis == $anTher)
+        $analgDis: Number(intValue >= 10) from accumulate (
+        	$ex: Examination() from $exams and
+        	Examination(this != $ex, this meets[365d] $ex, $pres: prescription) from $exams and
+        	Prescription($drug: drug) from $pres and
+        	Drug(drugType == DrugType.ANALGESIC) from $drug,
+        	count(1)
+        )
+        $allDis: Number(intValue >= 0) from accumulate (
+        	$ex: Examination() from $exams and
+        	Examination(this != $ex, this meets[365d] $ex) from $exams,
+        	count(1)
+        )
+        eval($analgDis == $allDis)
     then
         System.out.println($patient+" moguce ima oslabljen imunitet");
 

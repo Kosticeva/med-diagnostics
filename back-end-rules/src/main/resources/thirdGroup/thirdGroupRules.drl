@@ -9,7 +9,7 @@ import drools.model.Disease;
 import java.util.Date;
 import drools.model.Prescription;
 import drools.model.enums.DrugType;
-
+import drools.model.Drug;
 
 //declare any global variables here
 
@@ -27,11 +27,20 @@ rule "Hronicna bubrezna bolest"
     		count(1)
     	)
     	$diabetes: Number(intValue > -1) from accumulate (
-    			Examination($dis: disease) from $exams and
-    			Disease(name == "Dijabetes") from $dis,
+			Examination($dis: disease) from $exams and
+			Disease(name == "Dijabetes") from $dis,
     		count(1)
     	)
-    	eval($diabetes.intValue() + checkHypertension($chart, $exam) > 0)
+    	$hyperTens: Number(intValue > -1) from accumulate (
+        	Examination(
+        		this != $exam,
+        		$diag: disease, 
+        		disease != null,
+        		this meets[180d] $exam) from $exams and
+        	Disease(name == "Hipertenzija") from $diag,
+        	count(1)
+    	)
+    	eval($diabetes.intValue()+$hyperTens.intValue() > 0)
     then
         Disease d = new Disease(6, "Hronicna bubrezna bolest", null);
     	$exam.setDisease(d);
@@ -39,7 +48,6 @@ rule "Hronicna bubrezna bolest"
         System.out.println("U pitanju je hronicna bubrezna bolest");
 
 end
-
 
 rule "Akutna bubrezna povreda"
     //include attributes such as "salience" here...
@@ -59,7 +67,25 @@ rule "Akutna bubrezna povreda"
     		Symptom(name=="Oporavlja se od operacije") from $symptoms,
     		count(1)
     	)
-    	eval(checkHighTemperatureDisease($chart, $exam) + checkAntibiotics($chart, $exam) + $postOp.intValue()> 0)
+    	$highTemp: Number(intValue > -1) from accumulate (
+    		Examination(
+        		this != $exam,
+        		$symptoms1: symptoms,
+        		this meets[14d] $exam) from $exams and
+        	Symptom(name == "Temperatura veca od 38" || name == "Temperatura od 40 do 41") from $symptoms1,
+        	count(1)
+    	)
+    	$antiBio: Number(intValue > -1) from accumulate (
+    		Examination(
+        		this != $exam,
+        		$prescr: prescription,
+        		prescription != null,
+        		this meets[14d] $exam) from $exams and
+        	Prescription($drug: drug) from $prescr and
+        	Drug(drugType == DrugType.ANTIBIOTIC) from $drug,
+        	count(1)
+    	)
+    	eval($postOp.intValue() + $highTemp.intValue() + $antiBio.intValue() > 0)
     then
         Disease d = new Disease(7, "Akutna bubrezna povreda", null);
     	$exam.setDisease(d);
@@ -67,42 +93,3 @@ rule "Akutna bubrezna povreda"
         System.out.println("U pitanju je akutna bubrezna povreda");
 
 end
-
-function int checkHypertension(Chart chart, Examination e){
-	for(Examination m: chart.getExaminations()) {
-		if(m.getDisease() != null && m.getDisease().getName().equals("Hipertenzija")){
-			if((e.getDate().getTime() - m.getDate().getTime())/(1000*60*60*24) > 30*6 ){
-				return 1;
-			}
-		}
-	}
-	
-	return 0;
-}
-
-function int checkHighTemperatureDisease(Chart chart, Examination e){
-	for(Examination m: chart.getExaminations()) {
-		for(Symptom s: m.getSymptoms()){
-			if(s.getName().equals("Temperatura veca od 38") ||
-				s.getName().equals("Temperatura od 40 do 41")){
-				if((e.getDate().getTime() - m.getDate().getTime())/(1000*60*60*24) < 14) {
-					return 1;
-				}
-			}
-		}
-	}
-	
-	return 0;
-}
-
-function int checkAntibiotics(Chart chart, Examination e){
-	for(Examination m: chart.getExaminations()) {
-		if(m.getPrescription() != null && m.getPrescription().getDrug().getDrugType() == DrugType.ANTIBIOTIC){
-			if((e.getDate().getTime() - m.getDate().getTime())/(1000*60*60*24) < 21) {
-				return 1;
-			}
-		}
-	}
-	
-	return 0;
-}

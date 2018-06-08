@@ -56,49 +56,26 @@ public class IntensiveCareResource {
 	@Autowired
 	IntensiveCareService intensiveCareService;
 	
-	@RequestMapping(value="/api/intensive-care/start", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
-	public void startDaemon() {
+	@RequestMapping(value="/api/intensive-care/start2", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	public void startDaemon2() {
 		
-		Chart c1 = new Chart(new ArrayList<Examination>(), null, 1);
 		Chart c2 = new Chart(new ArrayList<Examination>(), null, 2);
-		
-		Patient hasDiabetes = new Patient("Milka", "Debelic", 123, new ArrayList<Allergen>());
 		Patient hasKidneyDisease = new Patient("Rastko", "Drzic", 321, new ArrayList<Allergen>());
-		
 		Doctor d = new Doctor("Doca", "Dr Docic", 44444, "drDoca", "drDoca44444", DoctorType.ADMINISTRATOR);
-	
+		
 		Symptom ss = new Symptom("Neki sim", 0);
-		
-		Examination diabExam = new Examination(10, new Date(), d, new ArrayList<Symptom>(), null, null);	
 		Examination kidnExam = new Examination(20, new Date(), d, new ArrayList<Symptom>(), null, null);
-		
-		Disease diab = new Disease(88, "Dijabetes", new ArrayList<Symptom>());
 		Disease kidn = new Disease(98, "Hronicna bubrezna bolest", new ArrayList<Symptom>());
-		
-		diab.getSymptoms().add(ss);
 		kidn.getSymptoms().add(ss);
 		
-		Prescription pDiab = new Prescription(880, "Sto vise", null);
 		Prescription pKidn = new Prescription(980, "Sto vise", null);
-		
-		Drug dDiab = new Drug(8800, "Insulin", new ArrayList<Ingredient>(), DrugType.OTHER);
 		Drug dKidn = new Drug(9800, "Andol", new ArrayList<Ingredient>(), DrugType.OTHER);
-		
-		pDiab.setDrug(dDiab);
 		pKidn.setDrug(dKidn);
-		
-		diabExam.setDisease(diab);
+
 		kidnExam.setDisease(kidn);
-		diabExam.setPrescription(pDiab);
 		kidnExam.setPrescription(pKidn);
-		
-		c1.setPatient(hasDiabetes);
 		c2.setPatient(hasKidneyDisease);
-		
-		c1.getExaminations().add(diabExam);
 		c2.getExaminations().add(kidnExam);
-		
-		System.out.println(c1);
 		System.out.println(c2);
 		
 		KieServices kss = KieServices.Factory.get();
@@ -116,12 +93,9 @@ public class IntensiveCareResource {
         KieSessionConfiguration ksconf2 = kss.newKieSessionConfiguration();
         ksconf2.setOption(ClockTypeOption.get(ClockType.PSEUDO_CLOCK.getId()));
         KieSession ks = kbase.newKieSession(ksconf2, null);
-		ks.getAgenda().getAgendaGroup("alerts").setFocus();
-		
-		IntensiveCareReport icDiab = new IntensiveCareReport(true, true, true, c1);
+
 		IntensiveCareReport icKidn = new IntensiveCareReport(true, true, true, c2);
 		
-		ks.insert(icDiab);
 		ks.insert(icKidn);
 		
 		SessionPseudoClock clock = ks.getSessionClock();
@@ -131,33 +105,79 @@ public class IntensiveCareResource {
 		
 		System.out.println("===================================\nZapocet monitoring 1\n");
 		for(int i=0; i<30; i++) {
+			ks.getAgenda().getAgendaGroup("alerts").setFocus();
 			OxygenEvent oe = new OxygenEvent(c2, startOxLevel - i*2);
 			ks.insert(oe);
 			clock.advanceTime(30, TimeUnit.SECONDS);
 			ks.fireAllRules();
-			System.out.println("Drop ("+i*30+"s)");
+			System.out.println("Drop ("+i*30+30+"s)");
+			ks.getAgenda().getAgendaGroup("alerts").setFocus();
 			OxygenEvent oe1 = new OxygenEvent(c2, startOxLevel - i*2);
 			ks.insert(oe1);
 			clock.advanceTime(30, TimeUnit.SECONDS);
-			System.out.println("Drop ("+i*30+"s)");
+			System.out.println("Drop ("+i*30+60+"s)");
 			ks.fireAllRules();
 		}
 		
-		System.out.println("===================================\nZavrsen monitoring 1\n");
-		System.out.println("Stanje pacijenta: "+icDiab.getChart().getPatient());
-		System.out.println("\t*** Nivo kiseonika: "+icDiab.isOxygenOk()+"\n");
-		System.out.println("\t*** Nivo otkucaja: "+icDiab.isHeartOk()+"\n");
-		System.out.println("\t*** Nivo urina: "+icDiab.isUrinOk()+"\n");
-		System.out.println("\t------------------------------------------------------\n");
+		System.out.println("===================================\nZavrsen monitoring 1(PROBLEM SA KISEONIKOM\n");
 		System.out.println("Stanje pacijenta: "+icKidn.getChart().getPatient());
 		System.out.println("\t*** Nivo kiseonika: "+icKidn.isOxygenOk()+"\n");
 		System.out.println("\t*** Nivo otkucaja: "+icKidn.isHeartOk()+"\n");
 		System.out.println("\t*** Nivo urina: "+icKidn.isUrinOk()+"\n");
 		
-		////////////////////////////////////////////////////////////////////////////////////////////////////////
+	}
+	
+	
+	@RequestMapping(value="/api/intensive-care/start1", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	public void startDaemon1() {
+		
+		Chart c1 = new Chart(new ArrayList<Examination>(), null, 1);
+		Patient hasDiabetes = new Patient("Milka", "Debelic", 123, new ArrayList<Allergen>());
+		Doctor d = new Doctor("Doca", "Dr Docic", 44444, "drDoca", "drDoca44444", DoctorType.ADMINISTRATOR);
+		
+		Symptom ss = new Symptom("Neki sim", 0);
+		Examination diabExam = new Examination(10, new Date(), d, new ArrayList<Symptom>(), null, null);
+		Disease diab = new Disease(88, "Dijabetes", new ArrayList<Symptom>());
+		diab.getSymptoms().add(ss);
+		
+		Prescription pDiab = new Prescription(880, "Sto vise", null);
+		Drug dDiab = new Drug(8800, "Insulin", new ArrayList<Ingredient>(), DrugType.OTHER);
+		pDiab.setDrug(dDiab);
+		
+		diabExam.setDisease(diab);
+		diabExam.setPrescription(pDiab);
+		
+		c1.setPatient(hasDiabetes);
+		
+		c1.getExaminations().add(diabExam);
+		
+		System.out.println(c1);
+		
+		KieServices kss = KieServices.Factory.get();
+        KieFileSystem kfs = kss.newKieFileSystem();
+        kfs.write(ResourceFactory.newClassPathResource("intensiveCare/ic-rules.drl"));
+        KieBuilder kbuilder = kss.newKieBuilder(kfs);
+        kbuilder.buildAll();
+        if (kbuilder.getResults().hasMessages(Message.Level.ERROR)) {
+            throw new IllegalArgumentException("Coudln't build knowledge module" + kbuilder.getResults());
+        }
+        KieContainer kContainer = kss.newKieContainer(kbuilder.getKieModule().getReleaseId());
+        KieBaseConfiguration kbconf = kss.newKieBaseConfiguration();
+        kbconf.setOption(EventProcessingOption.STREAM);
+        KieBase kbase = kContainer.newKieBase(kbconf);
+        KieSessionConfiguration ksconf2 = kss.newKieSessionConfiguration();
+        ksconf2.setOption(ClockTypeOption.get(ClockType.PSEUDO_CLOCK.getId()));
+        KieSession ks = kbase.newKieSession(ksconf2, null);
+		
+		IntensiveCareReport icDiab = new IntensiveCareReport(true, true, true, c1);
+		
+		ks.insert(icDiab);
+		
+		SessionPseudoClock clock = ks.getSessionClock();
 		
 		System.out.println("===================================\nZapocet monitoring 2\n");
 		for(int i=0; i<30; i++) {
+			ks.getAgenda().getAgendaGroup("alerts").setFocus();
 			HeartBeatEvent oe = new HeartBeatEvent(c1);
 			ks.insert(oe);
 			clock.advanceTime(100, TimeUnit.MILLISECONDS);
@@ -165,21 +185,62 @@ public class IntensiveCareResource {
 			System.out.println("Beat ("+i*0.1+"s)");
 		}
 		
-		System.out.println("===================================\nZavrsen monitoring 2\n");
+		System.out.println("===================================\nZavrsen monitoring 2(PROBLEM S SRCEM)\n");
 		System.out.println("Stanje pacijenta: "+icDiab.getChart().getPatient());
 		System.out.println("\t*** Nivo kiseonika: "+icDiab.isOxygenOk()+"\n");
 		System.out.println("\t*** Nivo otkucaja: "+icDiab.isHeartOk()+"\n");
 		System.out.println("\t*** Nivo urina: "+icDiab.isUrinOk()+"\n");
-		System.out.println("\t------------------------------------------------------\n");
-		System.out.println("Stanje pacijenta: "+icKidn.getChart().getPatient());
-		System.out.println("\t*** Nivo kiseonika: "+icKidn.isOxygenOk()+"\n");
-		System.out.println("\t*** Nivo otkucaja: "+icKidn.isHeartOk()+"\n");
-		System.out.println("\t*** Nivo urina: "+icKidn.isUrinOk()+"\n");
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////
-				
-		System.out.println("===================================\nZapocet monitoring 3\n");
+	}
+	
+	@RequestMapping(value="/api/intensive-care/start3", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	public void startDaemon3() {
+
+		Chart c2 = new Chart(new ArrayList<Examination>(), null, 2);
+		Patient hasKidneyDisease = new Patient("Rastko", "Drzic", 321, new ArrayList<Allergen>());
+		Doctor d = new Doctor("Doca", "Dr Docic", 44444, "drDoca", "drDoca44444", DoctorType.ADMINISTRATOR);
+		
+		Symptom ss = new Symptom("Neki sim", 0);
+		Examination kidnExam = new Examination(20, new Date(), d, new ArrayList<Symptom>(), null, null);
+		Disease kidn = new Disease(98, "Hronicna bubrezna bolest", new ArrayList<Symptom>());
+		kidn.getSymptoms().add(ss);
+		
+		Prescription pKidn = new Prescription(980, "Sto vise", null);
+		Drug dKidn = new Drug(9800, "Andol", new ArrayList<Ingredient>(), DrugType.OTHER);
+		pKidn.setDrug(dKidn);
+
+		kidnExam.setDisease(kidn);
+		kidnExam.setPrescription(pKidn);
+		c2.setPatient(hasKidneyDisease);
+		c2.getExaminations().add(kidnExam);
+		System.out.println(c2);
+		
+		KieServices kss = KieServices.Factory.get();
+        KieFileSystem kfs = kss.newKieFileSystem();
+        kfs.write(ResourceFactory.newClassPathResource("intensiveCare/ic-rules.drl"));
+        KieBuilder kbuilder = kss.newKieBuilder(kfs);
+        kbuilder.buildAll();
+        if (kbuilder.getResults().hasMessages(Message.Level.ERROR)) {
+            throw new IllegalArgumentException("Coudln't build knowledge module" + kbuilder.getResults());
+        }
+        KieContainer kContainer = kss.newKieContainer(kbuilder.getKieModule().getReleaseId());
+        KieBaseConfiguration kbconf = kss.newKieBaseConfiguration();
+        kbconf.setOption(EventProcessingOption.STREAM);
+        KieBase kbase = kContainer.newKieBase(kbconf);
+        KieSessionConfiguration ksconf2 = kss.newKieSessionConfiguration();
+        ksconf2.setOption(ClockTypeOption.get(ClockType.PSEUDO_CLOCK.getId()));
+        KieSession ks = kbase.newKieSession(ksconf2, null);
+
+		IntensiveCareReport icKidn = new IntensiveCareReport(true, true, true, c2);
+		
+		ks.insert(icKidn);
+		
+		SessionPseudoClock clock = ks.getSessionClock();
+		
+		System.out.println("===================================\nZapocet monitoring 3(PROBLEM S MOKRACOM)\n");
 		for(int i=0; i<30; i++) {
+			ks.getAgenda().getAgendaGroup("alerts").setFocus();
 			DialysisEvent oe = new DialysisEvent(c2, 1);
 			ks.insert(oe);
 			clock.advanceTime(30, TimeUnit.MINUTES);
@@ -188,29 +249,26 @@ public class IntensiveCareResource {
 		}
 		
 		for(int i=0; i<30; i++) {
+			ks.getAgenda().getAgendaGroup("alerts").setFocus();
 			HeartBeatEvent oe = new HeartBeatEvent(c2);
 			ks.insert(oe);
 			clock.advanceTime(500, TimeUnit.MILLISECONDS);
 			ks.fireAllRules();
+			System.out.println("Beat ("+i+0.5+"s)");
+			ks.getAgenda().getAgendaGroup("alerts").setFocus();
 			HeartBeatEvent oe1 = new HeartBeatEvent(c2);
 			ks.insert(oe1);
 			clock.advanceTime(500, TimeUnit.MILLISECONDS);
 			ks.fireAllRules();
-			System.out.println("Beat ("+i*0.5+"s)");
+			System.out.println("Beat ("+i+1+"s)");
 		}
 		
 		System.out.println("===================================\nZavrsen monitoring 3\n");
-		System.out.println("Stanje pacijenta: "+icDiab.getChart().getPatient());
-		System.out.println("\t*** Nivo kiseonika: "+icDiab.isOxygenOk()+"\n");
-		System.out.println("\t*** Nivo otkucaja: "+icDiab.isHeartOk()+"\n");
-		System.out.println("\t*** Nivo urina: "+icDiab.isUrinOk()+"\n");
-		System.out.println("\t------------------------------------------------------\n");
 		System.out.println("Stanje pacijenta: "+icKidn.getChart().getPatient());
 		System.out.println("\t*** Nivo kiseonika: "+icKidn.isOxygenOk()+"\n");
 		System.out.println("\t*** Nivo otkucaja: "+icKidn.isHeartOk()+"\n");
 		System.out.println("\t*** Nivo urina: "+icKidn.isUrinOk()+"\n");
 	}
-	
 	
 	@Bean
     public static KieContainer kieContainer() {

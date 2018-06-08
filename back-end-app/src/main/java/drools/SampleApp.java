@@ -1,7 +1,6 @@
 package drools;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import drools.model.Prescription;
 import drools.model.Symptom;
 import drools.model.enums.DoctorType;
 import drools.model.enums.DrugType;
-import drools.resource.IntensiveCareResource;
 
 
 @SpringBootApplication
@@ -40,10 +38,10 @@ public class SampleApp {
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(SampleApp.class, args);
 		
-        //doStuff();
-		//doStuff1();
-		//doStuff2();
-		//doStuff3();
+        /*doStuff();
+		doStuff1();
+		doStuff2();*/
+		doStuff3();
 	}
 	
 	public static void doStuff3() {
@@ -72,13 +70,6 @@ public class SampleApp {
 			}
 		}catch(Exception e) {
 			
-		}
-		
-		Examination eee = new Examination(23, new Date(), null, null, null, null);
-		ks.setGlobal("noww", eee);
-		
-		for(int i=0; i<prehlada.getExaminations().size(); i++) {
-			System.out.println(eee.getDate().getTime()-prehlada.getExaminations().get(i).getDate().getTime());
 		}
 		
 		FactHandle f = ks.insert(prehlada);
@@ -241,6 +232,7 @@ public class SampleApp {
 	
 	public static void doStuff1() {
 		KieSession ks = kieContainer().newKieSession();
+		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		
 		Chart prehlada = new Chart();
 		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
@@ -323,6 +315,7 @@ public class SampleApp {
 		
 		f = ks.insert(prehlada);
 		
+		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		System.out.println(ks.fireAllRules());
 		
 		ks.delete(f);
@@ -357,6 +350,7 @@ public class SampleApp {
 		
 		FactHandle f = ks.insert(prehlada);
 		
+		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		System.out.println(ks.fireAllRules());
 		
 		ks.delete(f);
@@ -384,6 +378,7 @@ public class SampleApp {
 		
 		f = ks.insert(prehlada);
 		
+		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		System.out.println(ks.fireAllRules());
 		
 		ks.delete(f);
@@ -400,6 +395,7 @@ public class SampleApp {
 		
 		f = ks.insert(prehlada);
 		
+		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		System.out.println(ks.fireAllRules());
 		
 		ks.delete(f);

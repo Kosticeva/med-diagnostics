@@ -79,12 +79,21 @@ rule "Sinusna infekcija"
 	when
 		$chart: Chart($exams: examinations)
         $exam: Examination(disease == null, $symptoms: symptoms) from $exams
-        $count: Number(intValue >= 4) from accumulate (
+        $count: Number(intValue >= 3) from accumulate (
         	Symptom(name=="Oticanje oko ociju" || name=="Glavobolja" || name=="Zuti sekret iz nosa" 
         		|| name=="Bol u grlu" || name=="Temperatura veca od 38" || name=="Kasalj") from $symptoms,
         	count(1)
         )
-        eval(checkLastColdFever($chart, $exam))
+        $specCount: Number(intValue >= 0) from accumulate (
+        	Examination(
+        		this != $exam,
+        		this meets[60d] $exam,
+        		$disease: disease
+        	) and
+        	Disease( name == "Prehlada" || name == "Groznica"),
+        	count(1)
+        )
+        eval($count.intValue() + $specCount.intValue() >= 4)
 	then
 		Disease d = new Disease(2, "Sinusna infekcija", null);
     	$exam.setDisease(d);

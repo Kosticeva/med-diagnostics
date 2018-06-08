@@ -17,17 +17,22 @@ rule "Hipertenzija"
     when
     	$chart: Chart($exams: examinations)
     	$exam: Examination(disease == null) from $exams
-        eval(countBloodPressures($chart, $exam))
+        $cc: Number(intValue >= 10) from accumulate (
+        	$exam1: Examination(
+        		this meets[180d] $exam,
+        		$symptoms: symptoms
+        	) from $exams and
+        	Symptom(name == "Povisen krvni pritisak") from $symptoms,
+        	count(1)
+        )
     then
        Disease d = new Disease(4, "Hipertenzija", null);
     	$exam.setDisease(d);
     	update($chart);
-		System.out.println("U pitanju je hipertenzija");
-
+		System.out.println("U pitanju je hipertenzija ");
 end
 
 rule "Dijabetes"
-    salience $count.intValue()*100/4
     agenda-group "diagnose"
     when
        	$chart: Chart($exams: examinations)
@@ -44,24 +49,3 @@ rule "Dijabetes"
 		System.out.println("U pitanju je dijabetes");
 
 end
-
-function boolean countBloodPressures(Chart chart, Examination exam) {
-
-	int count = 0;
-	for (Examination m: chart.getExaminations()){
-		if((exam.getDate().getTime() - m.getDate().getTime())/(1000*60*60*24) < 180 && exam.getDate().getTime() - m.getDate().getTime() >= 0){
-			for(Symptom s: m.getSymptoms()){
-				if(s.getName().equals("Povisen krvni pritisak")){
-					count++;
-					break;
-				}
-			}
-		}
-	}
-	
-	if(count >= 10){
-		return true;
-	}
-	
-	return false;
-}

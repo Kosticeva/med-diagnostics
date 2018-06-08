@@ -10,41 +10,9 @@ import drools.model.Examination;
 import drools.model.Disease;
 import java.util.Date;
 
-rule "Try Oxygen"
-	agenda-group "alerts"
-	when
-		$ol1: OxygenEvent($lvl: oxygenBloodLevel, oxygenBloodLevel < 70.0, $chart: chart)
-	then
-		System.out.println("**LEVEL LESS THAN 70, DROP FROM RULE**");
-end
-
-rule "Try Heart"
-	agenda-group "alerts"
-	when
-		$hb1: HeartBeatEvent($chart: chart)
-	then
-		System.out.println("**A BEAT FROM RULE**");
-end
-
-rule "Try Urin"
-	agenda-group "alerts"
-	when
-		$dl1: DialysisEvent($chart: chart)
-    	Number(doubleValue < 100.0) from accumulate (
-    		$dl2: DialysisEvent(
-    			this != $dl1,
-    			chart == $chart,
-    			this meets [12h] $dl1,
-    			$q: urineQuantity
-    		),
-    		sum($q)
-    	)
-	then
-		System.out.println("**LVL SUM LESS THAN 100 -> URIN FROM RULE");
-end
-
 rule "Oxygen Level Alert"
 	no-loop
+	agenda-group "alerts"
     when
     	$ol1: OxygenEvent($lvl: oxygenBloodLevel, oxygenBloodLevel < 70, $chart: chart)
     	$icReport: IntensiveCareReport(chart == $chart)
@@ -66,6 +34,7 @@ end
 
 rule "Tachycardia"
 	no-loop
+	agenda-group "alerts"
     when
     	$hb1: HeartBeatEvent($chart: chart)
     	$icReport: IntensiveCareReport(chart == $chart)
@@ -86,8 +55,9 @@ end
 
 rule "Urgent  dialysis"
 	no-loop
+	agenda-group "alerts"
     when
-    	$dl1: DialysisEvent($chart: chart)
+		$dl1: DialysisEvent($chart: chart)
     	Number(doubleValue < 100) from accumulate (
     		$dl2: DialysisEvent(
     			this != $dl1,
@@ -97,8 +67,8 @@ rule "Urgent  dialysis"
     		),
     		sum($q)
     	)
-    	$hb1: HeartBeatEvent(chart == $chart)
         Number(intValue >= 10) from accumulate(
+    		$hb1: HeartBeatEvent(chart == $chart) and
         	$hb2: HeartBeatEvent(
         		this != $hb1,
         		chart == $chart,
@@ -107,9 +77,12 @@ rule "Urgent  dialysis"
         	count(1)
         )
         $icReport: IntensiveCareReport(chart == $chart)
-        Chart($exams: examinations) from $chart
-        $exam: Examination($diag: disease, disease != null) from $exams
-        Disease(name == "Hronicna bubrezna bolest") from $diag
+        Number(intValue > 0) from accumulate(
+        	Chart($exams: examinations) from $chart and
+        	$exam: Examination($diag: disease, disease != null) from $exams and
+        	Disease(name == "Hronicna bubrezna bolest") from $diag,
+        	count(1)
+        )
     then
         System.out.println("Patient " + $chart.getPatient() + " needs dialysis!");
         $icReport.setTimeStamp(new Date());
