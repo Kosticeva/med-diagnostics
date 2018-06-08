@@ -7,9 +7,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SymptomsComponent implements OnInit {
 
+  formShown: boolean;
+
   constructor() { }
 
   ngOnInit() {
+    this.formShown = false;
   }
+
+  public showForm() {
+    this.formShown = !this.formShown;
+  }
+
+  addSymptom() {
+
+  }
+
+  removeSymptom() {
+    
+  }
+
 
 }

@@ -7,9 +7,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IntensiveCareComponent implements OnInit {
 
+  newPatientOpen: boolean;
+
   constructor() { }
 
   ngOnInit() {
+    this.newPatientOpen = false;
+  }
+
+  navBack() {
+    window.history.back();
+  }
+
+  openNewPatient() {
+    this.newPatientOpen = !this.newPatientOpen;
+  }
+
+  removeIcPatient(){
+
   }
 
 }

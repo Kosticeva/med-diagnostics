@@ -15,10 +15,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { SymptomsComponent } from './exam/symptoms/symptoms.component';
 import { DiagnoseComponent } from './exam/diagnose/diagnose.component';
 import { TherapyComponent } from './exam/therapy/therapy.component';
-import { SelfDiagnoseComponent } from './exam/diagnose/self-diagnose/self-diagnose.component';
 import { NewIcPatientComponent } from './intensive-care/new-ic-patient/new-ic-patient.component';
 import { PatientComponent } from './patient/patient.component';
 import { NewPatientComponent } from './patient/new-patient/new-patient.component';
+import { NewSymptomComponent } from './exam/symptoms/new-symptom/new-symptom.component';
+import { NewDoctorComponent } from './menubar/new-doctor/new-doctor.component';
+import { NewDiseaseComponent } from './menubar/new-disease/new-disease.component';
+import { NewDrugComponent } from './menubar/new-drug/new-drug.component';
 
 
 @NgModule({
@@ -35,10 +38,13 @@ import { NewPatientComponent } from './patient/new-patient/new-patient.component
     SymptomsComponent,
     DiagnoseComponent,
     TherapyComponent,
-    SelfDiagnoseComponent,
     NewIcPatientComponent,
     PatientComponent,
-    NewPatientComponent
+    NewPatientComponent,
+    NewSymptomComponent,
+    NewDoctorComponent,
+    NewDiseaseComponent,
+    NewDrugComponent
   ],
   imports: [
     BrowserModule,

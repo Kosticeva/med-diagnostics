@@ -12,4 +12,8 @@ export class TherapyComponent implements OnInit {
   ngOnInit() {
   }
 
+  chooseDrug() {}
+
+  removeDrug() {}
+
 }

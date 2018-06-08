@@ -12,4 +12,12 @@ export class NewIcPatientComponent implements OnInit {
   ngOnInit() {
   }
 
+  addToIC() {
+
+  }
+
+  removeFromIC() {
+    
+  }
+
 }

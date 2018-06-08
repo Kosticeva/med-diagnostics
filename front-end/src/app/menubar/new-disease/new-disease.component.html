@@ -1,0 +1,21 @@
+<div class="card">
+    <div class="card-header">
+      <h5>Kreiraj novu bolest</h5>
+    </div>
+    <div class="card-body">
+      <form class="form-group">
+        <div class="form-field">
+          <label for="name">Naziv: </label>
+          <input type="text" id="name" class="form-control" />
+        </div>
+        <div class="form-field">
+            <label for="smyps">Simptomi: </label>
+            <textarea id="smyps" class="form-control" placeholder="Npr glavobolja ..."></textarea>
+          </div>
+        <hr />
+        <div class="form-field">
+          <button class="btn btn-success btn-lg" (click)="createDisease()">Zavrsi</button>
+        </div>
+      </form>
+    </div>
+</div>

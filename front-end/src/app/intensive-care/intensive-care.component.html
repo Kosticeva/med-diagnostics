@@ -3,23 +3,25 @@
   <div class="navnav container-fluid d-flex justify-content-between">
     <span>
       &nbsp;
-      <button class="btn btn-la btn-success d-inline mr-3">
+      <button class="btn btn-la btn-success d-inline mr-3" (click)="navBack()">
         <i class="fa fa-la fa-arrow-left"></i>&nbsp;
-        Back
+        Nazad
       </button>
       <h3 class="d-inline">Pregledaj pacijente na intenzivnoj nezi</h3>
     </span>
-    <button class="btn btn-la btn-success d-inline">
+    <button class="btn btn-la btn-success d-inline" (click)="openNewPatient()">
         <i class="fa fa-user-plus"></i>
         Dodaj pacijenta
     </button>
   </div>
-  <div class="row justify-content-start pt-5 pb-5">
+  <br />
+  <app-new-ic-patient class="w-50 float-right" *ngIf="newPatientOpen"></app-new-ic-patient>
+  <div class="row justify-content-start pt-5 pb-5" [ngClass]="{'w-50': newPatientOpen, '': !newPatientOpen}">
     <div class="col-4 mb-2">
       <div class="card">
         <div class="card-header d-flex justify-content-between">
             <span>Pacijent Pacijentic</span>
-            <button class="btn btn-sm btn-light">
+            <button class="btn btn-sm btn-light" (click)="removeIcPatient()">
               <i class="fa fa-user-times"></i>
               Skloni
             </button>
@@ -27,30 +29,30 @@
           <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-between">Broj otkucaja srca
                 <span class="btn-group" role="group">
-                  <button class="btn btn-sm btn-success">
+                  <button class="btn btn-sm btn-success" disabled>
                       <i class="fa fa-smile-o"></i>
                   </button>
-                  <button class="btn btn-sm btn-danger">
+                  <button class="btn btn-sm btn-danger" disabled>
                     <i class="fa fa-frown-o"></i>
                   </button>
                 </span>
               </li>
               <li class="list-group-item d-flex justify-content-between">Nivo kiseonika u krvi
                 <span class="btn-group" role="group">
-                    <button class="btn btn-sm btn-success">
+                    <button class="btn btn-sm btn-success" disabled> 
                         <i class="fa fa-smile-o"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger">
+                    <button class="btn btn-sm btn-danger" disabled>
                       <i class="fa fa-frown-o"></i>
                     </button>
                   </span>
               </li>
               <li class="list-group-item d-flex justify-content-between">Kolicina mokrace
                 <span class="btn-group" role="group">
-                    <button class="btn btn-sm btn-success">
+                    <button class="btn btn-sm btn-success" disabled>
                         <i class="fa fa-smile-o"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger">
+                    <button class="btn btn-sm btn-danger" disabled>
                       <i class="fa fa-frown-o"></i>
                     </button>
                   </span>

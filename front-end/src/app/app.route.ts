@@ -16,10 +16,6 @@ import { PatientComponent } from "./patient/patient.component";
 
 export const icRoutes: Routes = [
     {
-        path: 'intensive-care/new',
-        component: NewIcPatientComponent
-    },
-    {
         path: 'intensive-care',
         component: IntensiveCareComponent
     }
@@ -27,24 +23,26 @@ export const icRoutes: Routes = [
 
 export const diagnoseRoutes: Routes = [
     {
-        path: 'exam/:id/diagnose',
-        component: DiagnoseComponent
-    },
-    {
-        path: 'exam/:id/therapy',
-        component: TherapyComponent
-    },
-    {
-        path: 'exam/:id/symptoms',
-        component: SymptomsComponent
-    },
-    {
         path: 'exam/new',
         component: StartExamComponent
     },
     {
         path: 'exam/:id',
-        component: ExamComponent
+        component: ExamComponent,
+        children: [
+            {
+                path: 'diagnose',
+                component: DiagnoseComponent
+            },
+            {
+                path: 'therapy',
+                component: TherapyComponent
+            },
+            {
+                path: 'symptoms',
+                component: SymptomsComponent
+            }
+        ]
     }
 ];
 

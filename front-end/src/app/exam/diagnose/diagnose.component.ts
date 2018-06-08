@@ -7,9 +7,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DiagnoseComponent implements OnInit {
 
+  dropdownOpen: boolean;
+
   constructor() { }
 
   ngOnInit() {
+    this.dropdownOpen = false;
   }
 
+  public openDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  showAllPossible() {
+
+  }
+
+  showMostPossible() {
+
+  }
+
+  chooseDisease() {
+    
+  }
 }

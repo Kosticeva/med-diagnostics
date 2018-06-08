@@ -1,3 +1,28 @@
-<p>
-  therapy works!
-</p>
+<div class="container-fluid">
+    <br />
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <div class="form-group">
+            <input type="text" class="form-control w-75" placeholder="Unesi lek ..." />
+          </div>
+        </div>
+        <div class="list-group-and-forms">
+          <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
+            <li class="list-group-item d-flex justify-content-between">Bla 1
+                <span class="btn-group">
+                    <button class="btn btn-sm btn-success" (click)="chooseDrug()"><i class="fa fa-check"></i></button>
+                    <button class="btn btn-sm btn-danger" (click)="removeDrug()"><i class="fa fa-trash"></i></button>
+                </span>
+            </li>
+            <li class="list-group-item">Bla 2</li>
+          </ul>
+        </div>
+        <hr />
+        <div class="form-group">
+          <label for="plan">Nacin unosenja: </label>
+            <textarea id="plan" class="form-control" placeholder="2 puta dnevno, oralno ..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>

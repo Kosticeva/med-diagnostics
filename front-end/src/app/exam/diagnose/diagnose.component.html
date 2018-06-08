@@ -1,3 +1,29 @@
-<p>
-  diagnose works!
-</p>
+<div class="container-fluid">
+    <br />
+    <div class="card">
+        <div class="card-body">
+        <div class="card-title">
+            <div class="dropdown float-right">
+                <button class="btn btn-success dropdown-toggle" (click)="openDropdown()" type="button">
+                    Dijagnoza
+                </button>
+                <div class="dropdown-menu" ngShow="dropdownOpen">
+                    <a class="dropdown-item" (click)="showMostPossible()">Najverovatnija bolest</a>
+                    <a class="dropdown-item" (click)="showAllPossible()">Sve moguce bolesti</a>
+                </div>
+            </div>
+            <form class="form-group">
+            <input type="text" class="form-control w-75" placeholder="Unesi bolest ..." />
+            </form>
+        </div>
+        <div class="list-group-and-forms">
+            <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
+            <li class="list-group-item d-flex justify-content-between" (click)="chooseDisease()">Bla 1
+            </li>
+            <li class="list-group-item">Bla 2</li>
+            </ul>
+        </div>
+        
+        </div>
+    </div>
+</div>

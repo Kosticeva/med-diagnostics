@@ -1,0 +1,29 @@
+<div class="card">
+    <div class="card-header">
+      <h5>Kreiraj novi lek</h5>
+    </div>
+    <div class="card-body">
+      <form class="form-group">
+        <div class="form-field">
+          <label for="name">Naziv: </label>
+          <input type="text" id="name" class="form-control" />
+        </div>
+        <div class="form-field">
+            <label for="smyps">Sastojci: </label>
+            <textarea id="smyps" class="form-control" placeholder="Npr aspirin ..."></textarea>
+        </div>
+        <div class="form-field">
+            <label for="type">Vrsta leka: </label>
+            <select id="type" class="form-control">
+              <option value="Analgetik">Analgetik</option>
+              <option value="Antibiotik">Antibiotik</option>
+              <option value="Ostalo">Ostalo</option>
+            </select>
+        </div>
+        <hr />
+        <div class="form-field">
+          <button class="btn btn-success btn-lg" (click)="createDrug()">Zavrsi</button>
+        </div>
+      </form>
+    </div>
+</div>

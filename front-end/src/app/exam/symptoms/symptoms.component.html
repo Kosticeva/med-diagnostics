@@ -1,3 +1,30 @@
-<p>
-  symptoms works!
-</p>
+<div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <button class="btn btn-success float-right" (click)="showForm()">
+              <i class="fa fa-user-plus"></i>
+              Novi simptom
+            </button>
+          <form class="form-group">
+            <input type="text" class="form-control w-75" placeholder="Pronadji simptom" />
+          </form>
+        </div>
+        <div class="list-group-and-forms">
+          <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
+            <h5>Uneti simptomi</h5>
+            <li class="list-group-item d-flex justify-content-between">
+              Bla 1
+              <span class="btn-group">
+                  <button class="btn btn-sm btn-success"><i class="fa fa-check" (click)="addSymptom()"></i></button>
+                  <button class="btn btn-sm btn-danger"><i class="fa fa-trash" (click)="removeSymptom()"></i></button>
+              </span>
+            </li>
+            <li class="list-group-item">Bla 2</li>
+          </ul>
+          <app-new-symptom *ngIf="formShown" class="w-50"></app-new-symptom>
+        </div>
+        
+      </div>
+    </div>
+</div>

@@ -3,7 +3,7 @@
   <div class="card-header row">
       <h6 class="col-2">Pacijent: </h6>
       <span class="col-8"></span>
-      <button class="btn btn-success float-right col-2">
+      <button class="btn btn-success float-right col-2" (click)="goToChart()">
           <i class="fa fa fa-file"></i> &nbsp;
           Karton</button>
       <br />
@@ -14,7 +14,7 @@
     <div class="card-title row">
       <h6 class="col-2">Datum pregleda: </h6>
       <span class="col-8"></span>
-      <button class="btn btn-lg btn-success float-right col-2">
+      <button class="btn btn-lg btn-success float-right col-2" (click)="finishExam()">
           <i class="fa fa-lg fa-check"></i>
           Zavrsi</button>
     </div>
@@ -26,7 +26,7 @@
             <div class="d-inline col-8 pr-10">
                 <textarea class="form-control"></textarea>
             </div>
-            <button class="btn btn-primary d-inline col-2">Dodaj simptom</button>
+            <button class="btn btn-primary d-inline col-2"  routerLink="./symptoms">Simptomi</button>
         </div>
         <br />
         <hr />
@@ -34,7 +34,7 @@
         <div class="d-flex justify-content-between row">
             <h6 class="d-inline col-2">Dijagnoza: </h6>
             <h6 class="d-inline w-75 col-8"></h6>
-            <button class="btn btn-primary d-inline col-2">Postavi dijagnozu</button>
+            <button class="btn btn-primary d-inline col-2" routerLink="./diagnose">Dijagnoza</button>
         </div>
         <br />
         <hr />
@@ -42,8 +42,9 @@
         <div class="d-flex justify-content-between row">
             <h6 class="d-inline col-2">Terapija: </h6>
             <h6 class="d-inline w-75 col-8"></h6>
-            <button class="btn btn-primary d-inline col-2">Prepisi terapiju</button>
+            <button class="btn btn-primary d-inline col-2" routerLink="./therapy">Terapija</button>
         </div>
     </div>
   </div>
+  <router-outlet></router-outlet>
 </div>

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelfDiagnoseComponent } from './self-diagnose.component';
+import { NewSymptomComponent } from './new-symptom.component';
 
-describe('SelfDiagnoseComponent', () => {
-  let component: SelfDiagnoseComponent;
-  let fixture: ComponentFixture<SelfDiagnoseComponent>;
+describe('NewSymptomComponent', () => {
+  let component: NewSymptomComponent;
+  let fixture: ComponentFixture<NewSymptomComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SelfDiagnoseComponent ]
+      declarations: [ NewSymptomComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelfDiagnoseComponent);
+    fixture = TestBed.createComponent(NewSymptomComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

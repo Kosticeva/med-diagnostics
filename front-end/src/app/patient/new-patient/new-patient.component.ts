@@ -12,4 +12,7 @@ export class NewPatientComponent implements OnInit {
   ngOnInit() {
   }
 
+  createPatient() {
+    
+  }
 }
