@@ -9,34 +9,55 @@ import drools.model.Prescription;
 import drools.model.enums.DrugType;
 import drools.model.Drug;
 
+//$c1: Number(intValue > 5) from accumulate(
+//$ex: Examination($disease: disease, date == $maxDate) from $exams and
+//	        Disease(name!= "Prehlada", name!= "Groznica", $dName: name) from $disease and
+//        	Examination($dis: disease, this!= $ex, this meets[730d] $ex) from $exams and
+//        	Disease(name == $dName) from $dis,
+//	        count(1)
+//	    )
+
 rule "Hronicna oboljenja"
 	agenda-group "reports"
     when
         Chart($exams: examinations, $patient: patient)
-        $c1: Number(intValue > 5) from accumulate(
-	        $ex: Examination($disease: disease) from $exams and
-	        Disease(name!= "Prehlada", name!= "Groznica", $dName: name) from $disease and
-        	Examination($dis: disease, this!= $ex, this meets[730d] $ex) from $exams and
-        	Disease(name == $dName) from $dis,
+        $maxDate: Number() from accumulate (
+        	Examination($date: date, $dis: disease) from $exams and
+        	Disease(name != "Prehlada", name != "Groznica") from $dis and
+        	Date($time: time) from $date,
+        	max($time)
+        )
+        $ex: Examination($date: date, $di: disease) from $exams
+        Date(time == $maxDate) from $date
+        Disease($dName: name) from $di
+        $c: Number(intValue > 4) from accumulate(
+       		Examination($ds: disease, this!= $ex, this meets[730d] $ex) from $exams and
+        	Disease(name == $dName) from $ds,
 	        count(1)
-	    )
+        )
     then
-        System.out.println($patient+" moguce boluje od hronicne bolesti "+$c1.intValue());
+        System.out.println($patient+" moguce boluje od hronicne bolesti ("+$c+") "+$ex+", "+$ex.getId());
 end
 
 rule "Zavisnici"
 	agenda-group "reports"
     when
         Chart($exams: examinations, $patient: patient)
-        Number(intValue > 5) from accumulate(
-	        $ex: Examination() from $exams and
-	        Examination(this != $ex, this meets[180d] $ex, $pres1: prescription) from $exams and
+        $maxDate: Number() from accumulate (
+        	Examination($date: date) from $exams and
+        	Date($time: time) from $date,
+        	max($time)
+        )
+        $ex: Examination($date: date) from $exams
+        Date(time == $maxDate) from $date
+        $c: Number(intValue > 6) from accumulate(
+	       	Examination(this != $ex, this meets[180d] $ex, $pres1: prescription) from $exams and
 	        Prescription($drug1: drug) from $pres1 and
 	        Drug(drugType == DrugType.ANALGESIC) from $drug1,
 	        count(1)
 	    )	
     then
-        System.out.println($patient+" je moguci zavisnik");
+        System.out.println($patient+" je moguci zavisnik ("+$c+") "+$ex.getId()+", "+$ex.getDate());
 
 end
 
@@ -44,21 +65,26 @@ rule "Oslabljen imunitet"
     agenda-group "reports"
     when
         Chart($exams: examinations, $patient: patient)
-        $analgDis: Number(intValue >= 10) from accumulate (
-        	$ex: Examination() from $exams and
+        $maxDate: Number() from accumulate (
+        	Examination($date: date) from $exams and
+        	Date($time: time) from $date,
+        	max($time)
+        )
+        $ex: Examination($date: date) from $exams
+        Date(time == $maxDate) from $date
+        $analgDis: Number(intValue >= 0) from accumulate (
         	Examination(this != $ex, this meets[365d] $ex, $pres: prescription) from $exams and
         	Prescription($drug: drug) from $pres and
-        	Drug(drugType == DrugType.ANALGESIC) from $drug,
+        	Drug(drugType == DrugType.ANTIBIOTIC) from $drug,
         	count(1)
         )
         $allDis: Number(intValue >= 0) from accumulate (
-        	$ex: Examination() from $exams and
         	Examination(this != $ex, this meets[365d] $ex) from $exams,
         	count(1)
         )
-        eval($analgDis == $allDis)
+        eval($analgDis.intValue() == $allDis.intValue())
     then
-        System.out.println($patient+" moguce ima oslabljen imunitet");
+        System.out.println($patient+" moguce ima oslabljen imunitet ("+$analgDis+" vs "+$allDis+")");
 
 end
 

@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Bean;
 
 import drools.model.Allergen;
 import drools.model.Chart;
-import drools.model.Disease;
 import drools.model.Doctor;
 import drools.model.Drug;
 import drools.model.Examination;
@@ -41,48 +40,7 @@ public class SampleApp {
         /*doStuff();
 		doStuff1();
 		doStuff2();*/
-		doStuff3();
 	}
-	
-	public static void doStuff3() {
-		KieSession ks = kieContainer().newKieSession();
-		ks.getAgenda().getAgendaGroup("reports").setFocus();
-		
-		Chart prehlada = new Chart();
-		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
-		prehlada.setPatient(p);
-		prehlada.setExaminations(new ArrayList<Examination>());
-		
-		Doctor dd = new Doctor("Kiki", "Riki", 1234, "aa124", "xxx", DoctorType.REGULAR);
-		
-		Disease d = new Disease(23, "Dijabetes", null);
-		
-		try {
-			for(int i=0; i<6; i++) {
-				Examination e = new Examination();
-				e.setSymptoms(new ArrayList<Symptom>());
-				e.setDoctor(dd);
-				e.setDisease(d);
-				e.setId(i*56);
-				e.setDate(new Date());
-				prehlada.getExaminations().add(e);
-				Thread.sleep(i*1000);
-			}
-		}catch(Exception e) {
-			
-		}
-		
-		FactHandle f = ks.insert(prehlada);
-		
-		System.out.println(ks.fireAllRules());
-		
-		ks.delete(f);
-		
-		System.out.println(prehlada);
-		
-		
-	}
-	
 	
 	@Bean
     public static KieContainer kieContainer() {

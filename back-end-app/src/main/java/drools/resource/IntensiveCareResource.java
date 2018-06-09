@@ -22,6 +22,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.api.runtime.conf.ClockTypeOption;
+import org.kie.api.runtime.rule.FactHandle;
 import org.kie.internal.io.ResourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -55,6 +56,152 @@ public class IntensiveCareResource {
 
 	@Autowired
 	IntensiveCareService intensiveCareService;
+	
+	/*@RequestMapping(value="/api/intensive-care/report1", method = RequestMethod.GET)
+	public void startReport1() {
+		KieSession ks = kieContainer().newKieSession();
+		ks.getAgenda().getAgendaGroup("reports").setFocus();
+		
+		Chart prehlada = new Chart();
+		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
+		prehlada.setPatient(p);
+		prehlada.setExaminations(new ArrayList<Examination>());
+		
+		Doctor dd = new Doctor("Kiki", "Riki", 1234, "aa124", "xxx", DoctorType.REGULAR);
+		
+		Disease d = new Disease(23, "Dijabetes", null);
+		
+		try {
+			for(int i=0; i<6; i++) {
+				Examination e = new Examination();
+				e.setSymptoms(new ArrayList<Symptom>());
+				e.setDoctor(dd);
+				e.setDisease(d);
+				e.setId(i*56);
+				e.setDate(new Date());
+				prehlada.getExaminations().add(e);
+				Thread.sleep(i*1000);
+			}
+		}catch(Exception e) {
+			
+		}
+		
+		for(int i=0; i<prehlada.getExaminations().size(); i++) {
+			System.out.println("\nPregled "+prehlada.getExaminations().get(i).getId() +": datum = "+prehlada.getExaminations().get(i).getDate() + ", milisekunde = "+prehlada.getExaminations().get(i).getDate().getTime());
+		}
+		
+		FactHandle f = ks.insert(prehlada);
+		
+		System.out.println(ks.fireAllRules());
+		
+		ks.delete(f);
+		
+		System.out.println(prehlada);
+	}
+	
+	@RequestMapping(value="/api/intensive-care/report2", method = RequestMethod.GET)
+	public void startReport2() {
+		KieSession ks = kieContainer().newKieSession();
+		ks.getAgenda().getAgendaGroup("reports").setFocus();
+		
+		Chart prehlada = new Chart();
+		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
+		prehlada.setPatient(p);
+		prehlada.setExaminations(new ArrayList<Examination>());
+		
+		Doctor dd = new Doctor("Kiki", "Riki", 1234, "aa124", "xxx", DoctorType.REGULAR);
+		
+		Disease d1 = new Disease(23, "Groznica", null);
+		Disease d2 = new Disease(24, "Prehlada", null);
+		
+		Prescription pp = new Prescription(444, "2x dnevno", null);
+		Drug dg = new Drug(9, "Andol", new ArrayList<Ingredient>(), DrugType.ANALGESIC);
+		pp.setDrug(dg);
+		
+		
+		try {
+			for(int i=0; i<12; i++) {
+				Examination e = new Examination();
+				e.setSymptoms(new ArrayList<Symptom>());
+				e.setDoctor(dd);
+
+				if(i%2 == 0)
+					e.setDisease(d1);
+				else
+					e.setDisease(d2);
+				
+				e.setPrescription(pp);
+				e.setId(i*56);
+				e.setDate(new Date());
+				prehlada.getExaminations().add(e);
+				Thread.sleep(i*1000);
+			}
+		}catch(Exception e) {
+			
+		}
+		
+		FactHandle f = ks.insert(prehlada);
+		
+		System.out.println(ks.fireAllRules());
+		
+		ks.delete(f);
+		
+		System.out.println(prehlada);
+	}
+	
+	@RequestMapping(value="/api/intensive-care/report3", method = RequestMethod.GET)
+	public void startReport3() {
+		KieSession ks = kieContainer().newKieSession();
+		ks.getAgenda().getAgendaGroup("reports").setFocus();
+		
+		Chart prehlada = new Chart();
+		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
+		prehlada.setPatient(p);
+		prehlada.setExaminations(new ArrayList<Examination>());
+		
+		Doctor dd = new Doctor("Kiki", "Riki", 1234, "aa124", "xxx", DoctorType.REGULAR);
+		
+		Disease d1 = new Disease(23, "Groznica", null);
+		Disease d2 = new Disease(24, "Prehlada", null);
+		Disease d3 = new Disease(25, "Sinusna infekcija", null);
+		
+		Prescription pp = new Prescription(444, "2x dnevno", null);
+		Drug dg = new Drug(9, "Penicilin", new ArrayList<Ingredient>(), DrugType.ANTIBIOTIC);
+		pp.setDrug(dg);
+		
+		
+		try {
+			for(int i=0; i<12; i++) {
+				Examination e = new Examination();
+				e.setSymptoms(new ArrayList<Symptom>());
+				e.setDoctor(dd);
+
+				if(i%3 == 0)
+					e.setDisease(d1);
+				else if(i%2 == 0)
+					e.setDisease(d2);
+				else
+					e.setDisease(d3);
+				
+				e.setPrescription(pp);
+				e.setId(i*56);
+				e.setDate(new Date());
+				prehlada.getExaminations().add(e);
+				Thread.sleep(i*1000);
+			}
+		}catch(Exception e) {
+			
+		}
+		
+		FactHandle f = ks.insert(prehlada);
+		
+		System.out.println(ks.fireAllRules());
+		
+		ks.delete(f);
+		
+		System.out.println(prehlada);
+	}*/
+	
 	
 	@RequestMapping(value="/api/intensive-care/start2", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public void startDaemon2() {
