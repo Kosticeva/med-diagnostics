@@ -1,14 +1,16 @@
 <div>
   <nav class="navbar navbar-dark bg-success d-flex justify-content-between">
-      <a class="nav-link dropdown-toggle btn btn-la btn-outline-light" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="openDropdown()">
-        Dodaj
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="dropdownOpen">
-        <a class="dropdown-item" (click)="openNewDisease()">Bolest</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" (click)="openNewDoctor()">Doktor</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" (click)="openNewDrug()">Lek</a>
+      <div class="dropdown">
+        <a class="nav-link dropdown-toggle btn btn-outline-light" data-toggle="dropdown" id="navbarDropdown" role="button" (click)="openDropdown()">
+          Dodaj
+        </a>
+        <div class="dropdown-menu" [ngStyle]="{'z-index': dropdownOpen? '1' : '-1' }">
+          <a class="dropdown-item" (click)="openNewDisease()">Bolest</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="openNewDoctor()">Doktor</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="openNewDrug()">Lek</a>
+        </div>
       </div>
       <a class="navbar-brand d-flex flex-row" href="../home">
         <h1><i class="fa fa-home"></i>
@@ -18,9 +20,20 @@
           Izadji
       </a>
   </nav>
-  <div class="optional-menu">
-      <app-new-doctor *ngIf="newDoctorOpen && !newDiseaseOpen && !newDrugOpen"></app-new-doctor>
-      <app-new-disease *ngIf="!newDoctorOpen && newDiseaseOpen && !newDrugOpen"></app-new-disease>
-      <app-new-drug *ngIf="!newDoctorOpen && !newDiseaseOpen && newDrugOpen"></app-new-drug>
+  <div class="optional-menu container-fluid" *ngIf="dropdownOpen">
+      <div class="row">
+          <div class="col-3">
+              <ul class="list-group">
+                  <li class="list-group-item" [ngClass]="{'active': newDiseaseOpen}" (click)="openNewDisease()">Bolest</li>
+                  <li class="list-group-item" [ngClass]="{'active': newDoctorOpen}" (click)="openNewDoctor()">Doktor</li>
+                  <li class="list-group-item" [ngClass]="{'active': newDrugOpen}" (click)="openNewDrug()">Lek</li>
+              </ul>
+          </div>
+          <div class="col-9 pl-5 pr-5">
+              <app-new-doctor *ngIf="newDoctorOpen && !newDiseaseOpen && !newDrugOpen"></app-new-doctor>
+              <app-new-disease *ngIf="!newDoctorOpen && newDiseaseOpen && !newDrugOpen"></app-new-disease>
+              <app-new-drug *ngIf="!newDoctorOpen && !newDiseaseOpen && newDrugOpen"></app-new-drug>
+          </div> 
+      </div>
   </div>
 </div>

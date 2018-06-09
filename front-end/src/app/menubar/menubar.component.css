@@ -1,6 +1,5 @@
 a.nav-link{
     color: white;
-    display: inline;
 }
 
 nav{
@@ -10,8 +9,4 @@ nav{
 
 i, h1{
     color: white;
-}
-
-.dropdown-menu{
-    position: absolute;
 }

@@ -4,28 +4,33 @@
     </div>
     <div class="card-body">
       <form class="form-group">
-        <div class="form-field">
-          <label for="name">Ime: </label>
-          <input type="text" id="name" class="form-control" />
+        <div class="row">
+          <div class="form-field col">
+            <label for="name">Ime: </label>
+            <input type="text" id="name" class="form-control" />
+          </div>
+          <div class="form-field col">
+              <label for="lname">Prezime: </label>
+              <input type="text" id="lname" class="form-control" />
+          </div>
         </div>
-        <div class="form-field">
-            <label for="lname">Prezime: </label>
-            <input type="text" id="lname" class="form-control" />
-        </div>
-        <div class="form-field">
-            <label for="username">Korisnicko ime: </label>
-            <input type="text" id="username" class="form-control" />
-        </div>
-        <div class="form-field">
-            <label for="username">Sifra: </label>
-            <input type="password" id="pass" class="form-control" />
-        </div>
-        <div class="form-field">
-            <label for="priv">Doktor ima privilegije administratora </label>
-            <input type="checkbox" id="priv" class="form-control float-right" />
+        <div class="row">
+          <div class="form-field col">
+              <label for="username">Korisnicko ime: </label>
+              <input type="text" id="username" class="form-control" />
+          </div>
+          <div class="form-field col">
+              <label for="username">Sifra: </label>
+              <input type="password" id="pass" class="form-control" />
+          </div>
         </div>
         <hr />
-        <div class="form-field">
+        <div class="form-field form-check row">
+            <label for="priv" class="form-check-label col-10">Doktor ima privilegije administratora</label>
+            <input type="checkbox" id="priv" class="form-check-input col-2" />
+        </div>
+        <hr />
+        <div class="form-field d-flex justify-content-end">
           <button class="btn btn-success btn-lg" (click)="createDoctor()">Zavrsi</button>
         </div>
       </form>

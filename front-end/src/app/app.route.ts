@@ -28,21 +28,7 @@ export const diagnoseRoutes: Routes = [
     },
     {
         path: 'exam/:id',
-        component: ExamComponent,
-        children: [
-            {
-                path: 'diagnose',
-                component: DiagnoseComponent
-            },
-            {
-                path: 'therapy',
-                component: TherapyComponent
-            },
-            {
-                path: 'symptoms',
-                component: SymptomsComponent
-            }
-        ]
+        component: ExamComponent
     }
 ];
 

@@ -2,11 +2,27 @@
   <div class="card-header">
     <h5>Naziv pacijenta</h5>
   </div>
-  <div class="card-body">
-    <h6 class="float-left w-25">Alergije: </h6>
-    <textarea readonly class="w-75">
-      sve alergije
-    </textarea>
+  <div class="card-body d-flex justify-content-between">
+    <h6 class="float-left w-15">Alergije: </h6>
+    <div style="border: 1px solid green" class="w-100 ml-2 mr-2 container">
+      <div class="row">
+        <div class="col-2">
+            <span style="background-color: green; width: 50px; height: 10px; margin: 2px 2px 2px 2px">Simptom</span>
+        </div>
+      </div>
+    </div>
+    <div class="float-right w-25 card">
+      <div class="card-header">
+        <button class="btn btn-la btn-success" role="button" (click)="openNewAllergy()">Nova alergija</button>
+      </div>
+      <div class="card-body">
+        <form *ngIf="newAllergyOpen" class="form form-group">
+          <textarea class="form-control" placeholder="Nova alergija"></textarea>
+          <br />
+          <button role="button" class="btn btn-success" (click)="addAllergy()"><i class="fa fa-plus"></i>&nbsp;Dodaj</button>
+        </form>
+      </div>
+    </div>
   </div>
   <hr />
   <div class="card-body container">

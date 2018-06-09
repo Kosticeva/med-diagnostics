@@ -3,17 +3,16 @@
     <div class="card">
         <div class="card-body">
         <div class="card-title">
-            <div class="dropdown float-right">
-                <button class="btn btn-success dropdown-toggle" (click)="openDropdown()" type="button">
-                    Dijagnoza
+            <div class="btn-group float-right">
+                <button class="btn btn-primary" (click)="showMostPossible()" type="button">
+                    Najverovatnija bolest
                 </button>
-                <div class="dropdown-menu" ngShow="dropdownOpen">
-                    <a class="dropdown-item" (click)="showMostPossible()">Najverovatnija bolest</a>
-                    <a class="dropdown-item" (click)="showAllPossible()">Sve moguce bolesti</a>
-                </div>
+                <button class="btn btn-secondary" (click)="showAllPossible()" type="button">
+                    Sve bolesti
+                </button>
             </div>
             <form class="form-group">
-            <input type="text" class="form-control w-75" placeholder="Unesi bolest ..." />
+                <input type="text" class="form-control w-75" placeholder="Unesi bolest ..." />
             </form>
         </div>
         <div class="list-group-and-forms">

@@ -7,9 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatientComponent implements OnInit {
 
+  newAllergyOpen: boolean;
+
   constructor() { }
 
   ngOnInit() {
+    this.newAllergyOpen = false;
+  }
+
+  openNewAllergy(){
+    this.newAllergyOpen = !this.newAllergyOpen;
+  }
+
+  addAllergy() {
+    this.newAllergyOpen = false;
   }
 
 }

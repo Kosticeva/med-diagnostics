@@ -1,50 +1,68 @@
 <div class="card container-fluid">
   <br />
   <div class="card-header row">
-      <h6 class="col-2">Pacijent: </h6>
-      <span class="col-8"></span>
-      <button class="btn btn-success float-right col-2" (click)="goToChart()">
-          <i class="fa fa fa-file"></i> &nbsp;
-          Karton</button>
-      <br />
-      <h6 class="col-2">Pregled obavio: </h6>
-      <span class="col-10"><b></b></span>
+        <h6 class="col-2">Pregled obavio: </h6>
+        <span class="col-6"></span>
+        <h6 class="col-2">Datum pregleda: </h6>
+        <span class="col-2"><b></b></span>
   </div>
   <div class="card-body container-fluid">
     <div class="card-title row">
-      <h6 class="col-2">Datum pregleda: </h6>
-      <span class="col-8"></span>
-      <button class="btn btn-lg btn-success float-right col-2" (click)="finishExam()">
-          <i class="fa fa-lg fa-check"></i>
-          Zavrsi</button>
+        <h6 class="col-2">Pacijent: </h6>
+        <span class="col-8"></span>
+        <button class="btn btn-success float-right col-2" (click)="goToChart()">
+            <i class="fa fa fa-file"></i> &nbsp;
+            Karton</button>
     </div>
-    <hr />
-    <br >
+    <br/>
+    <br/>
     <div class="card-text container-fluid">
+        <hr />
         <div class="d-flex justify-content-between row">
             <h6 class="d-inline col-2">Simptomi: </h6>
-            <div class="d-inline col-8 pr-10">
-                <textarea class="form-control"></textarea>
+            <div class="d-inline col-8 pr-10 d-flex">
+                <ul class="list-group list-group-flush container-fluid">
+                    <li class="list-group-item d-flex justify-content-between">Simptom 1 <span class="btn-group"><button class="btn btn-danger" (click)="removeSymptom()"><i class="fa fa-trash"></i></button></span></li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+                    <li class="list-group-item">Simptom 1</li>
+
+                </ul>
             </div>
-            <button class="btn btn-primary d-inline col-2"  routerLink="./symptoms">Simptomi</button>
+            <button class="btn btn-primary d-inline col-2 h-50"  (click)="openSymps()">Dodaj simptom</button>
         </div>
+        <app-symptoms *ngIf="sympsOpen"></app-symptoms>
         <br />
         <hr />
         <br >
         <div class="d-flex justify-content-between row">
             <h6 class="d-inline col-2">Dijagnoza: </h6>
             <h6 class="d-inline w-75 col-8"></h6>
-            <button class="btn btn-primary d-inline col-2" routerLink="./diagnose">Dijagnoza</button>
+            <button class="btn btn-primary d-inline col-2" (click)="openDiag()">Postavi dijagnozu</button>
         </div>
+        <app-diagnose *ngIf="diagOpen"></app-diagnose>
         <br />
         <hr />
         <br >
         <div class="d-flex justify-content-between row">
             <h6 class="d-inline col-2">Terapija: </h6>
             <h6 class="d-inline w-75 col-8"></h6>
-            <button class="btn btn-primary d-inline col-2" routerLink="./therapy">Terapija</button>
+            <button class="btn btn-primary d-inline col-2" (click)="openTher()">Odredi terapiju</button>
         </div>
+        <app-therapy *ngIf="therOpen"></app-therapy>
     </div>
   </div>
-  <router-outlet></router-outlet>
+  <button class="btn btn-lg btn-success container-fluid" (click)="finishExam()">
+        <i class="fa fa-lg fa-check"></i>
+        Zavrsi</button>
 </div>
