@@ -2,11 +2,11 @@ package drools.resource;
 
 import java.util.List;
 
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +32,7 @@ public class ExaminationResource {
 	
 	@RequestMapping(value = "/api/examinations", method = RequestMethod.POST, 
 		produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Examination newExamination(Examination examination) {
+	public Examination newExamination(@RequestBody Examination examination) {
 		if(examination.getId() != null) {
 			return null;
 		}
@@ -42,7 +42,7 @@ public class ExaminationResource {
 	
 	@RequestMapping(value = "/api/examinations/{id}", method = RequestMethod.PUT, 
 			produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Examination editExamination(Examination examination, @PathParam("id") int id) {
+	public Examination editExamination(@RequestBody Examination examination, @PathParam("id") int id) {
 		if(examination.getId() == null || examination.getId() != id) {
 			return null;
 		}

@@ -1,0 +1,11 @@
+insert into ingredient(id, name) values (1, "Penicilin");
+insert into ingredient(id, name) values (2, "Salicilna kiselina");
+insert into ingredient(id, name) values (3, "Laktoza");
+insert into ingredient(id, name) values (4, "Bumetanid");
+insert into ingredient(id, name) values (5, "Piridoksin");
+insert into ingredient(id, name) values (6, "Bisoprol-frumarat");
+insert into ingredient(id, name) values (7, "Pipemidinska kiselina");
+insert into ingredient(id, name) values (8, "Metronidazol");
+insert into ingredient(id, name) values (9, "Lizinopril");
+insert into ingredient(id, name) values (10, "Ibuprofen");
+insert into ingredient(id, name) values (11, "Ramipril");

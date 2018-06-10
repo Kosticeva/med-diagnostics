@@ -1,0 +1,15 @@
+insert into drug(id, name, drug_type) values (12, "Vivace", 2);
+insert into drug(id, name, drug_type) values (13, "Pipem", 1);
+insert into drug(id, name, drug_type) values (14, "Yurinex", 1);
+insert into drug(id, name, drug_type) values (16, "Penicilin", 1);
+insert into drug(id, name, drug_type) values (17, "Aspirin", 0);
+insert into drug(id, name, drug_type) values (18, "Brufen", 0);
+insert into drug(id, name, drug_type) values (19, "Kafetin", 0);
+insert into drug(id, name, drug_type) values (21, "Delagil", 0);
+insert into drug(id, name, drug_type) values (22, "Cardiopirin", 2);
+insert into drug(id, name, drug_type) values (23, "Defrinol", 2);
+insert into drug(id, name, drug_type) values (24, "Skopryl", 2);
+insert into drug(id, name, drug_type) values (25, "Orvagil", 2);
+insert into drug(id, name, drug_type) values (27, "Bisoprol", 2);
+insert into drug(id, name, drug_type) values (28, "Lysobact", 2);
+insert into drug(id, name, drug_type) values (12, "Vivace", 2);

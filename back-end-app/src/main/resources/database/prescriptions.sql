@@ -1,0 +1,14 @@
+insert into prescription(id, plan, drug) values (1, "Dva puta dnevno po 1 tableta", 14);
+insert into prescription(id, plan, drug) values (2, "Tri puta dnevno po 1 tableta", 17);
+insert into prescription(id, plan, drug) values (3, "Jednom dnevno po 2 tablete", 27);
+insert into prescription(id, plan, drug) values (4, "Jednom dnevno po 1 tableta", 28);
+insert into prescription(id, plan, drug) values (5, "Dva puta dnevno po 2 tablete", 14);
+insert into prescription(id, plan, drug) values (6, "Tri puta dnevno po 2 tablete", 18);
+insert into prescription(id, plan, drug) values (7, "Dva puta dnevno po 1 tableta", 18);
+insert into prescription(id, plan, drug) values (8, "Tri puta dnevno po 1 tableta", 17);
+insert into prescription(id, plan, drug) values (9, "Jednom dnevno po 1 tableta", 27);
+insert into prescription(id, plan, drug) values (10, "Dva puta dnevno po 1 tableta", 19);
+insert into prescription(id, plan, drug) values (11, "Dva puta dnevno po 1 tableta", 25);
+insert into prescription(id, plan, drug) values (12, "Tri puta dnevno po 1 tableta", 21);
+insert into prescription(id, plan, drug) values (13, "Tri puta dnevno po 1 tableta", 22);
+insert into prescription(id, plan, drug) values (14, "Jednom dnevno po 1 tableta", 23);

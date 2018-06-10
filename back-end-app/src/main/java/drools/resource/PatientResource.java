@@ -6,6 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +32,7 @@ public class PatientResource {
 	
 	@RequestMapping(value = "/api/patients", method = RequestMethod.POST, 
 		produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Patient newPatient(Patient patient) {
+	public Patient newPatient(@RequestBody Patient patient) {
 		if(patient.getId() != null) {
 			return null;
 		}
@@ -41,7 +42,7 @@ public class PatientResource {
 	
 	@RequestMapping(value = "/api/patients/{id}", method = RequestMethod.PUT, 
 			produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Patient editPatient(Patient patient, @PathParam("id") int id) {
+	public Patient editPatient(@RequestBody Patient patient, @PathParam("id") int id) {
 		if(patient.getId() == null || patient.getId() != id) {
 			return null;
 		}

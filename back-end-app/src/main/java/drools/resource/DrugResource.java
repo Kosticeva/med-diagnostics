@@ -6,6 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +32,7 @@ public class DrugResource {
 	
 	@RequestMapping(value = "/api/drugs", method = RequestMethod.POST, 
 		produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Drug newDrug(Drug drug) {
+	public Drug newDrug(@RequestBody Drug drug) {
 		if(drug.getId() != null) {
 			return null;
 		}
@@ -41,7 +42,7 @@ public class DrugResource {
 	
 	@RequestMapping(value = "/api/drugs/{id}", method = RequestMethod.PUT, 
 			produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Drug editDrug(Drug drug, @PathParam("id") int id) {
+	public Drug editDrug(@RequestBody Drug drug, @PathParam("id") int id) {
 		if(drug.getId() == null || drug.getId() != id) {
 			return null;
 		}

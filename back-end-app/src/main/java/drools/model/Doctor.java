@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import drools.model.enums.DoctorType;
@@ -18,9 +20,10 @@ public class Doctor{
 	private String lastName;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer licenceId;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String username;
 	
 	@Column(nullable = false)

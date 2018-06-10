@@ -16,7 +16,7 @@ public abstract class Allergen {
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	protected Integer id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	protected String name;
 	
 	public Allergen() {}

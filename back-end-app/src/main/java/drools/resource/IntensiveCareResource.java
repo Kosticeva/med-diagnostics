@@ -1,29 +1,13 @@
 package drools.resource;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
-import org.drools.core.ClockType;
-import org.drools.core.time.SessionPseudoClock;
-import org.kie.api.KieBase;
-import org.kie.api.KieBaseConfiguration;
 import org.kie.api.KieServices;
-import org.kie.api.builder.KieBuilder;
-import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.KieScanner;
-import org.kie.api.builder.Message;
-import org.kie.api.conf.EventProcessingOption;
 import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.KieSessionConfiguration;
-import org.kie.api.runtime.conf.ClockTypeOption;
-import org.kie.api.runtime.rule.FactHandle;
-import org.kie.internal.io.ResourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
@@ -32,22 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import drools.model.Allergen;
 import drools.model.Chart;
-import drools.model.Disease;
-import drools.model.Doctor;
-import drools.model.Drug;
-import drools.model.Examination;
-import drools.model.Ingredient;
-import drools.model.IntensiveCareReport;
-import drools.model.Patient;
-import drools.model.Prescription;
-import drools.model.Symptom;
-import drools.model.enums.DoctorType;
-import drools.model.enums.DrugType;
-import drools.model.reports.DialysisEvent;
-import drools.model.reports.HeartBeatEvent;
-import drools.model.reports.OxygenEvent;
 import drools.service.IntensiveCareService;
 
 @RestController
@@ -200,7 +169,7 @@ public class IntensiveCareResource {
 		ks.delete(f);
 		
 		System.out.println(prehlada);
-	}*/
+	}
 	
 	
 	@RequestMapping(value="/api/intensive-care/start2", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
@@ -415,7 +384,7 @@ public class IntensiveCareResource {
 		System.out.println("\t*** Nivo kiseonika: "+icKidn.isOxygenOk()+"\n");
 		System.out.println("\t*** Nivo otkucaja: "+icKidn.isHeartOk()+"\n");
 		System.out.println("\t*** Nivo urina: "+icKidn.isUrinOk()+"\n");
-	}
+	}*/
 	
 	@Bean
     public static KieContainer kieContainer() {
