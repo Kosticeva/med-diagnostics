@@ -8,6 +8,7 @@ import drools.model.Disease;
 import drools.model.Prescription;
 import drools.model.enums.DrugType;
 import drools.model.Drug;
+import drools.model.Patient;
 
 //$c1: Number(intValue > 5) from accumulate(
 //$ex: Examination($disease: disease, date == $maxDate) from $exams and
@@ -18,7 +19,7 @@ import drools.model.Drug;
 //	    )
 
 rule "Hronicna oboljenja"
-	agenda-group "reports"
+	agenda-group "reports-chronics"
     when
         Chart($exams: examinations, $patient: patient)
         $maxDate: Number() from accumulate (
@@ -37,10 +38,11 @@ rule "Hronicna oboljenja"
         )
     then
         System.out.println($patient+" moguce boluje od hronicne bolesti ("+$c+") "+$ex+", "+$ex.getId());
+        insert($patient);
 end
 
 rule "Zavisnici"
-	agenda-group "reports"
+	agenda-group "reports-addicts"
     when
         Chart($exams: examinations, $patient: patient)
         $maxDate: Number() from accumulate (
@@ -58,11 +60,11 @@ rule "Zavisnici"
 	    )	
     then
         System.out.println($patient+" je moguci zavisnik ("+$c+") "+$ex.getId()+", "+$ex.getDate());
-
+		insert($patient);
 end
 
 rule "Oslabljen imunitet"
-    agenda-group "reports"
+    agenda-group "reports-weaks"
     when
         Chart($exams: examinations, $patient: patient)
         $maxDate: Number() from accumulate (
@@ -85,7 +87,7 @@ rule "Oslabljen imunitet"
         eval($analgDis.intValue() == $allDis.intValue())
     then
         System.out.println($patient+" moguce ima oslabljen imunitet ("+$analgDis+" vs "+$allDis+")");
-
+		insert($patient);
 end
 
 

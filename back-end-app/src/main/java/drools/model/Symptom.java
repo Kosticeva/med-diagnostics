@@ -1,5 +1,7 @@
 package drools.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Symptom {
+public class Symptom implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Column(nullable = false, unique = true)
 	private String name;
@@ -38,6 +45,25 @@ public class Symptom {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == this) {
+			return true;
+		}
+		
+		if(!(o instanceof Symptom)) {
+			return false;
+		}
+		
+		Symptom s = (Symptom) o;
+		
+		if(id.equals(s.getId()) && name.equals(s.getName())) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 }

@@ -12,7 +12,7 @@ import java.util.Date;
 
 rule "Prehlada"
 	salience $count.intValue()*100/5
-	activation-group "x"
+	//activation-group "x"
 	agenda-group "diagnose"
     when
         $chart: Chart($exams: examinations)
@@ -24,8 +24,7 @@ rule "Prehlada"
         )
     then
     	Disease d = new Disease(0, "Prehlada", null);
-    	$exam.setDisease(d);
-    	update($chart);
+    	insert(d);
         System.out.println("U pitanju je prehlada");
 
 end
@@ -33,7 +32,7 @@ end
 
 rule "Groznica"
 	salience $count.intValue()*100/7
-	activation-group "x"
+	//activation-group "x"
 	agenda-group "diagnose"
 	when
 		$chart: Chart($exams: examinations)
@@ -46,14 +45,13 @@ rule "Groznica"
         )
 	then
 		Disease d = new Disease(1, "Groznica", null);
-    	$exam.setDisease(d);
-    	update($chart);
+    	insert(d);
 		System.out.println("U pitanju je groznica");
 end
 
 rule "Upala krajnika"
     salience $count.intValue()*100/8
-    activation-group "x"
+    //activation-group "x"
     agenda-group "diagnose"
     when
         $chart: Chart($exams: examinations)
@@ -66,15 +64,14 @@ rule "Upala krajnika"
         )
     then
         Disease d = new Disease(2, "Upala krajnika", null);
-    	$exam.setDisease(d);
-    	update($chart);
+    	insert(d);
 		System.out.println("U pitanju je upala krajnika");
 
 end
 
 rule "Sinusna infekcija"
 	salience $count.intValue()*100/7
-	activation-group "x"
+	//activation-group "x"
 	agenda-group "diagnose"
 	when
 		$chart: Chart($exams: examinations)
@@ -96,18 +93,6 @@ rule "Sinusna infekcija"
         eval($count.intValue() + $specCount.intValue() >= 4)
 	then
 		Disease d = new Disease(2, "Sinusna infekcija", null);
-    	$exam.setDisease(d);
-    	update($chart);
+    	insert(d);
 		System.out.println("U pitanju je sinusna infekcija");
 end
-
-function boolean checkLastColdFever(Chart chart, Examination exam) {
-	for(Examination m: chart.getExaminations()) {
-		if(m.getDisease()!= null && (m.getDisease().getName().equals("Prehlada") || m.getDisease().getName().equals("Groznica"))){
-			if((exam.getDate().getTime() - m.getDate().getTime()) / (60*60*24*1000) < 60)
-				return true;
-		}
-	}
-	
-	return false;
-}

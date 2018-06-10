@@ -1,19 +1,15 @@
 package drools.model;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 @Entity
-public class Disease  implements Serializable{
+public class Allergy implements Serializable{
 
 	/**
 	 * 
@@ -24,26 +20,22 @@ public class Disease  implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String name;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<Symptom> symptoms;
-	
-	public Disease() {}
+	public Allergy() {}
 
-	public Disease(int id, String name, List<Symptom> symptoms) {
+	public Allergy(Integer id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.symptoms = symptoms;
 	}
 
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -55,30 +47,23 @@ public class Disease  implements Serializable{
 		this.name = name;
 	}
 	
-	public List<Symptom> getSymptoms(){
-		return this.symptoms;
-	}
-	
-	public void setSymptoms(List<Symptom> symptoms) {
-		this.symptoms = symptoms;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if(o == this) {
 			return true;
 		}
 		
-		if(!(o instanceof Disease)) {
+		if(!(o instanceof Allergy)) {
 			return false;
 		}
 		
-		Disease d = (Disease) o;
+		Allergy a = (Allergy) o;
 		
-		if(id.equals(d.getId()) && name.equals(d.getName())) {
+		if(id.equals(a.getId()) && name.equals(a.getName())){
 			return true;
 		}
 		
 		return false;
 	}
+	
 }

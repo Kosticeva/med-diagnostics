@@ -1,13 +1,15 @@
 package drools.resource;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,15 +19,19 @@ import drools.model.Doctor;
 import drools.service.DoctorService;
 
 @RestController
-@Scope(value="session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class DoctorResource {
 
 	@Autowired
 	DoctorService doctorService;
 	
 	@RequestMapping(value = "/api/doctors/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
-	public Doctor getDoctor(@PathParam("id") int id) {
-		return doctorService.findById(id);
+	public ResponseEntity<Doctor> getDoctor(@PathVariable("id") Integer id) {
+		if(id != null) {
+			Doctor d = doctorService.findById(id);
+			
+			return ResponseEntity.ok().body(d);
+		}
+		return ResponseEntity.badRequest().body(null);
 	}
 	
 	@RequestMapping(value = "/api/doctors", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
@@ -35,27 +41,45 @@ public class DoctorResource {
 	
 	@RequestMapping(value = "/api/doctors", method = RequestMethod.POST, 
 		produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Doctor newDoctor(@RequestBody Doctor doctor) {
+	public ResponseEntity<Doctor> newDoctor(@RequestBody Doctor doctor) throws URISyntaxException {
 		if(doctor.getLicenceId() != null) {
-			return null;
+			return ResponseEntity.badRequest().body(null);
 		}
 		
-		return doctorService.createNewDoctor(doctor);
+		Doctor d = doctorService.createNewDoctor(doctor);
+		if(d!=null) {
+			return ResponseEntity.created(new URI("/api/doctors/"+d.getLicenceId())).body(d);
+		}
+		
+		return ResponseEntity.unprocessableEntity().body(d);
 	}
 	
 	@RequestMapping(value = "/api/doctors/{id}", method = RequestMethod.PUT, 
 			produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Doctor editDoctor(@RequestBody Doctor doctor, @PathParam("id") int id) {
-		if(doctor.getLicenceId() == null || doctor.getLicenceId() != id) {
-			return null;
+	public ResponseEntity<Doctor> editDoctor(@RequestBody Doctor doctor, @PathVariable("id") Integer id) {
+		if(doctor.getLicenceId() == null || !doctor.getLicenceId().equals(id)) {
+			System.out.println("URL update sa neodgovarajucim doctorom");
+			return ResponseEntity.badRequest().body(null);
 		}
 		
-		return doctorService.updateDoctor(doctor);
+		Doctor d = doctorService.updateDoctor(doctor);
+		if(d != null) {
+			return ResponseEntity.ok().body(d);
+		}
+		
+		return ResponseEntity.unprocessableEntity().body(d);
 	}
 	
 	@RequestMapping(value = "/api/doctors/{id}", method = RequestMethod.DELETE)
-	public void deleteDoctor(@PathParam("id") int id) {
-		doctorService.deleteDoctor(id);
+	public ResponseEntity<Doctor> deleteDoctor(@PathVariable("id") Integer id) {
+		try {
+			doctorService.deleteDoctor(id);
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(null);
+		}
+		
+		return ResponseEntity.ok().body(null);
 	}
 	
 }

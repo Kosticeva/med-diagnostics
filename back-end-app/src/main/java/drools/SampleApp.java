@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import drools.model.Allergen;
+import drools.model.Allergy;
 import drools.model.Chart;
 import drools.model.Doctor;
 import drools.model.Drug;
@@ -59,7 +59,7 @@ public class SampleApp {
 		ks.setGlobal("currDate", dz);*/
 		
 		Chart prehlada = new Chart();
-		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
+		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergy>());
 		prehlada.setPatient(p);
 		
 		Doctor dd = new Doctor("Kiki", "Riki", 1234, "aa124", "xxx", DoctorType.REGULAR);
@@ -173,7 +173,9 @@ public class SampleApp {
 		Drug d = new Drug(321, "Penicilin", new ArrayList<Ingredient>(), DrugType.ANTIBIOTIC);
 		d.getIngredients().add(ii);
 		
-		p.getAllergens().add(ii);
+		Allergy aa = new Allergy(1, ii.getName());
+		
+		p.getAllergens().add(aa);
 		
 		Prescription pp = new Prescription(312, "2 puta dnevno po 2", d);
 		MM.setPrescription(pp);
@@ -193,7 +195,7 @@ public class SampleApp {
 		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		
 		Chart prehlada = new Chart();
-		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
+		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergy>());
 		prehlada.setPatient(p);
 		prehlada.setExaminations(new ArrayList<Examination>());
 		
@@ -285,7 +287,7 @@ public class SampleApp {
 		KieSession ks = kieContainer().newKieSession();
 		
 		Chart prehlada = new Chart();
-		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergen>());
+		Patient p = new Patient("Jelena", "Kostic", 12, new ArrayList<Allergy>());
 		prehlada.setPatient(p);
 		prehlada.setExaminations(new ArrayList<Examination>());
 		

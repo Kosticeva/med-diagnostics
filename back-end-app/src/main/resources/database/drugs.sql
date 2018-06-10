@@ -12,4 +12,3 @@ insert into drug(id, name, drug_type) values (24, "Skopryl", 2);
 insert into drug(id, name, drug_type) values (25, "Orvagil", 2);
 insert into drug(id, name, drug_type) values (27, "Bisoprol", 2);
 insert into drug(id, name, drug_type) values (28, "Lysobact", 2);
-insert into drug(id, name, drug_type) values (12, "Vivace", 2);

@@ -1,5 +1,6 @@
 package drools.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,7 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Patient{
+public class Patient implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Column(nullable = false)
 	private String firstName;
@@ -23,12 +29,12 @@ public class Patient{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	private List<Allergen> allergens;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Allergy> allergens;
 	
 	public Patient() {}
 	
-	public Patient(String firstName, String lastName, int id, List<Allergen> allergens) {
+	public Patient(String firstName, String lastName, int id, List<Allergy> allergens) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -60,16 +66,42 @@ public class Patient{
 		this.id = id;
 	}
 	
-	public List<Allergen> getAllergens() {
+	public List<Allergy> getAllergens() {
 		return allergens;
 	}
 	
-	public void setAllergens(List<Allergen> allergens) {
+	public void setAllergens(List<Allergy> allergens) {
 		this.allergens = allergens;
 	}
 	
 	@Override
 	public String toString() {
 		return lastName + ", " + firstName;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == this) {
+			return true;
+		}
+		
+		if(!(o instanceof Patient)) {
+			return false;
+		}
+		
+		Patient p = (Patient) o;
+		
+		if(id.equals(p.getId()) && firstName.equals(p.getFirstName())
+				&& lastName.equals(p.getLastName())) {
+			for(Allergy aa: allergens) {
+				if(!p.getAllergens().contains(aa)){
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
+		return false;
 	}
 }

@@ -1,5 +1,6 @@
 package drools.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,12 +13,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Chart{
+public class Chart implements Serializable{
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Examination> examinations;
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Patient patient;
 	
 	@Id
@@ -66,6 +72,31 @@ public class Chart{
 		}
 		
 		return retVal;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == this) {
+			return true;
+		}
+		
+		if(!(o instanceof Chart)) {
+			return false;
+		}
+		
+		Chart c = (Chart) o;
+		
+		if(id.equals(c.getId()) && patient.equals(c.getPatient())) {
+			for(Examination ee: examinations) {
+				if(!c.getExaminations().contains(ee)){
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
 }

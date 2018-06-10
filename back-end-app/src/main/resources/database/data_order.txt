@@ -10,9 +10,9 @@ doctors.sql
 patients.sql
 patients_allergens.sql
 
-charts.sql
 prescriptions.sql
 exams.sql
-
 exams_symptoms.sql
+
+charts.sql
 charts_examinations.sql

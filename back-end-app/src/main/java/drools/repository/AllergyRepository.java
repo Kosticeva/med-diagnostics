@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import drools.model.Symptom;
+import drools.model.Allergy;
 
 @Repository
-public interface SymptomRepository extends JpaRepository<Symptom, Integer>{
+public interface AllergyRepository extends JpaRepository<Allergy, Integer>{
 
-	List<Symptom> findByName(String name);
+	List<Allergy> findByName(String name);
 }

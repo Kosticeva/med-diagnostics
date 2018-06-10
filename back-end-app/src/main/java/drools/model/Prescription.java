@@ -1,5 +1,7 @@
 package drools.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,7 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Prescription {
+public class Prescription implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +25,7 @@ public class Prescription {
 	@Column(nullable = false)
 	private String plan;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Drug drug;
 	
 	public Prescription() {}
@@ -57,5 +64,24 @@ public class Prescription {
 	@Override
 	public String toString() {
 		return drug.getName() + "[" + drug.getDrugType() + "]" + ", " + plan;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == this) {
+			return true;
+		}
+		
+		if(!(o instanceof Prescription)) {
+			return false;
+		}
+		
+		Prescription p = (Prescription) o;
+		
+		if(id.equals(p.getId()) && plan.equals(p.getPlan()) && drug.equals(p.getDrug())) {
+			return true;
+		}
+		
+		return false;
 	}
 }

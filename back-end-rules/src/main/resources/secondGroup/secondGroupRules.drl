@@ -27,8 +27,7 @@ rule "Hipertenzija"
         )
     then
        Disease d = new Disease(4, "Hipertenzija", null);
-    	$exam.setDisease(d);
-    	update($chart);
+    	insert(d);
 		System.out.println("U pitanju je hipertenzija ");
 end
 
@@ -44,8 +43,7 @@ rule "Dijabetes"
     	)
     then
         Disease d = new Disease(5, "Dijabetes", null);
-    	$exam.setDisease(d);
-    	update($chart);
+    	insert(d);
 		System.out.println("U pitanju je dijabetes");
 
 end

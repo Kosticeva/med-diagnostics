@@ -1,6 +1,9 @@
 package drools.service;
 
+import java.sql.SQLException;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,23 +17,56 @@ public class IngredientService {
 	@Autowired
 	IngredientRepository ingredientRepository;
 	
+	@Transactional
 	public Ingredient findById(int id) {
-		return ingredientRepository.getOne(id);
+		return ingredientRepository.findOne(id);
 	}
 	
+	@Transactional
 	public List<Ingredient> findAll(){
 		return ingredientRepository.findAll();
 	}
 	
+	@Transactional
 	public Ingredient createNewIngredient(Ingredient ingredient) {
+		if(ingredient.getName() == null || ingredient.getName().equals("")) {
+			System.out.println("Nema imena za sastojak");
+			return null;
+		}
+		
+		if(ingredientRepository.findByName(ingredient.getName()).size() != 0) {
+			System.out.println("Vec zauzeto ime");
+			return null;
+		}
+		
 		return ingredientRepository.save(ingredient);
 	}
 	
+	@Transactional
 	public Ingredient updateIngredient(Ingredient ingredient) {
+		if(ingredient.getName() == null || ingredient.getName().equals("")) {
+			System.out.println("Nema imena za sastojak");
+			return null;
+		}
+		
+		//vec postoji ime u bazi
+		if(ingredientRepository.findByName(ingredient.getName()).size() != 0) {
+			
+			//to je staro ime
+			if(ingredientRepository.findOne(ingredient.getId()).getName().equals(ingredient.getName())) {
+				//
+			}else {
+				//menja se ime al postoji u bazi
+				System.out.println("Vec zauzeto ime");
+				return null;
+			}
+		}
+		
 		return ingredientRepository.save(ingredient);
 	}
 	
-	public void deleteIngredient(int id) {
+	@Transactional
+	public void deleteIngredient(int id) throws SQLException{
 		ingredientRepository.delete(id);
 	}
 }

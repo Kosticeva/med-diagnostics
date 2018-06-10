@@ -1,11 +1,15 @@
 package drools.resource;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,8 +25,13 @@ public class ChartResource {
 	ChartService chartService;
 	
 	@RequestMapping(value = "/api/charts/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
-	public Chart getChart(@PathParam("id") int id) {
-		return chartService.findById(id);
+	public ResponseEntity<Chart> getChart(@PathVariable("id") Integer id) {
+		if(id != null) {
+			Chart c = chartService.findById(id);
+			
+			return ResponseEntity.ok().body(c);
+		}
+		return ResponseEntity.badRequest().body(null);
 	}
 	
 	@RequestMapping(value = "/api/charts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
@@ -32,27 +41,45 @@ public class ChartResource {
 	
 	@RequestMapping(value = "/api/charts", method = RequestMethod.POST, 
 		produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Chart newChart(@RequestBody Chart chart) {
+	public ResponseEntity<Chart> newChart(@RequestBody Chart chart) throws URISyntaxException {
 		if(chart.getId() != null) {
-			return null;
+			return ResponseEntity.badRequest().body(null);
 		}
 		
-		return chartService.createNewChart(chart);
+		Chart c = chartService.createNewChart(chart);
+		if(c!=null) {
+			return ResponseEntity.created(new URI("/api/charts/"+c.getId())).body(c);
+		}
+		
+		return ResponseEntity.unprocessableEntity().body(c);
 	}
 	
 	@RequestMapping(value = "/api/charts/{id}", method = RequestMethod.PUT, 
 			produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Chart editChart(@RequestBody Chart chart, @PathParam("id") int id) {
-		if(chart.getId() == null || chart.getId() != id) {
-			return null;
+	public ResponseEntity<Chart> editChart(@RequestBody Chart chart, @PathVariable("id") Integer id) {
+		if(chart.getId() == null || !chart.getId().equals(id)) {
+			System.out.println("URL update sa neodgovarajucim chartom");
+			return ResponseEntity.badRequest().body(null);
 		}
 		
-		return chartService.updateChart(chart);
+		Chart c = chartService.updateChart(chart);
+		if(c != null) {
+			return ResponseEntity.ok().body(c);
+		}
+		
+		return ResponseEntity.unprocessableEntity().body(c);
 	}
 	
 	@RequestMapping(value = "/api/charts/{id}", method = RequestMethod.DELETE)
-	public void deleteChart(@PathParam("id") int id) {
-		chartService.deleteChart(id);
+	public ResponseEntity<Chart> deleteChart(@PathVariable("id") Integer id) {
+		try {
+			chartService.deleteChart(id);
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(null);
+		}
+		
+		return ResponseEntity.ok().body(null);
 	}
 	
 }

@@ -1,5 +1,7 @@
 package drools.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,8 +13,13 @@ import javax.persistence.Id;
 import drools.model.enums.DoctorType;
 
 @Entity
-public class Doctor{
+public class Doctor implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(nullable = false)
 	private String firstName;
 	
@@ -30,7 +37,7 @@ public class Doctor{
 	private String password;
 	
 	@Column(nullable = false)
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	private DoctorType type;
 	
 	public Doctor() {}
@@ -97,5 +104,26 @@ public class Doctor{
 	@Override
 	public String toString() {
 		return "Dr. " + firstName + " " + lastName + ", " + licenceId ;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == this) {
+			return true;
+		}
+		
+		if(!(o instanceof Doctor)) {
+			return false;
+		}
+		
+		Doctor d = (Doctor) o;
+		
+		if(licenceId.equals(d.getLicenceId()) && firstName.equals(d.getFirstName())
+				&& lastName.equals(d.getLastName()) && username.equals(d.getUsername())
+				&& password.equals(d.getPassword()) && type == d.getType()) {
+			return true;
+		}
+		
+		return false;
 	}
 }

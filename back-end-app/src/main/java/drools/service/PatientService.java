@@ -1,10 +1,15 @@
 package drools.service;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import drools.model.Allergy;
 import drools.model.Patient;
 import drools.repository.PatientRepository;
 
@@ -14,23 +19,51 @@ public class PatientService {
 	@Autowired
 	PatientRepository patientRepository;
 	
+	@Autowired
+	AllergyService allergyService;
+	
+	@Transactional
 	public Patient findById(int id) {
-		return patientRepository.getOne(id);
+		return patientRepository.findOne(id);
 	}
 	
+	@Transactional
 	public List<Patient> findAll(){
 		return patientRepository.findAll();
 	}
 	
-	public Patient createNewPatient(Patient patient) {
+	@Transactional
+	public Patient savePatient(Patient patient) {
+		
+		if(patient.getFirstName() == null || patient.getFirstName().equals("")) {
+			System.out.println("Nema prvog imena za pacijenta");
+			return null;
+		}
+		
+		if(patient.getLastName() == null || patient.getLastName().equals("")) {
+			System.out.println("Nema prezimena za pacijenta");
+			return null;
+		}
+		
+		List<Allergy> newAlgs = new ArrayList<Allergy>();
+		for(Allergy aa: patient.getAllergens()) {
+			Allergy AA = allergyService.findById(aa.getId());
+			
+			if(AA == null) {
+				System.out.println("Nepostojeca alergija");
+				return null;
+			}
+			
+			newAlgs.add(AA);
+		}
+		
+		patient.setAllergens(newAlgs);
+		
 		return patientRepository.save(patient);
 	}
-	
-	public Patient updatePatient(Patient patient) {
-		return patientRepository.save(patient);
-	}
-	
-	public void deletePatient(int id) {
+
+	@Transactional
+	public void deletePatient(int id) throws SQLException {
 		patientRepository.delete(id);
 	}
 }

@@ -1,5 +1,6 @@
 package drools.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,12 @@ import org.kie.api.definition.type.Timestamp;
 @Entity
 @Role(Role.Type.EVENT)
 @Timestamp("date")
-public class Examination {
+public class Examination  implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,16 +38,16 @@ public class Examination {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private Doctor doctor;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Symptom> symptoms;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Disease disease;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Prescription prescription;
 	
 	public Examination() {}
@@ -121,6 +127,32 @@ public class Examination {
 		}
 		
 		return retVal;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == this) {
+			return true;
+		}
+		
+		if(!(o instanceof Examination)) {
+			return false;
+		}
+		
+		Examination e = (Examination) o;
+		
+		if(id.equals(e.getId()) && doctor.equals(e.getDoctor()) && date.equals(e.getDate())
+				&& prescription.equals(e.getPrescription()) && disease.equals(e.getDisease())) {
+			for(Symptom ss: symptoms) {
+				if(!e.getSymptoms().contains(ss)){
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
 }

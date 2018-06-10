@@ -1,11 +1,15 @@
 package drools.resource;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,8 +25,13 @@ public class PatientResource {
 	PatientService patientService;
 	
 	@RequestMapping(value = "/api/patients/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
-	public Patient getPatient(@PathParam("id") int id) {
-		return patientService.findById(id);
+	public ResponseEntity<Patient> getPatient(@PathVariable("id") Integer id) {
+		if(id != null) {
+			Patient p = patientService.findById(id);
+			
+			return ResponseEntity.ok().body(p);
+		}
+		return ResponseEntity.badRequest().body(null);
 	}
 	
 	@RequestMapping(value = "/api/patients", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
@@ -32,27 +41,45 @@ public class PatientResource {
 	
 	@RequestMapping(value = "/api/patients", method = RequestMethod.POST, 
 		produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Patient newPatient(@RequestBody Patient patient) {
+	public ResponseEntity<Patient> newPatient(@RequestBody Patient patient) throws URISyntaxException {
 		if(patient.getId() != null) {
-			return null;
+			return ResponseEntity.badRequest().body(null);
 		}
 		
-		return patientService.createNewPatient(patient);
+		Patient p = patientService.savePatient(patient);
+		if(p!=null) {
+			return ResponseEntity.created(new URI("/api/patients/"+p.getId())).body(p);
+		}
+		
+		return ResponseEntity.unprocessableEntity().body(p);
 	}
 	
 	@RequestMapping(value = "/api/patients/{id}", method = RequestMethod.PUT, 
 			produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Patient editPatient(@RequestBody Patient patient, @PathParam("id") int id) {
-		if(patient.getId() == null || patient.getId() != id) {
-			return null;
+	public ResponseEntity<Patient> editPatient(@RequestBody Patient patient, @PathVariable("id") Integer id) {
+		if(patient.getId() == null || !patient.getId().equals(id)) {
+			System.out.println("URL update sa neodgovarajucim patientom");
+			return ResponseEntity.badRequest().body(null);
 		}
 		
-		return patientService.updatePatient(patient);
+		Patient p = patientService.savePatient(patient);
+		if(p != null) {
+			return ResponseEntity.ok().body(p);
+		}
+		
+		return ResponseEntity.unprocessableEntity().body(p);
 	}
 	
 	@RequestMapping(value = "/api/patients/{id}", method = RequestMethod.DELETE)
-	public void deletePatient(@PathParam("id") int id) {
-		patientService.deletePatient(id);
+	public ResponseEntity<Patient> deletePatient(@PathVariable("id") Integer id) {
+		try {
+			patientService.deletePatient(id);
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(null);
+		}
+		
+		return ResponseEntity.ok().body(null);
 	}
 	
 }

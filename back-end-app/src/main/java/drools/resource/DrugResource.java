@@ -2,10 +2,10 @@ package drools.resource;
 
 import java.util.List;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +21,7 @@ public class DrugResource {
 	DrugService drugService;
 	
 	@RequestMapping(value = "/api/drugs/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
-	public Drug getDrug(@PathParam("id") int id) {
+	public Drug getDrug(@PathVariable("id") Integer id) {
 		return drugService.findById(id);
 	}
 	
@@ -37,21 +37,21 @@ public class DrugResource {
 			return null;
 		}
 		
-		return drugService.createNewDrug(drug);
+		return drugService.saveDrug(drug);
 	}
 	
 	@RequestMapping(value = "/api/drugs/{id}", method = RequestMethod.PUT, 
 			produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public Drug editDrug(@RequestBody Drug drug, @PathParam("id") int id) {
+	public Drug editDrug(@RequestBody Drug drug, @PathVariable("id") Integer id) {
 		if(drug.getId() == null || drug.getId() != id) {
 			return null;
 		}
 		
-		return drugService.updateDrug(drug);
+		return drugService.saveDrug(drug);
 	}
 	
 	@RequestMapping(value = "/api/drugs/{id}", method = RequestMethod.DELETE)
-	public void deleteDrug(@PathParam("id") int id) {
+	public void deleteDrug(@PathVariable("id") Integer id) {
 		drugService.deleteDrug(id);
 	}
 	

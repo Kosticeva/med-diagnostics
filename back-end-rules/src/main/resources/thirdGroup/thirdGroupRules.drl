@@ -15,7 +15,7 @@ import drools.model.Drug;
 
 rule "Hronicna bubrezna bolest"
 	salience $count.intValue()*100/7+$diabetes.intValue()*100/7+100/7
-	activation-group "y"
+	//activation-group "y"
 	agenda-group "diagnose"
     when
         $chart: Chart($exams: examinations)
@@ -43,8 +43,7 @@ rule "Hronicna bubrezna bolest"
     	eval($diabetes.intValue()+$hyperTens.intValue() > 0)
     then
         Disease d = new Disease(6, "Hronicna bubrezna bolest", null);
-    	$exam.setDisease(d);
-    	update($chart);
+    	insert(d);
         System.out.println("U pitanju je hronicna bubrezna bolest");
 
 end
@@ -52,7 +51,7 @@ end
 rule "Akutna bubrezna povreda"
     //include attributes such as "salience" here...
     salience $count.intValue()*100/8+$postOp.intValue()*100/8+100/8
-    activation-group "y"
+    //activation-group "y"
     agenda-group "diagnose"
     when
         $chart: Chart($exams: examinations)
@@ -88,8 +87,7 @@ rule "Akutna bubrezna povreda"
     	eval($postOp.intValue() + $highTemp.intValue() + $antiBio.intValue() > 0)
     then
         Disease d = new Disease(7, "Akutna bubrezna povreda", null);
-    	$exam.setDisease(d);
-    	update($chart);
+    	insert(d);
         System.out.println("U pitanju je akutna bubrezna povreda");
 
 end
