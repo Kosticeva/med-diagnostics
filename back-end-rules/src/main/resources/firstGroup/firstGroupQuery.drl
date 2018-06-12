@@ -1,0 +1,31 @@
+//created on: Jun 12, 2018
+package firstGroup
+
+import drools.model.Link;
+import drools.model.Symptom;
+import drools.model.Disease;
+
+rule "All diseases for symptom"
+	agenda-group "symptom-bc"
+    when
+       	$s: Symptom()
+       	isSymptomOf(disease, $s; )
+    then
+        System.out.println($s.getName() + " je simptom " + disease.getName());
+
+end
+
+query isSymptomOf(Disease d, Symptom s)
+	Link(d, s; )
+end
+
+rule "All symptoms for disease"
+	agenda-group "disease-bc"
+	when
+       	$d: Disease()
+       	isSymptomOf($d, symptom)
+    then
+        System.out.println(symptom.getName() + " uzrokuje " + $d.getName());
+
+end
+	

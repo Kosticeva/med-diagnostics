@@ -3,14 +3,11 @@ package drools.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 @Entity
 public class Disease  implements Serializable{
@@ -27,8 +24,8 @@ public class Disease  implements Serializable{
 	@Column(nullable = false, unique = true)
 	private String name;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<Symptom> symptoms;
+	//@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	//private List<Symptom> symptoms;
 	
 	public Disease() {}
 
@@ -36,7 +33,7 @@ public class Disease  implements Serializable{
 		super();
 		this.id = id;
 		this.name = name;
-		this.symptoms = symptoms;
+		//this.symptoms = symptoms;
 	}
 
 	public Integer getId() {
@@ -55,13 +52,13 @@ public class Disease  implements Serializable{
 		this.name = name;
 	}
 	
-	public List<Symptom> getSymptoms(){
+	/*public List<Symptom> getSymptoms(){
 		return this.symptoms;
 	}
 	
 	public void setSymptoms(List<Symptom> symptoms) {
 		this.symptoms = symptoms;
-	}
+	}*/
 
 	@Override
 	public boolean equals(Object o) {

@@ -15,7 +15,7 @@ import drools.model.Drug;
 
 rule "Hronicna bubrezna bolest"
 	salience $count.intValue()*100/7+$diabetes.intValue()*100/7+100/7
-	//activation-group "y"
+	activation-group "y"
 	agenda-group "diagnose"
     when
         $chart: Chart($exams: examinations)
@@ -51,7 +51,7 @@ end
 rule "Akutna bubrezna povreda"
     //include attributes such as "salience" here...
     salience $count.intValue()*100/8+$postOp.intValue()*100/8+100/8
-    //activation-group "y"
+    activation-group "y"
     agenda-group "diagnose"
     when
         $chart: Chart($exams: examinations)

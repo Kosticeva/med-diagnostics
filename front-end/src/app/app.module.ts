@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -22,7 +22,8 @@ import { NewSymptomComponent } from './exam/symptoms/new-symptom/new-symptom.com
 import { NewDoctorComponent } from './menubar/new-doctor/new-doctor.component';
 import { NewDiseaseComponent } from './menubar/new-disease/new-disease.component';
 import { NewDrugComponent } from './menubar/new-drug/new-drug.component';
-
+import { LoginService } from './login/login.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -48,9 +49,11 @@ import { NewDrugComponent } from './menubar/new-drug/new-drug.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

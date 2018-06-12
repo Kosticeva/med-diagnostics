@@ -44,7 +44,7 @@ public class DoctorService {
 			return null;
 		}
 		
-		if(doctorRepository.findByUsername(doctor.getUsername()).size() != 0) {
+		if(doctorRepository.findByUsername(doctor.getUsername())!= null) {
 			System.out.println("Vec iskoriceno kor ime za doktora");
 			return null;
 		}

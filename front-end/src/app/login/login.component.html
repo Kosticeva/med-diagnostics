@@ -5,16 +5,18 @@
 </div>
 <div class="card">
   <div class="card-body">
-    <form>
+    <form class="form">
         <div class="form-group">
           <label for="username">Korisnicko ime: </label>
-          <input type="text" class="form-control" id="username" placeholder="Enter username">
+          <input type="text" class="form-control" id="username" placeholder="Korisnicko ime..." [(ngModel)]="doctor.username" name="username" required/>
+          <small class="text-danger">{{errors.username}}</small>
         </div>
         <div class="form-group">
           <label for="password">Sifra: </label>
-          <input type="password" class="form-control" id="password" placeholder="Password">
+          <input type="password" class="form-control" id="password" placeholder="Sifra..." [(ngModel)]="doctor.password" name="password" required/>
+          <small class="text-danger">{{errors.password}}</small>
         </div>
-        <button type="button" class="btn btn-success btn-lg" routerLink="/home">Prijavi se</button>
+        <input type="submit" role="button" class="btn btn-success btn-lg" (click)="logIn()" value="Prijavi se" />
     </form>
   </div>
 </div>

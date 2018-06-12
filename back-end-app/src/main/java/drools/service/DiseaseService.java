@@ -1,7 +1,6 @@
 package drools.service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import drools.model.Disease;
-import drools.model.Symptom;
 import drools.repository.DiseaseRepository;
 
 @Service
@@ -44,19 +42,6 @@ public class DiseaseService {
 			return null;
 		}
 		
-		List<Symptom> newSymps = new ArrayList<Symptom>();
-		for(Symptom ss: disease.getSymptoms()) {
-			Symptom SS = symptomService.findById(ss.getId());
-			
-			if(SS == null) {
-				System.out.println("Nepostojeci simptom");
-				return null;
-			}
-			
-			newSymps.add(SS);
-		}
-		
-		disease.setSymptoms(newSymps);
 		return diseaseRepository.save(disease);
 	}
 	
@@ -80,19 +65,6 @@ public class DiseaseService {
 			}
 		}
 		
-		List<Symptom> newSymps = new ArrayList<Symptom>();
-		for(Symptom ss: disease.getSymptoms()) {
-			Symptom SS = symptomService.findById(ss.getId());
-			
-			if(SS == null) {
-				System.out.println("Nepostojeci simptom");
-				return null;
-			}
-			
-			newSymps.add(SS);
-		}
-		
-		disease.setSymptoms(newSymps);
 		return diseaseRepository.save(disease);
 	}
 	
