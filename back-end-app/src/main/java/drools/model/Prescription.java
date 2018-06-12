@@ -20,12 +20,14 @@ public class Prescription implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="prescription_id")
 	private Integer id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="prescription_plan")
 	private String plan;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
+	//@Column(name="drug_id")
 	private Drug drug;
 	
 	public Prescription() {}

@@ -23,7 +23,7 @@ public class PrescriptionService {
 	
 	@Transactional
 	public Prescription findById(int id) {
-		return prescriptionRepository.findOne(id);
+		return prescriptionRepository.getOne(id);
 	}
 	
 	@Transactional
@@ -56,6 +56,6 @@ public class PrescriptionService {
 	
 	@Transactional
 	public void deletePrescription(int id) throws SQLException {
-		prescriptionRepository.delete(id);
+		prescriptionRepository.deleteById(id);
 	}
 }

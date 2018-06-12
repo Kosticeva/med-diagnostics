@@ -7,7 +7,7 @@ export class Patient {
         public firstName: string,
         public lastName: string,
         public allergens: Allergen[],
-        public id?: number
+        public id: number
     ) {}
 
 

@@ -1,4 +1,4 @@
-import { Routes } from "@angular/router";
+import { Routes, Route } from "@angular/router";
 import { LoginComponent } from "./login/login.component";
 import { MainComponent } from "./main/main.component";
 import { MenubarComponent } from "./menubar/menubar.component";
@@ -14,37 +14,62 @@ import { StartExamComponent } from "./start-exam/start-exam.component";
 import { NewPatientComponent } from "./patient/new-patient/new-patient.component";
 import { PatientComponent } from "./patient/patient.component";
 
+export const menuBarRoute: Route = {
+    path: '',
+    outlet: 'menubar',
+    component: MenubarComponent
+};
+
 export const icRoutes: Routes = [
     {
         path: 'intensive-care',
-        component: IntensiveCareComponent
+        component: MainComponent,
+        children: [
+            menuBarRoute,
+            {
+                path: '',
+                component: IntensiveCareComponent
+            }
+        ]
     }
 ];
 
 export const diagnoseRoutes: Routes = [
     {
         path: 'exam/new',
-        component: StartExamComponent
+        component: MainComponent,
+        children: [
+            menuBarRoute,
+            {
+                path: '',
+                component: StartExamComponent
+            }
+        ]
     },
     {
         path: 'exam/:id',
-        component: ExamComponent
+        component: MainComponent,
+        children: [
+            menuBarRoute,
+            {
+                path: '',
+                component: ExamComponent
+            }
+        ]
     }
 ];
 
 export const patientRoutes: Routes = [
     {
-        path: '',
-        component: NewPatientComponent,
-        outlet: 'new-pat-modal'
-    },
-    /*
-    ovde gore staviti da je path '' ali da je outlet neki specif
-    i uraditi js da se napravi taj outlet na zahtev
-    */
-    {
         path: 'patient/:id',
-        component: PatientComponent
+        component: MainComponent,
+        children: [
+            menuBarRoute,
+            {
+                path: '',
+                component: PatientComponent
+            }
+        ]
     }
 ];
 
@@ -54,30 +79,33 @@ export const pageRoutes: Routes = [
         component: LoginComponent
     },
     {
-        path: '',
+        path: 'home',
         component: MainComponent,
         children: [
+            menuBarRoute,
             {
                 path: '',
-                outlet: 'menubar',
-                component: MenubarComponent
-            },
-            {
-                path: 'home',
                 component: MainPageComponent
-            },
-            {
-                path: 'reports',
-                component: ReportsComponent
-            },
-            ...icRoutes,
-            ...diagnoseRoutes,
-            ...patientRoutes
+            }
         ]
     },
     {
+        path: 'reports',
+        component: MainComponent,
+        children: [
+            menuBarRoute,
+            {
+                path: '',
+                component: ReportsComponent
+            }
+        ]
+    },
+    ...patientRoutes,
+    ...icRoutes,
+    ...diagnoseRoutes,
+    {
         path: '',
-        redirectTo: 'home',
+        redirectTo: '/login',
         pathMatch: 'full'
     }
 ];

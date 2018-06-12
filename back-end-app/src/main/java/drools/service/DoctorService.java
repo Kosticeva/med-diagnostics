@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import drools.model.Doctor;
 import drools.repository.DoctorRepository;
 
+
 @Service
 public class DoctorService {
 
@@ -19,7 +20,7 @@ public class DoctorService {
 	
 	@Transactional
 	public Doctor findById(int id) {
-		return doctorRepository.findOne(id);
+		return doctorRepository.getOne(id);
 	}
 	
 	@Transactional
@@ -79,7 +80,7 @@ public class DoctorService {
 			return null;
 		}
 		
-		if(!doctorRepository.findOne(doctor.getLicenceId()).getUsername().equals(doctor.getUsername())) {
+		if(!doctorRepository.getOne(doctor.getLicenceId()).getUsername().equals(doctor.getUsername())) {
 			System.out.println("Nedozvoljena promena kor imena za doktora");
 			return null;
 		}
@@ -99,6 +100,6 @@ public class DoctorService {
 	
 	@Transactional
 	public void deleteDoctor(int id) throws SQLException {
-		doctorRepository.delete(id);
+		doctorRepository.deleteById(id);
 	}
 }

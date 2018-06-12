@@ -20,7 +20,8 @@ export class LoginService{
     }
 
     login(doctor: Doctor) {
-        this.http.post<Doctor>('http://localhost:8080/api/login', doctor, header).subscribe(data => {
+        this.http.get('http://localhost:8080/api/allergys/1', header).subscribe(data => {
+            console.log(data);
             this.router.navigateByUrl('/home');
         });
     }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,7 @@ import drools.model.Chart;
 import drools.model.Patient;
 import drools.service.ReportsService;
 
+@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class ReportsResource {
 

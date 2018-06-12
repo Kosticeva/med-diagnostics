@@ -28,7 +28,7 @@ public class ChartService {
 	
 	@Transactional
 	public Chart findById(int id) {
-		return chartRepository.findOne(id);
+		return chartRepository.getOne(id);
 	}
 	
 	@Transactional
@@ -75,7 +75,7 @@ public class ChartService {
 			return null;
 		}
 		
-		if(!chartRepository.findOne(chart.getId()).getPatient().equals(chart.getPatient())) {
+		if(!chartRepository.getOne(chart.getId()).getPatient().equals(chart.getPatient())) {
 			System.out.println("Promenjen pacijent");
 			return null;
 		}
@@ -106,6 +106,6 @@ public class ChartService {
 	
 	@Transactional
 	public void deleteChart(int id) throws SQLException{
-		chartRepository.delete(id);
+		chartRepository.deleteById(id);
 	}
 }

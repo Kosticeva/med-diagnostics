@@ -16,11 +16,12 @@ public class Symptom implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = true, name="symptom_name")
 	private String name;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="symptom_id")
 	private Integer id;
 	
 	public Symptom() {}

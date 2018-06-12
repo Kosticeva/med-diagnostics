@@ -3,7 +3,6 @@ package drools.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,7 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
 
 import drools.model.enums.DrugType;
 
@@ -26,15 +27,20 @@ public class Drug implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="drug_id")
 	protected Integer id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = true, name="drug_name")
 	protected String name;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name="drug_ingredients",
+			joinColumns = @JoinColumn(name="drug_id"),
+			inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
 	private List<Ingredient> ingredients;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="drug_type")
 	@Enumerated(EnumType.STRING)
 	private DrugType drugType;
 	

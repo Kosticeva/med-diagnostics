@@ -20,23 +20,24 @@ public class Doctor implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name="doctor_first_name")
 	private String firstName;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="doctor_last_name")
 	private String lastName;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="doctor_licence_id")
 	private Integer licenceId;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = true, name="doctor_username")
 	private String username;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="doctor_password")
 	private String password;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="doctor_type")
 	@Enumerated(EnumType.STRING)
 	private DoctorType type;
 	

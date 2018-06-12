@@ -2,6 +2,7 @@ package drools.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,14 +22,17 @@ public class Link implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="link_id")
 	private Long id;
 	
 	@Position(0)
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	//@Column(name="disease_id")
 	private Disease disease;
 	
 	@Position(1)
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	//@Column(name="symptom_id")
 	private Symptom symptom;
 
 	public Disease getDisease() {

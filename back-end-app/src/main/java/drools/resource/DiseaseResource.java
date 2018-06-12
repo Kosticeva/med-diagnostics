@@ -7,24 +7,23 @@ import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
-import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import drools.SampleApp;
 import drools.model.Disease;
 import drools.model.Link;
-import drools.model.Symptom;
 import drools.repository.LinkRepository;
 import drools.repository.SymptomRepository;
 import drools.service.DiseaseService;
 import drools.service.LinkService;
 
+@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class DiseaseResource {
 
@@ -120,41 +119,4 @@ public class DiseaseResource {
 		
 		return ResponseEntity.badRequest().body(null);
 	}
-	
-	@RequestMapping(value="/api/try-bc-bc/s/{id}", method=RequestMethod.GET)
-	public void checkSymptomsAndDiseases(@PathVariable("id") Integer id) {
-		KieSession ks = SampleApp.kieContainer().newKieSession();
-		ks.getAgenda().getAgendaGroup("symptom-bc").setFocus();
-		
-		List<Link> allLinks = linkRepository.findAll();
-		for(Link l: allLinks) {
-			ks.insert(l);
-		}
-		
-		Symptom s = symptomRepository.findOne(id);
-		
-		ks.insert(s);
-		
-		ks.fireAllRules();
-		
-	}
-	
-	@RequestMapping(value="/api/try-bc-bc/d/{id}", method=RequestMethod.GET)
-	public void checkDiseasesAndSymptoms(@PathVariable("id") Integer id) {
-		KieSession ks = SampleApp.kieContainer().newKieSession();
-		ks.getAgenda().getAgendaGroup("disease-bc").setFocus();
-		
-		List<Link> allLinks = linkRepository.findAll();
-		for(Link l: allLinks) {
-			ks.insert(l);
-		}
-		
-		Disease d = diseaseService.findById(id);
-		
-		ks.insert(d);
-		
-		ks.fireAllRules();
-		
-	}
-	
 }

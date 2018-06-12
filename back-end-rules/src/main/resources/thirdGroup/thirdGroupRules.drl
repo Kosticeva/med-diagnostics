@@ -14,12 +14,12 @@ import drools.model.Drug;
 //declare any global variables here
 
 rule "Hronicna bubrezna bolest"
-	salience $count.intValue()*100/7+$diabetes.intValue()*100/7+100/7
-	activation-group "y"
+	salience $count.intValue()*10000/7+$diabetes.intValue()*10000/7+$hyperTens.intValue()*10000/7
+	//activation-group "x"
 	agenda-group "diagnose"
     when
-        $chart: Chart($exams: examinations)
-    	$exam: Examination(disease == null, $symptoms: symptoms) from $exams
+        Chart($exams: examinations)
+    	$exam: Examination($symptoms: symptoms)
     	$count: Number(intValue > 1) from accumulate (
     		Symptom(name=="Zamor" || name=="Nocturia" || 
     			name=="Otoci nogu i zglobova" || name=="Gusenje" || 
@@ -27,7 +27,7 @@ rule "Hronicna bubrezna bolest"
     		count(1)
     	)
     	$diabetes: Number(intValue > -1) from accumulate (
-			Examination($dis: disease) from $exams and
+			Examination($dis: disease, $dis != null) from $exams and
 			Disease(name == "Dijabetes") from $dis,
     		count(1)
     	)
@@ -42,6 +42,8 @@ rule "Hronicna bubrezna bolest"
     	)
     	eval($diabetes.intValue()+$hyperTens.intValue() > 0)
     then
+    	System.out.println("Salience je "+($count.intValue()*10000/7+$diabetes.intValue()*10000/7+$hyperTens.intValue()*10000/7));
+    	System.out.println("Count: "+$count.intValue()+", diabetes: "+$diabetes.intValue()+", hyperTens: "+$hyperTens.intValue());
         Disease d = new Disease(6, "Hronicna bubrezna bolest", null);
     	insert(d);
         System.out.println("U pitanju je hronicna bubrezna bolest");
@@ -50,12 +52,12 @@ end
 
 rule "Akutna bubrezna povreda"
     //include attributes such as "salience" here...
-    salience $count.intValue()*100/8+$postOp.intValue()*100/8+100/8
-    activation-group "y"
+    salience ($count.intValue()*10000/8+$postOp.intValue()*10000/8+$highTemp.intValue()*10000/8+$antiBio.intValue()*10000/8)
+    //activation-group "x"
     agenda-group "diagnose"
     when
-        $chart: Chart($exams: examinations)
-    	$exam: Examination(disease == null, $symptoms: symptoms) from $exams
+        Chart($exams: examinations)
+    	$exam: Examination($symptoms: symptoms)
     	$count: Number(intValue > 1) from accumulate (
     		Symptom(name=="Zamor" || name=="Dijareja" || 
     			name=="Otoci nogu i zglobova" || name=="Gusenje" || 
@@ -86,6 +88,8 @@ rule "Akutna bubrezna povreda"
     	)
     	eval($postOp.intValue() + $highTemp.intValue() + $antiBio.intValue() > 0)
     then
+    	System.out.println("Salience je "+ ($count.intValue()*10000/8+$postOp.intValue()*10000/8+$highTemp.intValue()*10000/8+$antiBio.intValue()*10000/8));
+    	System.out.println("Count: "+$count.intValue()+", postOp: "+$postOp.intValue()+", highTemp: "+$highTemp.intValue()+", antiBio: "+$antiBio.intValue()); 
         Disease d = new Disease(7, "Akutna bubrezna povreda", null);
     	insert(d);
         System.out.println("U pitanju je akutna bubrezna povreda");

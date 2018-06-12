@@ -18,9 +18,10 @@ public class Ingredient implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="ingredient_id")
 	protected Integer id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = true, name="ingredient_name")
 	protected String name;
 	
 	public Ingredient() {}

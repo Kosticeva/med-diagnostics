@@ -23,7 +23,7 @@ public class DrugService {
 	
 	@Transactional
 	public Drug findById(int id) {
-		return drugRepository.findOne(id);
+		return drugRepository.getOne(id);
 	}
 	
 	@Transactional
@@ -62,6 +62,6 @@ public class DrugService {
 	
 	@Transactional
 	public void deleteDrug(int id) {
-		drugRepository.delete(id);
+		drugRepository.deleteById(id);
 	}
 }

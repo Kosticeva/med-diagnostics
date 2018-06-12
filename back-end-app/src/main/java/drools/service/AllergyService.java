@@ -2,6 +2,7 @@ package drools.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -19,7 +20,7 @@ public class AllergyService {
 	
 	@Transactional
 	public Allergy findById(int id) {
-		return allergyRepository.findOne(id);
+		return allergyRepository.getOne(id);
 	}
 	
 	@Transactional
@@ -53,7 +54,8 @@ public class AllergyService {
 		if(allergyRepository.findByName(allergy.getName()).size() != 0) {
 			
 			//to je staro ime
-			if(allergyRepository.findOne(allergy.getId()).getName().equals(allergy.getName())) {
+			Optional<Allergy> aa = allergyRepository.findById(allergy.getId());
+			if(aa.isPresent() && aa.get().getName().equals(allergy.getName())) {
 				//
 			}else {
 				//menja se ime al postoji u bazi
@@ -68,6 +70,6 @@ public class AllergyService {
 	
 	@Transactional
 	public void deleteAllergy(int id) throws SQLException{
-		allergyRepository.delete(id);
+		allergyRepository.deleteById(id);
 	}
 }

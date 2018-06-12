@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -32,22 +33,31 @@ public class Examination  implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="exam_id")
 	private Integer id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="exam_date")
 	@Temporal(TemporalType.DATE)
 	private Date date;
 	
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	//@Column(name="doctor_id")
 	private Doctor doctor;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name="exam_symptoms",
+			joinColumns = @JoinColumn(name="exam_id"),
+			inverseJoinColumns = @JoinColumn(name="symptoms_id")
+		)
 	private List<Symptom> symptoms;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
+	//@Column(name="disease_id")
 	private Disease disease;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
+	//@Column(name="prescription_id")
 	private Prescription prescription;
 	
 	public Examination() {}

@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -19,17 +21,23 @@ public class Patient implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name="patient_first_name")
 	private String firstName;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="patient_last_name")
 	private String lastName;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="patient_id")
 	private Integer id;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name="patient_allergies",
+			joinColumns = @JoinColumn(name="patient_id"),
+			inverseJoinColumns = @JoinColumn(name = "allergy_id")
+		)
 	private List<Allergy> allergens;
 	
 	public Patient() {}

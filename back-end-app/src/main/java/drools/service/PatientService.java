@@ -24,7 +24,7 @@ public class PatientService {
 	
 	@Transactional
 	public Patient findById(int id) {
-		return patientRepository.findOne(id);
+		return patientRepository.getOne(id);
 	}
 	
 	@Transactional
@@ -64,6 +64,6 @@ public class PatientService {
 
 	@Transactional
 	public void deletePatient(int id) throws SQLException {
-		patientRepository.delete(id);
+		patientRepository.deleteById(id);
 	}
 }

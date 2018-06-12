@@ -3,16 +3,19 @@ package drools.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
+//@Table(name="chart")
 public class Chart implements Serializable{
 
 	/**
@@ -20,14 +23,20 @@ public class Chart implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name="chart_exams",
+			joinColumns = @JoinColumn(name="chart_id"),
+			inverseJoinColumns = @JoinColumn(name = "exam_id"))
 	private List<Examination> examinations;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
+	///@Column(name = "patient_id", nullable = false)
 	private Patient patient;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "chart_id")
 	private Integer id;
 	
 	public Chart() {}

@@ -19,7 +19,7 @@ public class IngredientService {
 	
 	@Transactional
 	public Ingredient findById(int id) {
-		return ingredientRepository.findOne(id);
+		return ingredientRepository.getOne(id);
 	}
 	
 	@Transactional
@@ -53,7 +53,7 @@ public class IngredientService {
 		if(ingredientRepository.findByName(ingredient.getName()).size() != 0) {
 			
 			//to je staro ime
-			if(ingredientRepository.findOne(ingredient.getId()).getName().equals(ingredient.getName())) {
+			if(ingredientRepository.getOne(ingredient.getId()).getName().equals(ingredient.getName())) {
 				//
 			}else {
 				//menja se ime al postoji u bazi
@@ -67,6 +67,6 @@ public class IngredientService {
 	
 	@Transactional
 	public void deleteIngredient(int id) throws SQLException{
-		ingredientRepository.delete(id);
+		ingredientRepository.deleteById(id);
 	}
 }

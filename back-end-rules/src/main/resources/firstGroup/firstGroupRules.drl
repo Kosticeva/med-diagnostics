@@ -11,18 +11,19 @@ import java.util.Date;
 //declare any global variables here
 
 rule "Prehlada"
-	salience $count.intValue()*100/5
-	activation-group "x"
+	salience $count.intValue()*10000/5
+	//activation-group "x"
 	agenda-group "diagnose"
     when
-        $chart: Chart($exams: examinations)
-        $exam: Examination(disease == null, $symptoms: symptoms) from $exams
+        Chart()
+        $exam: Examination($symptoms: symptoms)
         $count: Number(intValue >= 4) from accumulate (
         	Symptom(name=="Curenje iz nosa" || name=="Bol u grlu" || name=="Glavobolja"
         		|| name=="Kijanje" || name=="Kasalj") from $symptoms,
         	count(1)
         )
     then
+    	System.out.println("Salience je: "+$count.intValue()*10000/5);
     	Disease d = new Disease(0, "Prehlada", null);
     	insert(d);
         System.out.println("U pitanju je prehlada");
@@ -31,12 +32,12 @@ end
 
 
 rule "Groznica"
-	salience $count.intValue()*100/7
-	activation-group "x"
+	salience $count.intValue()*10000/7
+	//activation-group "x"
 	agenda-group "diagnose"
 	when
-		$chart: Chart($exams: examinations)
-        $exam: Examination(disease == null, $symptoms: symptoms) from $exams
+		Chart()
+        $exam: Examination($symptoms: symptoms)
         $count: Number(intValue >= 4) from accumulate (
         	Symptom(name=="Curenje iz nosa" || name=="Bol u grlu" || name=="Glavobolja"
         		|| name=="Kijanje" || name=="Kasalj" || name=="Drhtavica" 
@@ -44,18 +45,19 @@ rule "Groznica"
         	count(1)
         )
 	then
+		System.out.println("Salience je "+$count.intValue()*10000/7);
 		Disease d = new Disease(1, "Groznica", null);
     	insert(d);
 		System.out.println("U pitanju je groznica");
 end
 
 rule "Upala krajnika"
-    salience $count.intValue()*100/8
-    activation-group "x"
+    salience ($count.intValue()*10000/8)
+    //activation-group "x"
     agenda-group "diagnose"
     when
-        $chart: Chart($exams: examinations)
-        $exam: Examination(disease == null, $symptoms: symptoms) from $exams
+        Chart()
+        $exam: Examination($symptoms: symptoms)
         $count: Number(intValue >= 4) from accumulate (
         	Symptom(name=="Bol u grlu" || name=="Bol koji se siri do usiju" || name=="Glavobolja" || 
         		name=="Temperatura od 40 do 41" || name=="Drhtavica" || name=="Gubitak apetita" ||
@@ -63,6 +65,7 @@ rule "Upala krajnika"
         	count(1)
         )
     then
+    	System.out.println("Salience je "+($count.intValue()*10000/8));
         Disease d = new Disease(2, "Upala krajnika", null);
     	insert(d);
 		System.out.println("U pitanju je upala krajnika");
@@ -70,12 +73,12 @@ rule "Upala krajnika"
 end
 
 rule "Sinusna infekcija"
-	salience $count.intValue()*100/7
-	activation-group "x"
+	salience $count.intValue()*10000/7 + $specCount.intValue()*10000/7
+	//activation-group "x"
 	agenda-group "diagnose"
 	when
-		$chart: Chart($exams: examinations)
-        $exam: Examination(disease == null, $symptoms: symptoms) from $exams
+		Chart($exams: examinations)
+        $exam: Examination($symptoms: symptoms)
         $count: Number(intValue >= 3) from accumulate (
         	Symptom(name=="Oticanje oko ociju" || name=="Glavobolja" || name=="Zuti sekret iz nosa" 
         		|| name=="Bol u grlu" || name=="Temperatura veca od 38" || name=="Kasalj") from $symptoms,
@@ -86,13 +89,14 @@ rule "Sinusna infekcija"
         		this != $exam,
         		this meets[60d] $exam,
         		$disease: disease
-        	) and
+        	) from $exams and
         	Disease( name == "Prehlada" || name == "Groznica"),
         	count(1)
         )
         eval($count.intValue() + $specCount.intValue() >= 4)
 	then
-		Disease d = new Disease(2, "Sinusna infekcija", null);
+		System.out.println("Salience je "+($count.intValue()*10000/7 + $specCount.intValue()*10000/7) +" (spec count je "+$specCount.intValue()+")");
+		Disease d = new Disease(3, "Sinusna infekcija", null);
     	insert(d);
 		System.out.println("U pitanju je sinusna infekcija");
 end

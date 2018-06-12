@@ -22,7 +22,7 @@ public class DiseaseService {
 	
 	@Transactional
 	public Disease findById(int id) {
-		return diseaseRepository.findOne(id);
+		return diseaseRepository.getOne(id);
 	}
 	
 	@Transactional
@@ -56,7 +56,7 @@ public class DiseaseService {
 		if(diseaseRepository.findByName(disease.getName()).size() != 1) {
 			
 			//to je staro ime
-			if(diseaseRepository.findOne(disease.getId()).getName().equals(disease.getName())) {
+			if(diseaseRepository.getOne(disease.getId()).getName().equals(disease.getName())) {
 				//
 			}else {
 				//menja se ime al postoji u bazi
@@ -70,6 +70,6 @@ public class DiseaseService {
 	
 	@Transactional
 	public void deleteDisease(int id) throws SQLException{
-		diseaseRepository.delete(id);
+		diseaseRepository.deleteById(id);
 	}
 }

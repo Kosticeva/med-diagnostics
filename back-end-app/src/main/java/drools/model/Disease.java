@@ -19,9 +19,10 @@ public class Disease  implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="disease_id")
 	private Integer id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = true, name="disease_name")
 	private String name;
 	
 	//@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

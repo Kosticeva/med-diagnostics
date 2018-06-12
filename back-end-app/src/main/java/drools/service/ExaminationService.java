@@ -37,7 +37,7 @@ public class ExaminationService {
 	
 	@Transactional
 	public Examination findById(int id) {
-		return examinationRepository.findOne(id);
+		return examinationRepository.getOne(id);
 	}
 	
 	@Transactional
@@ -191,6 +191,6 @@ public class ExaminationService {
 	
 	@Transactional
 	public void deleteExamination(int id) throws SQLException {
-		examinationRepository.delete(id);
+		examinationRepository.deleteById(id);
 	}
 }

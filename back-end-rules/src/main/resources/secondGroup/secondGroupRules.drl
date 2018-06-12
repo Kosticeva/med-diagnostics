@@ -14,11 +14,14 @@ import java.util.Date;
 
 rule "Hipertenzija"
 	agenda-group "diagnose"
+	salience $cc.intValue()*1000
+	//activation-group "x"
     when
-    	$chart: Chart($exams: examinations)
-    	$exam: Examination(disease == null) from $exams
+    	Chart($exams: examinations)
+    	$exam: Examination()
         $cc: Number(intValue >= 10) from accumulate (
         	$exam1: Examination(
+        		this != $exam,
         		this meets[180d] $exam,
         		$symptoms: symptoms
         	) from $exams and
@@ -26,22 +29,26 @@ rule "Hipertenzija"
         	count(1)
         )
     then
-       Disease d = new Disease(4, "Hipertenzija", null);
+    	System.out.println("Salience je "+$cc.intValue()*1000);
+       	Disease d = new Disease(4, "Hipertenzija", null);
     	insert(d);
 		System.out.println("U pitanju je hipertenzija ");
 end
 
 rule "Dijabetes"
     agenda-group "diagnose"
+    //activation-group "x"
+    salience $count.intValue()*10000/4
     when
-       	$chart: Chart($exams: examinations)
-    	$exam: Examination(disease == null, $symptoms: symptoms) from $exams
+       	Chart()
+    	$exam: Examination($symptoms: symptoms)
     	$count: Number(intValue == 4) from accumulate (
     		Symptom(name=="Cesto uriniranje" || name=="Gubitak telesne tezine"
     			|| name=="Zamor" || name=="Mucnina i povracanje") from $symptoms,
     		count(1)
     	)
     then
+    	System.out.println("Salience je "+$count.intValue()*10000/4);
         Disease d = new Disease(5, "Dijabetes", null);
     	insert(d);
 		System.out.println("U pitanju je dijabetes");

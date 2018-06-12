@@ -19,7 +19,7 @@ public class SymptomService {
 	
 	@Transactional
 	public Symptom findById(int id) {
-		return symptomRepository.findOne(id);
+		return symptomRepository.getOne(id);
 	}
 	
 	@Transactional
@@ -54,7 +54,7 @@ public class SymptomService {
 		if(symptomRepository.findByName(symptom.getName()).size() != 0) {
 			
 			//to je staro ime
-			if(symptomRepository.findOne(symptom.getId()).getName().equals(symptom.getName())) {
+			if(symptomRepository.getOne(symptom.getId()).getName().equals(symptom.getName())) {
 				//
 			}else {
 				//menja se ime al postoji u bazi
@@ -68,6 +68,6 @@ public class SymptomService {
 	
 	@Transactional
 	public void deleteSymptom(int id) throws SQLException {
-		symptomRepository.delete(id);
+		symptomRepository.deleteById(id);
 	}
 }

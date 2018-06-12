@@ -1,5 +1,5 @@
 //created on: Jun 12, 2018
-package firstGroup
+package querys
 
 import drools.model.Link;
 import drools.model.Symptom;
@@ -12,6 +12,7 @@ rule "All diseases for symptom"
        	isSymptomOf(disease, $s; )
     then
         System.out.println($s.getName() + " je simptom " + disease.getName());
+        insert(disease);
 
 end
 
@@ -23,9 +24,10 @@ rule "All symptoms for disease"
 	agenda-group "disease-bc"
 	when
        	$d: Disease()
-       	isSymptomOf($d, symptom)
+       	isSymptomOf($d, symptom; )
     then
         System.out.println(symptom.getName() + " uzrokuje " + $d.getName());
+        insert(symptom);
 
 end
 	

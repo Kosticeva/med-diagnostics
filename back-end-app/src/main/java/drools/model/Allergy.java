@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+//@Table(name="allergy")
 public class Allergy implements Serializable{
 
 	/**
@@ -18,10 +19,15 @@ public class Allergy implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="allergy_id")
 	private Integer id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name="allergy_name")
 	private String name;
+	
+	/*@ManyToMany(mappedBy = "patient")
+	@JsonIgnore
+	private Set<Patient> patients = new HashSet<Patient>();*/
 	
 	public Allergy() {}
 
