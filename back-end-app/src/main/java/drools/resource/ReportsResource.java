@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import drools.model.Allergy;
 import drools.model.Drug;
 import drools.model.Patient;
-import drools.model.Prescription;
 import drools.service.ReportsService;
 
 @CrossOrigin(value="http://localhost:4200", maxAge=1800)

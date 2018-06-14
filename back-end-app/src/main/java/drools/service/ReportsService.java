@@ -34,7 +34,9 @@ public class ReportsService {
 		
 		List<Chart> charts = chartService.findAll();
 		
-		ks.insert(charts);
+		for(Chart c: charts) {
+			ks.insert(c);
+		}
 		
 		ks.fireAllRules();
 		
@@ -55,7 +57,9 @@ public class ReportsService {
 		
 		List<Chart> charts = chartService.findAll();
 		
-		ks.insert(charts);
+		for(Chart c: charts) {
+			ks.insert(c);
+		}
 		
 		ks.fireAllRules();
 		
@@ -76,7 +80,9 @@ public class ReportsService {
 		
 		List<Chart> charts = chartService.findAll();
 		
-		ks.insert(charts);
+		for(Chart c: charts) {
+			ks.insert(c);
+		}
 		
 		ks.fireAllRules();
 		

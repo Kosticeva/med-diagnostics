@@ -14,12 +14,12 @@ export class LoginService{
     login(doctor: any):  Observable<any>{
         let header = { 
             headers: new HttpHeaders({
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'j_username': doctor.username,
-                'j_password': doctor.password
+                'Content-Type': 'application/x-www-form-urlencoded'//,
+//                'j_username': doctor.username,
+  //              'j_password': doctor.password
             })
         };
-        return this.http.post('http://localhost:8080/login', null, header);
+        return this.http.post('http://localhost:8080/login', 'j_username='+doctor.username+'&j_password='+doctor.password, header);
     }
 
     logout(){
