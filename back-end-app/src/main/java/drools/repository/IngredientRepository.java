@@ -11,4 +11,5 @@ import drools.model.Ingredient;
 public interface IngredientRepository extends JpaRepository<Ingredient, Integer>{
 
 	List<Ingredient> findByName(String name);
+	List<Ingredient> findByNameStartingWith(String name);
 }

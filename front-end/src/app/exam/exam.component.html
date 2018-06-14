@@ -22,26 +22,12 @@
             <h6 class="d-inline col-2">Simptomi: </h6>
             <div class="d-inline col-8 pr-10 d-flex">
                 <ul class="list-group list-group-flush container-fluid">
-                    <li class="list-group-item d-flex justify-content-between">Simptom 1 <span class="btn-group"><button class="btn btn-danger" (click)="removeSymptom()"><i class="fa fa-trash"></i></button></span></li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-                    <li class="list-group-item">Simptom 1</li>
-
+                    <li *ngFor="let symptom of exam.symptoms" class="list-group-item d-flex justify-content-between">{{symptom.name}} <span class="btn-group"><button class="btn btn-danger" (click)="removeSymptom(symptom)"><i class="fa fa-trash"></i></button></span></li>
                 </ul>
             </div>
             <button class="btn btn-primary d-inline col-2 h-50"  (click)="openSymps()">Dodaj simptom</button>
         </div>
-        <app-symptoms *ngIf="sympsOpen"></app-symptoms>
+        <app-symptoms *ngIf="sympsOpen" [symptoms]="exam.symptoms"></app-symptoms>
         <br />
         <hr />
         <br >
@@ -50,7 +36,7 @@
             <h6 class="d-inline w-75 col-8"></h6>
             <button class="btn btn-primary d-inline col-2" (click)="openDiag()">Postavi dijagnozu</button>
         </div>
-        <app-diagnose *ngIf="diagOpen"></app-diagnose>
+        <app-diagnose *ngIf="diagOpen" [disease]="exam.diagnose" [symptoms]="exam.symptoms"></app-diagnose>
         <br />
         <hr />
         <br >
@@ -59,7 +45,7 @@
             <h6 class="d-inline w-75 col-8"></h6>
             <button class="btn btn-primary d-inline col-2" (click)="openTher()">Odredi terapiju</button>
         </div>
-        <app-therapy *ngIf="therOpen"></app-therapy>
+        <app-therapy *ngIf="therOpen" [prescription]="exam.therapy"></app-therapy>
     </div>
   </div>
   <button class="btn btn-lg btn-success container-fluid" (click)="finishExam()">

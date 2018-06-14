@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Prescription } from '../../model/prescription';
+import { Drug } from '../../model/drug';
+import { DrugService } from '../../services/drug.service';
 
 @Component({
   selector: 'app-therapy',
@@ -7,13 +10,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TherapyComponent implements OnInit {
 
-  constructor() { }
+  drugs: Drug[];
+  query: string;
+  @Input() prescription: Prescription;
+
+  constructor(
+    private drugService: DrugService
+  ) { }
 
   ngOnInit() {
+    this.drugs = [];
+    this.query = '';
   }
 
-  chooseDrug() {}
+  chooseDrug(drug: Drug) {
+    this.prescription.drug = drug;
+  }
 
-  removeDrug() {}
+  findDrug() {
+    this.drugService.getByName(this.query).subscribe(
+      (data) => this.drugs = data
+    );
+  }
 
 }

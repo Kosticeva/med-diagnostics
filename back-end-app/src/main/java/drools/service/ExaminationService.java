@@ -67,40 +67,40 @@ public class ExaminationService {
 		
 		examination.setDoctor(DD);
 		
-		if(examination.getDisease() == null) {
-			System.out.println("Nema bolest");
+		if(examination.getDisease() != null) {
+			System.out.println("Ima bolest");
 			return null;
 		}
 		
-		Disease DDD = diseaseService.findById(examination.getDisease().getId());
+		/*Disease DDD = diseaseService.findById(examination.getDisease().getId());
 		
 		if(DDD == null) {
 			System.out.println("Nepostojeca bolest");
 			return null;
 		}
 		
-		examination.setDisease(DDD);
+		examination.setDisease(DDD);*/
 		
-		if(examination.getPrescription() == null) {
-			System.out.println("Nema recept");
+		if(examination.getPrescription() != null) {
+			System.out.println("Ima recept");
 			return null;
 		}
 		
-		Prescription PP = prescriptionService.findById(examination.getPrescription().getId());
+		/*Prescription PP = prescriptionService.findById(examination.getPrescription().getId());
 		
 		if(PP == null) {
 			System.out.println("Nepostojeci recept");
 			return null;
 		}
 		
-		examination.setPrescription(PP);
+		examination.setPrescription(PP);*/
 		
-		if(examination.getSymptoms() == null || examination.getSymptoms().size() == 0) {
-			System.out.println("Nema simptoma");
+		if(examination.getSymptoms() != null && examination.getSymptoms().size() != 0) {
+			System.out.println("Ima simptoma");
 			return null;
 		}
 		
-		List<Symptom> newSymps = new ArrayList<Symptom>();
+		/*List<Symptom> newSymps = new ArrayList<Symptom>();
 		for(Symptom ss: examination.getSymptoms()) {
 			Symptom SS = symptomService.findById(ss.getId());
 			
@@ -112,7 +112,7 @@ public class ExaminationService {
 			newSymps.add(SS);
 		}
 		
-		examination.setSymptoms(newSymps);
+		examination.setSymptoms(newSymps);*/
 		
 		examination.setDate(new Date());
 		

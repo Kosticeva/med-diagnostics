@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import drools.model.Chart;
@@ -82,6 +83,12 @@ public class ChartResource {
 		}
 		
 		return ResponseEntity.ok().body(null);
+	}
+
+	@RequestMapping(value = "/api/patients", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON,
+			params="name")
+	public List<Chart> getByPatientsName(@RequestParam("name") String name) {
+		return chartService.findByPatientName(name);
 	}
 	
 }

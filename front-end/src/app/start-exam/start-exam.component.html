@@ -20,13 +20,14 @@
             Novi pacijent
           </button>
         <form class="form-group">
-          <input type="text" class="form-control w-75" placeholder="Pronadji pacijenta ..." />
+          <input type="text" class="form-control w-75" placeholder="Pronadji pacijenta ..." [(ngModel)]="query" (change)="findPatients()"/>
         </form>
       </div>
       <div class="list-group-and-forms">
         <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
-          <li class="list-group-item" (click)="choosePatient()">Bla 1</li>
-          <li class="list-group-item">Bla 2</li>
+          <li *ngFor="let pat of patients" class="list-group-item" (click)="choosePatient(pat.id)">
+            {{pat.patient.firstName}} {{pat.patient.lastName}}
+          </li>
         </ul>
         <app-new-patient *ngIf="formShown" class="w-50"></app-new-patient>
       </div>

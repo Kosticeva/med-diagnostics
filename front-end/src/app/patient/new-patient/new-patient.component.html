@@ -6,15 +6,17 @@
     <form class="form-group">
       <div class="form-field">
         <label for="fName">Ime: </label>
-        <input type="text" id="fName" class="form-control" />
+        <input type="text" id="fName" class="form-control" name="firstName" [(ngModel)]="patient.firstName"/>
+        <small class="text-danger">{{error.firstName}}</small>
       </div>
       <div class="form-field">
         <label for="lName">Prezime: </label>
-        <input type="text" id="lName" class="form-control" />
+        <input type="text" id="lName" class="form-control" [(ngModel)]="patient.lastName"/>
+        <small class="text-danger">{{error.lastName}}</small>
       </div>
       <div class="form-field">
         <label for="allergens">Alergeni: </label>
-        <textarea class="form-control" id="allergens" placeholder="Alergen 1, alergen 2..."></textarea>
+        <textarea class="form-control" id="allergens" placeholder="Alergen 1, alergen 2..." [(ngModel)]="allergens"></textarea>
       </div>
       <hr />
       <div class="form-field">

@@ -5,18 +5,19 @@
 </div>
 <div class="card">
   <div class="card-body">
-    <form class="form">
+    <p class="text-danger">{{errors.main}}</p>
+    <form class="form" (ngSubmit)="logIn()" #dataForm="ngForm">
         <div class="form-group">
           <label for="username">Korisnicko ime: </label>
-          <input type="text" class="form-control" id="username" placeholder="Korisnicko ime..." [(ngModel)]="doctor.username" name="username" required/>
+          <input type="text" class="form-control" id="username" placeholder="Korisnicko ime..." [(ngModel)]="data.username" name="username" #username="ngModel" required/>
           <small class="text-danger">{{errors.username}}</small>
         </div>
         <div class="form-group">
           <label for="password">Sifra: </label>
-          <input type="password" class="form-control" id="password" placeholder="Sifra..." [(ngModel)]="doctor.password" name="password" required/>
+          <input type="password" class="form-control" id="password" placeholder="Sifra..." [(ngModel)]="data.password" name="password" #password="ngModel" required/>
           <small class="text-danger">{{errors.password}}</small>
         </div>
-        <input type="submit" role="button" class="btn btn-success btn-lg" (click)="logIn()" value="Prijavi se" />
+        <input type="submit" role="button" class="btn btn-success btn-lg" value="Prijavi se" [disabled]="!dataForm.form.valid"/>
     </form>
   </div>
 </div>

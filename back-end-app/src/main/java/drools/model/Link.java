@@ -34,6 +34,9 @@ public class Link implements Serializable{
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	//@Column(name="symptom_id")
 	private Symptom symptom;
+	
+	@Position(2)
+	private int type;
 
 	public Disease getDisease() {
 		return disease;
@@ -51,12 +54,21 @@ public class Link implements Serializable{
 		this.symptom = symptom;
 	}
 
-	public Link(Disease disease, Symptom symptom) {
+	public Link(Disease disease, Symptom symptom, int type) {
 		super();
 		this.disease = disease;
 		this.symptom = symptom;
+		this.type = type;
 	}
 	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
 	public Long getId() {
 		return id;
 	}

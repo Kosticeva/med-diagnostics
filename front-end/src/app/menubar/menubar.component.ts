@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-menubar',
@@ -12,7 +13,9 @@ export class MenubarComponent implements OnInit {
   newDrugOpen: boolean;
   dropdownOpen: boolean;
 
-  constructor() { }
+  constructor(
+    private loginService: LoginService
+  ) { }
 
   ngOnInit() {
     this.newDiseaseOpen = false;
@@ -47,4 +50,7 @@ export class MenubarComponent implements OnInit {
     
   }
 
+  logout() {
+    this.loginService.logout();
+  }
 }

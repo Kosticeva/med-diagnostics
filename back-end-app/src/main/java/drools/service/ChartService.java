@@ -32,6 +32,23 @@ public class ChartService {
 	}
 	
 	@Transactional
+	public List<Chart> findByPatientName(String name){
+		List<Patient> patients = patientService.findByName(name);
+		List<Chart> charts = findAll();
+
+		List<Chart> retVal = new ArrayList<Chart>();
+		for(Patient p: patients){
+			for(Chart c: charts){
+				if(c.getPatient().equals(p)){
+					retVal.add(c);
+				}
+			}
+		}
+
+		return retVal;
+	}
+
+	@Transactional
 	public List<Chart> findAll(){
 		return chartRepository.findAll();
 	}

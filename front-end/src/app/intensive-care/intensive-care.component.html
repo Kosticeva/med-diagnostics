@@ -15,13 +15,13 @@
     </button>
   </div>
   <br />
-  <app-new-ic-patient class="w-50 float-right" *ngIf="newPatientOpen"></app-new-ic-patient>
+  <app-new-ic-patient [icPatients]="icPatients" class="w-50 float-right" *ngIf="newPatientOpen"></app-new-ic-patient>
   <div class="row justify-content-start pt-5 pb-5" [ngClass]="{'w-50': newPatientOpen, '': !newPatientOpen}">
-    <div class="col-4 mb-2">
+    <div *ngFor="let patient of icPatients" class="col-4 mb-2">
       <div class="card">
         <div class="card-header d-flex justify-content-between">
-            <span>Pacijent Pacijentic</span>
-            <button class="btn btn-sm btn-light" (click)="removeIcPatient()">
+            <span>{{patient.firstName}} {{patient.lastName}}</span>
+            <button class="btn btn-sm btn-light" (click)="removeIcPatient(patient.id)">
               <i class="fa fa-user-times"></i>
               Skloni
             </button>

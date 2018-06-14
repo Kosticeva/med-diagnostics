@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from './login.service';
 import { Doctor } from '../model/doctor';
+import { LoginService } from '../services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,35 +10,60 @@ import { Doctor } from '../model/doctor';
 })
 export class LoginComponent implements OnInit {
 
-  doctor: Doctor;
-  errors = {
-    username: '',
-    password: ''
+  errors : {
+    username: string,
+    password: string,
+    main: string
   };
 
+  data: {
+    username: string,
+    password: string
+  }
+
   constructor(
-    private loginService: LoginService
+    private loginService: LoginService,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.doctor = new Doctor("", "", "", "", 0);
+    this.data = {
+      username: '',
+      password: ''
+    };
+
+    this.errors = {
+      username: '',
+      password: '',
+      main:''
+    }
   }
 
   logIn() {
-    if(this.doctor.username === "") {
+    if(this.data.username === "") {
       this.errors.username = "Morate uneti korisnicko ime";
       return;
     }
 
     this.errors.username = "";
     
-    if(this.doctor.password === ""){
+    if(this.data.password === ""){
       this.errors.password = "Morate uneti sifru";
       return;
     }
 
     this.errors.password = "";
     
-    this.loginService.login(this.doctor);
+    this.loginService.login(this.data).subscribe(
+      data => {
+        console.log(data);
+        this.router.navigate(['/home']);
+      },
+      errors => {
+        this.errors.username = "";
+        this.errors.password = "";
+        this.errors.main = "Kombinacija korisnickog imena i sifre nije dobra.";
+      }
+    );
   }
 }

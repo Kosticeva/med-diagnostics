@@ -29,7 +29,7 @@ public class IntensiveCareResource {
 		return intensiveCareService.getPatientsInIC().values();
 	}
 	
-	@RequestMapping(value = "/api/intensive-care/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/api/intensive-care/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON)
 	public Chart placePatientInIC(@PathVariable("id") Integer id) {
 		return intensiveCareService.addPatientToIC(id);
 	}

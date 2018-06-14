@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { IntensiveCareService } from '../services/intensive-care.service';
+import { Patient } from '../model/patient';
 
 @Component({
   selector: 'app-intensive-care',
@@ -8,11 +10,17 @@ import { Component, OnInit } from '@angular/core';
 export class IntensiveCareComponent implements OnInit {
 
   newPatientOpen: boolean;
+  icPatients: Patient[];
 
-  constructor() { }
+  constructor(
+    private icService: IntensiveCareService
+  ) { }
 
   ngOnInit() {
     this.newPatientOpen = false;
+    this.icService.getAllInIc().subscribe(
+      (data) => this.icPatients = data
+    );
   }
 
   navBack() {
@@ -23,8 +31,14 @@ export class IntensiveCareComponent implements OnInit {
     this.newPatientOpen = !this.newPatientOpen;
   }
 
-  removeIcPatient(){
-
+  removeIcPatient(id: number){
+    this.icService.removeFromIc(id).subscribe(
+      (data) => {
+        this.icService.getAllInIc().subscribe(
+          (data1) => this.icPatients = data1
+        )
+      }
+    );
   }
 
 }

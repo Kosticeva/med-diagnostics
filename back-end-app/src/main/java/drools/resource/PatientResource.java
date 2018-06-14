@@ -35,7 +35,6 @@ public class PatientResource {
 		}
 		return ResponseEntity.badRequest().body(null);
 	}
-	
 	@RequestMapping(value = "/api/patients", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
 	public List<Patient> getPatients() {
 		return patientService.findAll();

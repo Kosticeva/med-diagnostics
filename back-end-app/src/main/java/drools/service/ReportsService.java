@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import drools.SampleApp;
 import drools.model.Allergy;
 import drools.model.Chart;
+import drools.model.Drug;
 import drools.model.Patient;
 
 @Service
@@ -19,6 +20,12 @@ public class ReportsService {
 
 	@Autowired
 	ChartService chartService;
+	
+	@Autowired
+	PatientService patientService;
+	
+	@Autowired
+	DrugService drugService;
 	
 	public List<Patient> findChronics(){
 		
@@ -83,11 +90,14 @@ public class ReportsService {
 		return weaks;
 	}
 	
-	public List<Allergy> checkAllergyWarnings(Chart chart){
+	public List<Allergy> checkAllergyWarnings(Integer id, Drug drug){
 		KieSession ks = SampleApp.kieContainer().newKieSession();
 		ks.getAgenda().getAgendaGroup("allergy-warning").setFocus();
 		
-		ks.insert(chart);
+		Patient p = patientService.findById(id);
+		drug = drugService.findById(drug.getId());
+		ks.insert(drug);
+		ks.insert(p);
 		
 		ks.fireAllRules();
 		

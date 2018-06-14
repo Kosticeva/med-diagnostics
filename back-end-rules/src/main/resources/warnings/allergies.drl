@@ -18,10 +18,9 @@ import drools.model.Ingredient;
 rule "Drug allergy"
 	agenda-group "allergy-warning"
     when
-        $chart: Chart($exams: examinations, $pat: patient)
-        $p: Patient($allergies: allergens) from $pat
-        $exam: Examination($prescription: prescription, disease!=null) from $exams
-        $pp: Prescription($drug: drug) from $prescription
+        $pat: Patient($allergies: allergens)
+        Examination($pp: prescription)
+        Prescription($drug: drug) from $pp
         $dr: Drug($drName: name) from $drug
     	$allergyCount: Number(intValue > 0) from accumulate (
     		Allergy(name == $drName) from $allergies,
@@ -35,10 +34,9 @@ end
 rule "Ingredient allergy"
 	agenda-group "allergy-warning"
     when
-        $chart: Chart($exams: examinations, $pat: patient)
-        Patient($allergies: allergens) from $pat
-        $exam: Examination($prescription: prescription, disease!=null) from $exams
-        Prescription($drug: drug) from $prescription
+        $pat: Patient($allergies: allergens)
+        Examination($pp: prescription)
+        Prescription($drug: drug) from $pp
         Drug($drName: name, $ingredients: ingredients) from $drug
         $in: Ingredient($inName: name) from $ingredients
     	$allergyCount: Number(intValue > 0) from accumulate (

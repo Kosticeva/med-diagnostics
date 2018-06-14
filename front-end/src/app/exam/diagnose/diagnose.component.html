@@ -12,14 +12,15 @@
                 </button>
             </div>
             <form class="form-group">
-                <input type="text" class="form-control w-75" placeholder="Unesi bolest ..." />
+                <input type="text" class="form-control w-75" placeholder="Unesi bolest ..." name="query" [(ngModel)]="query" (change)="findDisease()"/>
             </form>
         </div>
         <div class="list-group-and-forms">
             <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
-            <li class="list-group-item d-flex justify-content-between" (click)="chooseDisease()">Bla 1
-            </li>
-            <li class="list-group-item">Bla 2</li>
+                <li *ngFor="let diseasse of diseases" class="list-group-item d-flex justify-content-between" (click)="chooseDisease(diseasse)">{{diseasse.name}}
+                    <button class="btn btn-primary" (click)="findSymptoms(diseasse)">Simptomi</button>
+                    <small>{{simptomi}}</small>
+                </li>
             </ul>
         </div>
         

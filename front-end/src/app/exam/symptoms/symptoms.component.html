@@ -8,20 +8,19 @@
               Novi simptom
             </button>
           <form class="form-group">
-            <input type="text" class="form-control w-75" placeholder="Pronadji simptom" />
+            <input type="text" class="form-control w-75" placeholder="Pronadji simptom" name="query" [(ngModel)]="query" (change)="findSymptoms()"/>
           </form>
         </div>
         <div class="list-group-and-forms">
           <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
             <h5>Uneti simptomi</h5>
-            <li class="list-group-item d-flex justify-content-between">
-              Bla 1
+            <li *ngFor="let symptom of allSymptoms" class="list-group-item d-flex justify-content-between">
+              {{symptom.name}}
               <span class="btn-group">
-                  <button class="btn btn-sm btn-success"><i class="fa fa-check" (click)="addSymptom()"></i></button>
-                  <button class="btn btn-sm btn-danger"><i class="fa fa-trash" (click)="removeSymptom()"></i></button>
+                  <button class="btn btn-sm btn-success"><i class="fa fa-check" (click)="addSymptom(symptom)"></i></button>
+                  <button class="btn btn-sm btn-danger"><i class="fa fa-trash" (click)="removeSymptom(symptom)"></i></button>
               </span>
             </li>
-            <li class="list-group-item">Bla 2</li>
           </ul>
           <app-new-symptom *ngIf="formShown" class="w-50"></app-new-symptom>
         </div>

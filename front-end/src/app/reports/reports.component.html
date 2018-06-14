@@ -17,8 +17,9 @@
               <div class="card-body">
                 <div class="card-text">
                   <ul class="list-group-flush">
-                    <li class="list-group-item">1</li>
-                    <li class="list-group-item">2</li>
+                    <li class="list-group-item d-flex justify-content-between" *ngFor="let patient of chronics">{{patient.firstName}} {{patient.lastName}}
+                      <a class="btn btn-primary" [routerLink]="getLink(patient.id)">Karton</a>
+                    </li>
                   </ul>
               </div>
             </div>
@@ -32,8 +33,9 @@
           <div class="card-body">
             <div class="card-text">
               <ul class="list-group-flush">
-                  <li class="list-group-item">1</li>
-                  <li class="list-group-item">2</li>
+                  <li class="list-group-item d-flex justify-content-between" *ngFor="let patient of weaks">{{patient.firstName}} {{patient.lastName}}
+                    <a class="btn btn-primary" [routerLink]="getLink(patient.id)">Karton</a>
+                  </li>
               </ul>
           </div>
         </div>
@@ -47,9 +49,10 @@
             <div class="card-body">
               <div class="card-text">
                 <ul class="list-group-flush">
-                    <li class="list-group-item">1</li>
-                    <li class="list-group-item">2</li>
-                  </ul>
+                    <li class="list-group-item d-flex justify-content-between" *ngFor="let patient of addicts">{{patient.firstName}} {{patient.lastName}}
+                      <a class="btn btn-primary" [routerLink]="getLink(patient.id)">Karton</a>
+                    </li>
+                </ul>
             </div>
           </div>
         </div>

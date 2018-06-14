@@ -6,11 +6,12 @@
       <form class="form-group">
         <div class="form-field">
           <label for="name">Naziv: </label>
-          <input type="text" id="name" class="form-control" />
+          <input type="text" id="name" class="form-control" name="name" [(ngModel)]="disease.name" />
+          <small class="text-danger">{{error}}</small>
         </div>
         <div class="form-field">
             <label for="smyps">Simptomi: </label>
-            <textarea id="smyps" class="form-control" placeholder="Npr glavobolja ..."></textarea>
+            <textarea id="smyps" class="form-control" placeholder="Npr glavobolja ..." [(ngModel)]="symptoms"></textarea>
           </div>
         <hr />
         <div class="form-field d-flex justify-content-end">

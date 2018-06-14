@@ -39,7 +39,7 @@ public class LinkService {
 			System.out.println("Vec postoji ovakav par!");
 		}
 		
-		return linkRepository.save(new Link(d, s));
+		return linkRepository.save(new Link(d, s, 0));
 	}
 	
 	@Transactional

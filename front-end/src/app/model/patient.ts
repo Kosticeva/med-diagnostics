@@ -1,6 +1,5 @@
 import { Allergen } from "./allergen";
 
-
 export class Patient {
 
     constructor(

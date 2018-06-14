@@ -22,8 +22,22 @@ import { NewSymptomComponent } from './exam/symptoms/new-symptom/new-symptom.com
 import { NewDoctorComponent } from './menubar/new-doctor/new-doctor.component';
 import { NewDiseaseComponent } from './menubar/new-disease/new-disease.component';
 import { NewDrugComponent } from './menubar/new-drug/new-drug.component';
-import { LoginService } from './login/login.service';
 import { FormsModule } from '@angular/forms';
+import { LoginService } from './services/login.service';
+import { DoctorService } from './services/doctor.service';
+import { ChartService } from './services/chart.service';
+import { AllergyService } from './services/allergy.service';
+import { DiseaseService } from './services/disease.service';
+import { DrugService } from './services/drug.service';
+import { ExamService } from './services/exam.service';
+import { IngredientService } from './services/ingredient.service';
+import { IntensiveCareService } from './services/intensive-care.service';
+import { LinkService } from './services/link.service';
+import { PatientService } from './services/patient.service';
+import { PrescriptionService } from './services/prescription.service';
+import { ReportService } from './services/report.service';
+import { QueryService } from './services/query.service';
+import { SymptomService } from './services/symptom.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +67,9 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule
   ],
-  providers: [LoginService],
+  providers: [AllergyService, ChartService, DiseaseService, DoctorService, DrugService, 
+    ExamService, IngredientService, IntensiveCareService, LoginService, LinkService, PatientService, 
+    PrescriptionService, ReportService, QueryService, SymptomService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

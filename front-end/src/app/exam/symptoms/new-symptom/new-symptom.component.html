@@ -6,7 +6,8 @@
       <form class="form-group">
         <div class="form-field">
           <label for="name">Naziv: </label>
-          <input type="text" id="name" class="form-control" />
+          <input type="text" id="name" class="form-control" name="namen" [(ngModel)]="symptom.name"/>
+          <small class="text-danger">{{error}}</small>
         </div>
         <hr />
         <div class="form-field">

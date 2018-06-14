@@ -27,6 +27,11 @@ public class DrugService {
 	}
 	
 	@Transactional
+	public List<Drug> findByName(String name){
+		return drugRepository.findByNameStartingWith(name);
+	}
+	
+	@Transactional
 	public List<Drug> findAll(){
 		return drugRepository.findAll();
 	}

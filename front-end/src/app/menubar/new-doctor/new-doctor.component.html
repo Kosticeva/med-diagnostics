@@ -7,32 +7,41 @@
         <div class="row">
           <div class="form-field col">
             <label for="name">Ime: </label>
-            <input type="text" id="name" class="form-control" />
+            <input type="text" id="name" class="form-control" name="name" [(ngModel)]="doctor.firstName"/>
           </div>
           <div class="form-field col">
               <label for="lname">Prezime: </label>
-              <input type="text" id="lname" class="form-control" />
+              <input type="text" id="lname" class="form-control" name="lname" [(ngModel)]="doctor.lastName"/>
           </div>
         </div>
         <div class="row">
           <div class="form-field col">
               <label for="username">Korisnicko ime: </label>
-              <input type="text" id="username" class="form-control" />
+              <input type="text" id="username" class="form-control" name="username" [(ngModel)]="doctor.username"/>
+              <small class="text-danger">{{errorMessage.username}}</small>
           </div>
           <div class="form-field col">
               <label for="username">Sifra: </label>
-              <input type="password" id="pass" class="form-control" />
+              <input type="password" id="pass" class="form-control" name="password" [(ngModel)]="doctor.password"/>
+              <small class="text-danger">{{errorMessage.password}}</small>
           </div>
         </div>
         <hr />
         <div class="form-field form-check row">
             <label for="priv" class="form-check-label col-10">Doktor ima privilegije administratora</label>
-            <input type="checkbox" id="priv" class="form-check-input col-2" />
+            <input type="checkbox" id="priv" class="form-check-input col-2" name="priv" [(ngModel)]="doctor.type"/>
         </div>
         <hr />
         <div class="form-field d-flex justify-content-end">
           <button class="btn btn-success btn-lg" (click)="createDoctor()">Zavrsi</button>
+          <button class="btn btn-success btn-lg" (click)="updateDoctor()">Updajtut</button>
         </div>
       </form>
+      <form>
+        <input type="number" placeholder="Unesi id doktora kojeg zelis da obrises" name="namen" [(ngModel)]="docId"/>
+        <button (click)="deleteDoctor()">Obrisi</button>
+        <button (click)="getDoctor()">Pronadji</button>
+      </form>
+      <button class="w-100 btn btn-warning" (click)="allDocs()">Svi!</button>
     </div>
 </div>

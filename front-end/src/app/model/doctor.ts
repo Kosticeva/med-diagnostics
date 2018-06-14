@@ -5,6 +5,7 @@ export class Doctor {
         public lastName: String,
         public username: String,
         public password: String,
-        public type: any
+        public type: any,
+        public licenceId: number
     ){}
 }

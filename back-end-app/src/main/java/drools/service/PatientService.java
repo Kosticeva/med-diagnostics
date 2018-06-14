@@ -26,10 +26,15 @@ public class PatientService {
 	public Patient findById(int id) {
 		return patientRepository.getOne(id);
 	}
-	
+
 	@Transactional
 	public List<Patient> findAll(){
 		return patientRepository.findAll();
+	}
+	
+	@Transactional
+	public List<Patient> findByName(String name){
+		return patientRepository.findByFirstNameStartingWithIgnoreCaseOrLastNameStartingWithIgnoreCase(name, name);
 	}
 	
 	@Transactional

@@ -1,17 +1,16 @@
 <div class="card">
   <div class="card-body">
     <form class="form-group">
-      <input type="text" class="form-control w-100" placeholder="Pronadji pacijenta ..." />
+      <input type="text" class="form-control w-100" placeholder="Pronadji pacijenta ..." name="query" [(ngModel)]="query" (change)="getPatients()"/>
     </form>
     <div class="list-group-and-forms">
       <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
-        <li class="list-group-item d-flex justify-content-between">Bla 1
+        <li *ngFor="let patient of patients" class="list-group-item d-flex justify-content-between">
+          {{patient.firstName}} {{patient.lastName}}
           <span class="btn-group">
-            <button class="btn btn-sm btn-success" (click)="addToIC()"><i class="fa fa-check"></i></button>
-            <button class="btn btn-sm btn-danger" (click)="removeFromIC()"><i class="fa fa-trash"></i></button>
-          </span>
+            <button class="btn btn-sm btn-success" (click)="addToIC(patient.id)"><i class="fa fa-check"></i></button>
+           </span>
         </li>
-        <li class="list-group-item">Bla 2</li>
       </ul>
     </div>
   </div>

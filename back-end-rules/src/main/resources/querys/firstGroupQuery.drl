@@ -4,30 +4,47 @@ package querys
 import drools.model.Link;
 import drools.model.Symptom;
 import drools.model.Disease;
+import java.util.List;
 
 rule "All diseases for symptom"
 	agenda-group "symptom-bc"
+	salience $c.size()
     when
        	$s: Symptom()
-       	isSymptomOf(disease, $s; )
+       	$c: List() from accumulate(
+       		isSymptomOf(disease, $s, type; ),
+       		collectList(disease)
+       	)
     then
-        System.out.println($s.getName() + " je simptom " + disease.getName());
-        insert(disease);
-
+    	for(int i=0; i<$c.size(); i++){
+        	System.out.println($s.getName() + " je simptom " + $c.get(i));
+        	insert($c.get(i));
+    	}
 end
 
-query isSymptomOf(Disease d, Symptom s)
-	Link(d, s; )
+query isSymptomOf(Disease d, Symptom s, int type)
+	Link(d, s, type; )
 end
 
-rule "All symptoms for disease"
+rule "All spec symptoms for disease"
 	agenda-group "disease-bc"
+	salience 500
 	when
        	$d: Disease()
-       	isSymptomOf($d, symptom; )
+       	isSymptomOf($d, symptom, 1;)
     then
         System.out.println(symptom.getName() + " uzrokuje " + $d.getName());
         insert(symptom);
+end
 
+rule "All gen symptoms for disease"
+	agenda-group "disease-bc"
+	salience 200
+	when
+		$d: Disease()
+		isSymptomOf($d, symptom, 0;)
+	then
+        System.out.println(symptom.getName() + " uzrokuje " + $d.getName());
+        insert(symptom);
 end
 	

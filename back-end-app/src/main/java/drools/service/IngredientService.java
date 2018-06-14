@@ -23,6 +23,11 @@ public class IngredientService {
 	}
 	
 	@Transactional
+	public List<Ingredient> findByName(String name){
+		return ingredientRepository.findByNameStartingWith(name);
+	}
+	
+	@Transactional
 	public List<Ingredient> findAll(){
 		return ingredientRepository.findAll();
 	}
@@ -34,9 +39,10 @@ public class IngredientService {
 			return null;
 		}
 		
-		if(ingredientRepository.findByName(ingredient.getName()).size() != 0) {
+		List<Ingredient> i = ingredientRepository.findByName(ingredient.getName());
+		if(i.size() != 0) {
 			System.out.println("Vec zauzeto ime");
-			return null;
+			return i.get(0);
 		}
 		
 		return ingredientRepository.save(ingredient);

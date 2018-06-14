@@ -23,6 +23,11 @@ public class SymptomService {
 	}
 	
 	@Transactional
+	public List<Symptom> findByName(String name){
+		return symptomRepository.findByName(name);
+	}
+	
+	@Transactional
 	public List<Symptom> findAll(){
 		return symptomRepository.findAll();
 	}
@@ -34,9 +39,10 @@ public class SymptomService {
 			return null;
 		}
 		
-		if(symptomRepository.findByName(symptom.getName()).size() != 0) {
+		List<Symptom> s = symptomRepository.findByName(symptom.getName());
+		if(s.size() != 0) {
 			System.out.println("Zauzeto ime");
-			return null;
+			return s.get(0);
 		}
 		
 		return symptomRepository.save(symptom);

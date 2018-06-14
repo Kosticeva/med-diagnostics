@@ -35,9 +35,10 @@ public class AllergyService {
 			return null;
 		}
 		
-		if(allergyRepository.findByName(allergy.getName()).size() != 0) {
+		List<Allergy> a = allergyRepository.findByName(allergy.getName());
+		if(a.size() != 0) {
 			System.out.println("Postojeca alergija");
-			return null;
+			return a.get(0);
 		}
 		
 		return allergyRepository.save(allergy);

@@ -4,24 +4,20 @@
       <div class="card-body">
         <div class="card-title">
           <div class="form-group">
-            <input type="text" class="form-control w-75" placeholder="Unesi lek ..." />
+            <input type="text" class="form-control w-75" placeholder="Unesi lek ..." name="query" [(ngModel)]="query" (change)="findDrug()"/>
           </div>
         </div>
         <div class="list-group-and-forms">
           <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
-            <li class="list-group-item d-flex justify-content-between">Bla 1
-                <span class="btn-group">
-                    <button class="btn btn-sm btn-success" (click)="chooseDrug()"><i class="fa fa-check"></i></button>
-                    <button class="btn btn-sm btn-danger" (click)="removeDrug()"><i class="fa fa-trash"></i></button>
-                </span>
+            <li *ngFor="let drug of drugs" class="list-group-item d-flex justify-content-between" (click)="chooseDrug(drug)">{{drug.name}}
+                <small>{{drug.ingredients}}</small>
             </li>
-            <li class="list-group-item">Bla 2</li>
           </ul>
         </div>
         <hr />
         <div class="form-group">
           <label for="plan">Nacin unosenja: </label>
-            <textarea id="plan" class="form-control" placeholder="2 puta dnevno, oralno ..."></textarea>
+            <textarea id="plan" class="form-control" placeholder="2 puta dnevno, oralno ..." name="plan" [(ngModel)]="prescription.plan"></textarea>
         </div>
       </div>
     </div>
