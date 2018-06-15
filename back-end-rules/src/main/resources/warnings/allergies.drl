@@ -19,9 +19,7 @@ rule "Drug allergy"
 	agenda-group "allergy-warning"
     when
         $pat: Patient($allergies: allergens)
-        Examination($pp: prescription)
-        Prescription($drug: drug) from $pp
-        $dr: Drug($drName: name) from $drug
+        $dr: Drug($drName: name)
     	$allergyCount: Number(intValue > 0) from accumulate (
     		Allergy(name == $drName) from $allergies,
     		count(1)
@@ -35,9 +33,7 @@ rule "Ingredient allergy"
 	agenda-group "allergy-warning"
     when
         $pat: Patient($allergies: allergens)
-        Examination($pp: prescription)
-        Prescription($drug: drug) from $pp
-        Drug($drName: name, $ingredients: ingredients) from $drug
+        Drug($drName: name, $ingredients: ingredients)
         $in: Ingredient($inName: name) from $ingredients
     	$allergyCount: Number(intValue > 0) from accumulate (
     		$aa: Allergy(name == $inName) from $allergies,

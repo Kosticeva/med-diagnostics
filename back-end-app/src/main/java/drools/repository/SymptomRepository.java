@@ -11,5 +11,5 @@ import drools.model.Symptom;
 public interface SymptomRepository extends JpaRepository<Symptom, Integer>{
 
 	List<Symptom> findByName(String name);
-	List<Symptom> findByNameStartingWith(String name);
+	List<Symptom> findByNameStartingWithIgnoreCase(String name);
 }

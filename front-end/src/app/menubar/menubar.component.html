@@ -1,7 +1,7 @@
 <div>
   <nav class="navbar navbar-dark bg-success d-flex justify-content-between">
       <div class="dropdown">
-        <a class="nav-link dropdown-toggle btn btn-outline-light" data-toggle="dropdown" id="navbarDropdown" role="button" (click)="openDropdown()">
+        <a class="nav-link dropdown-toggle btn btn-lg btn-outline-light" data-toggle="dropdown" id="navbarDropdown" role="button" (click)="openDropdown()">
           Dodaj
         </a>
         <div class="dropdown-menu" [ngStyle]="{'z-index': dropdownOpen? '1' : '-1' }">
@@ -16,7 +16,7 @@
         <h1><i class="fa fa-home"></i>
           &nbsp;&nbsp;Pocetna</h1>
       </a>
-      <a class="nav-link btn btn-la btn-outline-light" (click)="logout()" id="navbarLogout" role="button">
+      <a class="nav-link btn btn-lg btn-outline-light" (click)="logout()" id="navbarLogout" role="button">
           Izadji
       </a>
   </nav>

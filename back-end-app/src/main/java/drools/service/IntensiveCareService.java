@@ -1,67 +1,50 @@
 package drools.service;
 
-import java.util.HashMap;
-
-import javax.annotation.PostConstruct;
+import java.util.Collection;
+import drools.model.IntensiveCareReport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 import drools.model.Chart;
 import drools.service.util.ICSimulator;
 
 @Service
-@Scope(value="application", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value="singleton")
+//@Scope(value="application", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class IntensiveCareService {
 
 	@Autowired
 	ChartService chartService;
 	
-	@PostConstruct
-	public void doPatientsIntensiveCare() {
+	public void startThread() {
+		System.out.println("Hey im started");
 		ICSimulator.getInstance().start();
 	}
 	
 	public IntensiveCareService() {
-		ICSimulator.getInstance();
 	}
 
-	public HashMap<Integer, Chart> getPatientsInIC() {
-		return ICSimulator.getInstance().getPatientsInIC();
+	public Collection<IntensiveCareReport> getPatientsInIC() {
+		return ICSimulator.getInstance().getPatientsInIc();
 	}
 	
-	public Chart addPatientToIC(Integer id) {
+	public IntensiveCareReport addPatientToIC(Integer id) {
 		Chart cc = chartService.findById(id);
-		HashMap<Integer, Chart> patientsInIC = getPatientsInIC();
-		
-		if(!patientsInIC.containsKey(id) && cc != null) {
-			patientsInIC.put(id, cc);
-			ICSimulator.getInstance().setPatientsInIC(patientsInIC);
-		}
-		
-		return cc;
-	}
-	
-	public Chart removePatientFromIC(Integer id) {
-		HashMap<Integer, Chart> patientsInIC = getPatientsInIC();
-		
-		if(patientsInIC.containsKey(id)) {
-			Chart cc = patientsInIC.remove(id);
-			ICSimulator.getInstance().setPatientsInIC(patientsInIC);
-			return cc;
+		if(cc != null) {
+			return ICSimulator.getInstance().addPatientToMap(id, cc);
 		}
 		
 		return null;
 	}
 	
-	public Chart checkIfInIC(Integer id) {
-		if(getPatientsInIC().containsKey(id)) {
-			return getPatientsInIC().get(id);
-		}
-		
-		return null;
+	public IntensiveCareReport removePatientFromIC(Integer id) {
+		return ICSimulator.getInstance().removePatientFromMap(id);
+	}
+	
+	public IntensiveCareReport checkIfInIC(Integer id) {
+		return ICSimulator.getInstance().getPatientInIc(id);
 	}
 	
 }

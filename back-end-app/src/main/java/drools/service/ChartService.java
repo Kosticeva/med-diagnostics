@@ -3,6 +3,7 @@ package drools.service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -28,7 +29,12 @@ public class ChartService {
 	
 	@Transactional
 	public Chart findById(int id) {
-		return chartRepository.getOne(id);
+		Optional<Chart> c = chartRepository.findById(id);
+		if(c.isPresent()) {
+			return c.get();
+		}
+		
+		return null;
 	}
 	
 	@Transactional
@@ -51,6 +57,21 @@ public class ChartService {
 	@Transactional
 	public List<Chart> findAll(){
 		return chartRepository.findAll();
+	}
+
+	@Transactional
+	public Chart findByExamId(Integer examId){
+		List<Chart> allCharts = findAll();
+
+		for(Chart c: allCharts){
+			for(Examination e: c.getExaminations()){
+				if(e.getId().equals(examId)){
+					return c;
+				}
+			}
+		}
+
+		return null;
 	}
 	
 	@Transactional
@@ -92,7 +113,7 @@ public class ChartService {
 			return null;
 		}
 		
-		if(!chartRepository.getOne(chart.getId()).getPatient().equals(chart.getPatient())) {
+		if(chartRepository.getOne(chart.getId()).getPatient() != null && !chartRepository.getOne(chart.getId()).getPatient().equals(chart.getPatient())) {
 			System.out.println("Promenjen pacijent");
 			return null;
 		}
@@ -105,6 +126,7 @@ public class ChartService {
 		}
 		
 		List<Examination> newExams = new ArrayList<Examination>();
+
 		for(Examination ee: chart.getExaminations()) {
 			Examination EE = examinationService.findById(ee.getId());
 			

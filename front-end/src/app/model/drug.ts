@@ -6,6 +6,6 @@ export class Drug {
         public id: number,
         public name: string,
         public drugType: any,
-        public ingredients: Ingredient[]
+        public ingredients: any[]
     ){}
 }

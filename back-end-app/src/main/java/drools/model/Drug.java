@@ -48,7 +48,7 @@ public class Drug implements Serializable{
 		super();
 	}
 	
-	public Drug(int id, String name, List<Ingredient> ingredients, DrugType drugType) {
+	public Drug(Integer id, String name, List<Ingredient> ingredients, DrugType drugType) {
 		this.id = id;
 		this.name = name;
 		this.ingredients = ingredients;
@@ -83,7 +83,7 @@ public class Drug implements Serializable{
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	

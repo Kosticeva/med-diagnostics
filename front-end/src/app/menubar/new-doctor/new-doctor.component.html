@@ -33,15 +33,16 @@
         </div>
         <hr />
         <div class="form-field d-flex justify-content-end">
-          <button class="btn btn-success btn-lg" (click)="createDoctor()">Zavrsi</button>
-          <button class="btn btn-success btn-lg" (click)="updateDoctor()">Updajtut</button>
+          <button class="btn btn-success btn-lg" (click)="createDoctor()"><i class="fa fa-lg fa-check"></i>Zavrsi</button>
+          <!--<button class="btn btn-success btn-lg" (click)="updateDoctor()">Updajtut</button>-->
         </div>
+        <small class="text-success">{{success}}</small>
       </form>
-      <form>
+      <!--<form>
         <input type="number" placeholder="Unesi id doktora kojeg zelis da obrises" name="namen" [(ngModel)]="docId"/>
         <button (click)="deleteDoctor()">Obrisi</button>
         <button (click)="getDoctor()">Pronadji</button>
       </form>
-      <button class="w-100 btn btn-warning" (click)="allDocs()">Svi!</button>
+      <button class="w-100 btn btn-warning" (click)="allDocs()">Svi!</button>-->
     </div>
 </div>

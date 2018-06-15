@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import drools.model.Disease;
@@ -23,7 +24,7 @@ import drools.repository.SymptomRepository;
 import drools.service.DiseaseService;
 import drools.service.LinkService;
 
-@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class DiseaseResource {
 
@@ -45,9 +46,17 @@ public class DiseaseResource {
 		if(id != null) {
 			Disease d = diseaseService.findById(id);
 			
+			System.out.println("DISEASE GET ID OK");
 			return ResponseEntity.ok().body(d);
 		}
+		
+		System.out.println("DISEASE GET BAD ");
 		return ResponseEntity.badRequest().body(null);
+	}
+
+	@RequestMapping(value = "/api/diseases", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON, params = "name")
+	public List<Disease> searchByName(@RequestParam("name") String name){
+		return diseaseService.findByStartName(name);
 	}
 	
 	@RequestMapping(value = "/api/diseases", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
@@ -59,14 +68,17 @@ public class DiseaseResource {
 		produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
 	public ResponseEntity<Disease> newDisease(@RequestBody Disease disease) throws URISyntaxException {
 		if(disease.getId() != null) {
+			System.out.println("DISEASE POST ID Bad");
 			return ResponseEntity.badRequest().body(null);
 		}
 		
 		Disease d = diseaseService.createNewDisease(disease);
 		if(d!=null) {
+			System.out.println("DISEASE POST ID OK");
 			return ResponseEntity.created(new URI("/api/diseases/"+d.getId())).body(d);
 		}
 		
+		System.out.println("DISEASE POST BAD");
 		return ResponseEntity.unprocessableEntity().body(d);
 	}
 	

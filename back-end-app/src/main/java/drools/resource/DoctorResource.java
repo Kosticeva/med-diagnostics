@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import drools.model.Doctor;
 import drools.service.DoctorService;
 
-@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class DoctorResource {
 

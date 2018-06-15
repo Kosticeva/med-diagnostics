@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DiseaseService } from '../../services/disease.service';
 import { Disease } from '../../model/disease';
 import { Symptom } from '../../model/symptom';
@@ -13,9 +13,11 @@ import { LinkService } from '../../services/link.service';
 export class NewDiseaseComponent implements OnInit {
 
   error: string;
+  success: string;
   symptoms: string;
   disease: Disease;
-  realSymptoms: Symptom[];
+  realSymptoms: any[];
+  @Input() open: boolean;
 
   constructor(
     private diseaseService: DiseaseService,
@@ -25,6 +27,7 @@ export class NewDiseaseComponent implements OnInit {
 
   ngOnInit() {
     this.error = "";
+    this.success = "";
     this.symptoms= "";
     this.disease = {
       id: undefined,
@@ -41,28 +44,44 @@ export class NewDiseaseComponent implements OnInit {
     }
 
     this.error = "";
+    this.success = "";
 
     let parts = this.symptoms.split(',');
     for(let i=0; i<parts.length; i++){
       const part = parts[i].trim();
-      let s = new Symptom(null, part);
-      this.symptomService.post(s).subscribe(
-        (data) => this.realSymptoms.push(data)
-      );
+      this.realSymptoms.push({
+        'name': part
+      });
     }
 
-    this.diseaseService.post(this.disease).subscribe(
+    this.symptomService.post(this.realSymptoms).subscribe(
       (data) => {
-        this.disease = data;
-        this.createLinks();
-      },
-      error => { this.error = "" }
+        this.createDiseaseII(data)
+      }
     );
   }
 
-  createLinks() {
-    for(let i=0; i<this.realSymptoms.length; i++) {
-      this.linkService.putLink(this.disease, this.realSymptoms[i]);
+  createDiseaseII(symps: any[]) {
+    this.diseaseService.post(this.disease).subscribe(
+      (data) => {
+        this.disease = data;
+        this.createLinks(data, symps);
+      },
+      error => { this.error = "Nesto je krenulo po zlu"; }
+    );
+  }
+
+  createLinks(d: Disease, symptoms: Symptom[]) {
+    for(let i=0; i<symptoms.length; i++) {
+      this.linkService.putLink(d.id, symptoms[i].id).subscribe(
+        data => {
+          this.error = "";
+          this.success = "Bolest "+d.name+" uspesno kreirana!";
+        },
+        error => {
+          this.error = "Nesto je krenulo po zlu";
+          this.success = "";
+        });
     }
   }
 }

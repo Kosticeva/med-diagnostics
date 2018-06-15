@@ -22,7 +22,13 @@ export class PatientService {
   }
 
   post(p: Patient): Observable<any>{
-    return this.http.post('http://localhost:8080/api/patients', p, this.headers);
+    return this.http.post('http://localhost:8080/api/patients', 
+      JSON.stringify({
+        'firstName': p.firstName,
+        'lastName': p.lastName,
+        'allergens': p.allergens
+      })
+    , this.headers);
   }
 
   put(p: Patient, id: number): Observable<any>{

@@ -1,8 +1,8 @@
 package drools.resource;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import drools.model.Symptom;
 import drools.service.SymptomService;
 
-@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class SymptomResource {
 
@@ -44,17 +44,25 @@ public class SymptomResource {
 	
 	@RequestMapping(value = "/api/symptoms", method = RequestMethod.POST, 
 		produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public ResponseEntity<Symptom> newSymptom(@RequestBody Symptom symptom) throws URISyntaxException {
-		if(symptom.getId() != null) {
-			return ResponseEntity.badRequest().body(null);
+	public List<Symptom> newSymptom(@RequestBody List<Symptom> symptoms) throws URISyntaxException {
+
+		List<Symptom> retVal = new ArrayList<Symptom>();
+		for(Symptom symptom: symptoms){
+			if(symptom.getId() != null) {
+				System.out.println("post smyp - IMA ID");
+				return null;
+			}
+			
+			Symptom s = symptomService.createNewSymptom(symptom);
+			if(s!=null) {
+				retVal.add(s);
+			}else{
+				System.out.println("post smyp - los simp");
+				return null;
+			}
 		}
-		
-		Symptom s = symptomService.createNewSymptom(symptom);
-		if(s!=null) {
-			return ResponseEntity.created(new URI("/api/symptoms/"+s.getId())).body(s);
-		}
-		
-		return ResponseEntity.unprocessableEntity().body(s);
+
+		return retVal;
 	}
 	
 	@RequestMapping(value = "/api/symptoms/{id}", method = RequestMethod.PUT, 

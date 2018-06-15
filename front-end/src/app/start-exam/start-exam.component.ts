@@ -20,6 +20,7 @@ export class StartExamComponent implements OnInit {
   query: string;
   exam: Examination;
   patient: Chart;
+  searching: boolean
 
   constructor(
     private router: Router,
@@ -32,13 +33,25 @@ export class StartExamComponent implements OnInit {
     this.formShown = false;
     this.patients = [];
     this.query = "";
-    this.exam = null;
-    this.patient = null;
-    this.chartService.getAll().subscribe(
+    this.searching = false;
+    this.exam = {
+      id: null,
+      doctor: null,
+      date: null,
+      prescription: null,
+      symptoms: [],
+      disease: null
+    };
+    this.patient = {
+      id: -1,
+      patient: null,
+      examinations: []
+    };
+    /*this.chartService.getAll().subscribe(
       (data) => {
         this.patients = data;
       }
-    )
+    )*/
   }
 
   showForm() {
@@ -64,20 +77,24 @@ export class StartExamComponent implements OnInit {
     window.history.back();
   }
 
-  choosePatient(id: number) {
-    this.chartService.get(id).subscribe(
-      (data) => {
-        this.patient = data
-      }
-    );
+  choosePatient(chart: Chart) {
+    this.patient = chart;
   }
 
   findPatients() {
-    this.patientService.getByName(this.query).subscribe(
-      (data) => {
-        this.patients = data;
-      }
-    )
+    if(this.query.length > 0){
+      this.searching = true;
+      this.patientService.getByName(this.query).subscribe(
+        (data) => {
+          this.patients = data;
+          this.searching = false;
+        }
+      );
+    }
+  }
+
+  getLink(id: number): string{
+    return '../../patient/'+id;
   }
 
 }

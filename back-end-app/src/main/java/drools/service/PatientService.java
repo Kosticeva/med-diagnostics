@@ -3,6 +3,7 @@ package drools.service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -24,7 +25,12 @@ public class PatientService {
 	
 	@Transactional
 	public Patient findById(int id) {
-		return patientRepository.getOne(id);
+		Optional<Patient> p = patientRepository.findById(id);
+		if(p.isPresent()) {
+			return p.get();
+		}
+		
+		return null;
 	}
 
 	@Transactional

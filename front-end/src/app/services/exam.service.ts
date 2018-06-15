@@ -17,16 +17,20 @@ export class ExamService {
     private http: HttpClient
   ) { }
 
-  get(id: number): Observable<any> {
+  get(id: any): Observable<any> {
     return this.http.get('http://localhost:8080/api/examinations/'+id, this.headers);
   }
 
   post(e: Examination): Observable<any>{
-    return this.http.post('http://localhost:8080/api/examinations', e, this.headers);
+    return this.http.post('http://localhost:8080/api/examinations', 
+      JSON.stringify({
+        'doctor': e.doctor
+      })
+    , this.headers);
   }
 
   put(e: Examination, id: number): Observable<any>{
-    return this.http.put('http://localhost:8080/api/examinations/'+id, e, this.headers);
+    return this.http.put('http://localhost:8080/api/examinations/'+id, JSON.stringify(e), this.headers);
   }
 
   delete(id: number): Observable<any>{
@@ -35,6 +39,10 @@ export class ExamService {
 
   getAll(): Observable<any>{
     return this.http.get('http://localhost:8080/api/examinations', this.headers);
+  }
+
+  getChartOfExam(id: any): Observable<any>{
+    return this.http.get("http://localhost:8080/api/charts?exam_id="+id, this.headers);
   }
 
 }

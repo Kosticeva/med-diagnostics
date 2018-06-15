@@ -31,12 +31,12 @@ public class QueryService {
 	@Autowired
 	LinkService linkService;
 	
-	public Disease getMostProbable(Integer chartId, Examination exam) {
+	public Disease getMostProbable(Examination exam) {
 		
 		KieSession ks = SampleApp.kieContainer().newKieSession();
 		ks.getAgenda().getAgendaGroup("diagnose").setFocus();
 		
-		Chart ch = chartService.findById(chartId);
+		Chart ch = chartService.findByExamId(exam.getId());
 		if(ch == null) {
 			return null;
 		}

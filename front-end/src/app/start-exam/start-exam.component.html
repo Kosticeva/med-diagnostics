@@ -6,10 +6,14 @@
       Nazad
     </button>
     <h3 class="d-inline">Primi pacijenta</h3>
-    <button class="btn btn-la btn-success d-inline mr-3" (click)="goForward()">
+    <button class="btn btn-la btn-success d-inline mr-3" (click)="goForward()" [ngClass]="{'disabled': patient.patient === null}">
         <i class="fa fa-la fa-arrow-right"></i>&nbsp;
         Nastavi
     </button>
+  </div>
+  <br />
+  <div class="container-fluid d-flex justify-content-between text-warning" *ngIf="searching">
+    Pretraga ...
   </div>
   <br />
   <div class="card">
@@ -20,16 +24,21 @@
             Novi pacijent
           </button>
         <form class="form-group">
-          <input type="text" class="form-control w-75" placeholder="Pronadji pacijenta ..." [(ngModel)]="query" (change)="findPatients()"/>
+          <input type="text" class="form-control w-75" placeholder="Pronadji pacijenta ..." name="query" [(ngModel)]="query" (change)="findPatients()"/>
         </form>
       </div>
       <div class="list-group-and-forms">
         <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
-          <li *ngFor="let pat of patients" class="list-group-item" (click)="choosePatient(pat.id)">
+          <li *ngFor="let pat of patients" class="list-group-item d-flex justify-content-between"
+            [ngClass]="{ 'active': patient.id === pat.id}">
             {{pat.patient.firstName}} {{pat.patient.lastName}}
+            <span class="btn-group">
+              <button class="btn btn-success" (click)="choosePatient(pat)">Odaberi</button>
+              <a class="btn btn-secondary" [routerLink]="getLink(pat.patient.id)">Karton</a>
+            </span>
           </li>
         </ul>
-        <app-new-patient *ngIf="formShown" class="w-50"></app-new-patient>
+        <app-new-patient *ngIf="formShown" class="w-50" [currChart]="patient" ></app-new-patient>
       </div>
       
     </div>

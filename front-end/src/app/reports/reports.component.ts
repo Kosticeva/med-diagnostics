@@ -13,20 +13,32 @@ export class ReportsComponent implements OnInit {
   chronics: Patient[];
   addicts: Patient[];
   weaks: Patient[];
+  finished: number;
 
   constructor(
     private reportsService: ReportService
-  ) { }
+  ) { 
+    this.finished = 0;
+  }
 
   ngOnInit() {
     this.reportsService.addicts().subscribe(
-      (data) => this.addicts = data
+      (data) => {
+        this.addicts = data
+        this.finished = this.finished +1;
+      }
     );
     this.reportsService.weaks().subscribe(
-      (data) => this.weaks = data
+      (data) => {
+        this.weaks = data
+        this.finished = this.finished +1;
+      }
     );
     this.reportsService.chronics().subscribe(
-      (data) => this.chronics = data
+      (data) => {
+        this.chronics = data
+        this.finished = this.finished +1;
+      }
     )
   }
 
@@ -35,7 +47,7 @@ export class ReportsComponent implements OnInit {
   }
 
   getLink(id: number): string{
-    return '../patients/'+id;
+    return '../patient/'+id;
   }
 
 }

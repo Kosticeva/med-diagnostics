@@ -2,6 +2,7 @@ package drools.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -23,12 +24,17 @@ public class DrugService {
 	
 	@Transactional
 	public Drug findById(int id) {
-		return drugRepository.getOne(id);
+		Optional<Drug> d = drugRepository.findById(id);
+		if(d.isPresent()) {
+			return d.get();
+		}
+		
+		return null;
 	}
 	
 	@Transactional
 	public List<Drug> findByName(String name){
-		return drugRepository.findByNameStartingWith(name);
+		return drugRepository.findByNameStartingWithIgnoreCase(name);
 	}
 	
 	@Transactional

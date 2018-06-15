@@ -19,8 +19,8 @@ export class QueryService {
     private http: HttpClient
   ) { }
 
-  public findMostProbable(e: Examination, id:number): Observable<any>{
-    return this.http.put('http://localhost:8080/api/query/most-probable/'+id, e, this.headers);
+  public findMostProbable(e: Examination): Observable<any>{
+    return this.http.put('http://localhost:8080/api/query/most-probable', e, this.headers);
   }
 
   public findAllPossible(s: Symptom[]): Observable<any>{

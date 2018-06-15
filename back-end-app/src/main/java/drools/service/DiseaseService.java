@@ -2,6 +2,7 @@ package drools.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -22,7 +23,17 @@ public class DiseaseService {
 	
 	@Transactional
 	public Disease findById(int id) {
-		return diseaseRepository.getOne(id);
+		Optional<Disease> d = diseaseRepository.findById(id);
+		if(d.isPresent()) {
+			return d.get();
+		}
+		
+		return null;
+	}
+
+	@Transactional
+	public List<Disease> findByStartName(String name){
+		return diseaseRepository.findByNameStartingWithIgnoreCase(name);
 	}
 	
 	@Transactional
@@ -37,7 +48,12 @@ public class DiseaseService {
 			return null;
 		}
 		
-		if(diseaseRepository.findByName(disease.getName()).size() != 0) {
+		List<Disease> dds= diseaseRepository.findByName(disease.getName());
+		for(Disease ddd: dds){
+			System.out.println(ddd);
+		}
+		
+		if(dds.size() != 0) {
 			System.out.println("Vec postojeca bolest");
 			return null;
 		}

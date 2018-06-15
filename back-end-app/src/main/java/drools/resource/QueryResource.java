@@ -7,7 +7,6 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,17 +17,17 @@ import drools.model.Examination;
 import drools.model.Symptom;
 import drools.service.QueryService;
 
-@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class QueryResource {
 	
 	@Autowired
 	QueryService queryService;
 	
-	@RequestMapping(value="/api/query/most-probable/{chartId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public ResponseEntity<Disease> getMostProbableDisease(@RequestBody Examination exam, @PathVariable("chartId") Integer chartId) {
+	@RequestMapping(value="/api/query/most-probable", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
+	public ResponseEntity<Disease> getMostProbableDisease(@RequestBody Examination exam) {
 		
-		Disease d = queryService.getMostProbable(chartId, exam);
+		Disease d = queryService.getMostProbable(exam);
 		if(d != null)
 			return ResponseEntity.ok().body(d);
 		

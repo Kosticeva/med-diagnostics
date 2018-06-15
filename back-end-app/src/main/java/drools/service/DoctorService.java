@@ -2,6 +2,7 @@ package drools.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -20,7 +21,12 @@ public class DoctorService {
 	
 	@Transactional
 	public Doctor findById(int id) {
-		return doctorRepository.getOne(id);
+		Optional<Doctor> d = doctorRepository.findById(id);
+		if(d.isPresent()) {
+			return d.get();
+		}
+		
+		return null;
 	}
 	
 	@Transactional
@@ -40,12 +46,12 @@ public class DoctorService {
 			return null;
 		}
 		
-		if(doctor.getUsername() == null) {
+		if(doctor.getUsername() == null || doctor.getUsername().equals("")) {
 			System.out.println("Nema kor imena za doktora");
 			return null;
 		}
 		
-		if(doctorRepository.findByUsername(doctor.getUsername())!= null) {
+		if(doctorRepository.findByUsername(doctor.getUsername()).size() != 0) {
 			System.out.println("Vec iskoriceno kor ime za doktora");
 			return null;
 		}

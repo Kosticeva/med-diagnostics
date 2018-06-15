@@ -20,7 +20,11 @@ public class AllergyService {
 	
 	@Transactional
 	public Allergy findById(int id) {
-		return allergyRepository.getOne(id);
+		Optional<Allergy> a = allergyRepository.findById(id);
+		if(a.isPresent())
+			return a.get();
+		
+		return null;
 	}
 	
 	@Transactional

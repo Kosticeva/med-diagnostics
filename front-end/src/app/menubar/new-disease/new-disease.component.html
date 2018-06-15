@@ -7,16 +7,17 @@
         <div class="form-field">
           <label for="name">Naziv: </label>
           <input type="text" id="name" class="form-control" name="name" [(ngModel)]="disease.name" />
-          <small class="text-danger">{{error}}</small>
         </div>
         <div class="form-field">
             <label for="smyps">Simptomi: </label>
-            <textarea id="smyps" class="form-control" placeholder="Npr glavobolja ..." [(ngModel)]="symptoms"></textarea>
+            <textarea id="smyps" class="form-control" name="symps" placeholder="Npr glavobolja ..." [(ngModel)]="symptoms"></textarea>
           </div>
         <hr />
         <div class="form-field d-flex justify-content-end">
-          <button class="btn btn-success btn-lg" (click)="createDisease()">Zavrsi</button>
+          <button class="btn btn-success btn-lg" (click)="createDisease()"><i class="fa fa-lg fa-check"></i>Zavrsi</button>
         </div>
+        <small class="text-danger">{{error}}</small>
+        <small class="text-success">{{success}}</small>
       </form>
     </div>
 </div>

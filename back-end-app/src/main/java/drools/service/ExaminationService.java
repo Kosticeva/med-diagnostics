@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -37,7 +38,12 @@ public class ExaminationService {
 	
 	@Transactional
 	public Examination findById(int id) {
-		return examinationRepository.getOne(id);
+		Optional<Examination> e = examinationRepository.findById(id);
+		if(e.isPresent()) {
+			return e.get();
+		}
+		
+		return null;
 	}
 	
 	@Transactional

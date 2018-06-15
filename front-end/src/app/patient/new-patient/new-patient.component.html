@@ -11,16 +11,16 @@
       </div>
       <div class="form-field">
         <label for="lName">Prezime: </label>
-        <input type="text" id="lName" class="form-control" [(ngModel)]="patient.lastName"/>
+        <input type="text" id="lName" class="form-control" name="lastName" [(ngModel)]="patient.lastName"/>
         <small class="text-danger">{{error.lastName}}</small>
       </div>
       <div class="form-field">
         <label for="allergens">Alergeni: </label>
-        <textarea class="form-control" id="allergens" placeholder="Alergen 1, alergen 2..." [(ngModel)]="allergens"></textarea>
+        <textarea class="form-control" id="allergens" name="allergens" placeholder="Alergen 1, alergen 2..." [(ngModel)]="allergens"></textarea>
       </div>
       <hr />
       <div class="form-field">
-        <button class="btn btn-success btn-lg" (click)="createPatient()">Zavrsi</button>
+        <button class="btn btn-success btn-lg" (click)="createPatient()"><i class="fa fa-lg fa-check"></i>Zavrsi</button>
       </div>
     </form>
   </div>

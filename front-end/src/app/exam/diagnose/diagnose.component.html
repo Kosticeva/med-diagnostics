@@ -1,10 +1,11 @@
 <div class="container-fluid">
     <br />
+    <h5 [ngClass]="{'text-warning': startedSearch === 0, 'text-danger': startedSearch === 2, 'text-success': startedSearch === 1}">{{msg}}</h5>
     <div class="card">
         <div class="card-body">
         <div class="card-title">
             <div class="btn-group float-right">
-                <button class="btn btn-primary" (click)="showMostPossible()" type="button">
+                <button class="btn btn-success" (click)="showMostPossible()" type="button">
                     Najverovatnija bolest
                 </button>
                 <button class="btn btn-secondary" (click)="showAllPossible()" type="button">
@@ -17,9 +18,16 @@
         </div>
         <div class="list-group-and-forms">
             <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
-                <li *ngFor="let diseasse of diseases" class="list-group-item d-flex justify-content-between" (click)="chooseDisease(diseasse)">{{diseasse.name}}
-                    <button class="btn btn-primary" (click)="findSymptoms(diseasse)">Simptomi</button>
-                    <small>{{simptomi}}</small>
+                <li *ngFor="let diseasse of diseases container" class="list-group-item" [ngClass]="{'active': exam.disease.id === diseasse.id}">
+                    <div class="d-flex justify-content-between">
+                        <span>{{diseasse.name}}</span>
+                        <span class="btn-group">
+                            <button class="btn btn-secondary" (click)="findSymptoms(diseasse)">Simptomi</button>
+                            <button class="btn btn-success" (click)="chooseDisease(diseasse)">Odaberi</button>
+                        </span>
+                    </div>
+                    <br />
+                    <small *ngIf="diseasse.id === symptomsOpen" [innerHTML]="simptomi"></small>
                 </li>
             </ul>
         </div>

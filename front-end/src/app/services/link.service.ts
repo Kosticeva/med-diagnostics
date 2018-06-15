@@ -9,8 +9,7 @@ export class LinkService {
 
   private headers = {
     headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': 'my-auth-token'
+      'Content-Type':  'application/json'
     })
   };
 
@@ -18,7 +17,7 @@ export class LinkService {
     private http: HttpClient
   ) { }
 
-  putLink(d: Disease, s: Symptom){
-    this.http.post('http://localhost:8080/diseases/'+d.id+'/symptoms/'+s.id, null, this.headers);
+  putLink(d: number, s: number): Observable<any>{
+    return this.http.post('http://localhost:8080/api/diseases/'+d+'/symptoms/'+s, null, this.headers);
   }
 }

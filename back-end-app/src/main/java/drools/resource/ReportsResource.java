@@ -17,7 +17,7 @@ import drools.model.Drug;
 import drools.model.Patient;
 import drools.service.ReportsService;
 
-@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class ReportsResource {
 

@@ -1,18 +1,21 @@
 package drools.security;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 
 @Configuration
 @EnableWebSecurity
@@ -35,51 +38,58 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception{
 		
 		http
-		.authorizeRequests()
-			.antMatchers("/api/password/**").permitAll()
-			.antMatchers("/api/query/**").permitAll()
-			.antMatchers("/api/reports/**").permitAll()
-			.anyRequest().fullyAuthenticated()
-		.and()
-			.formLogin()
-			.loginPage("http://localhost:4200/login")
-			.loginProcessingUrl("/login")
-			.failureUrl("http://localhost:4200/login")
-			.usernameParameter("j_username")
-			.passwordParameter("j_password")
-			.permitAll()
-		.and()
-			/*.addFilterBefore(
-                authenticationFilter(),
-                UsernamePasswordAuthenticationFilter.class)*/
-			.logout()
-			.logoutUrl("/logout")
-			.logoutSuccessUrl("http://localhost:4200/login")
-			.permitAll()
-		.and()
+			.authorizeRequests()
+	        .anyRequest().authenticated()
+		 .and()
+            .formLogin()
+            .loginPage("http://localhost:4200/login")
+            .loginProcessingUrl("/login") //the URL on which the clients should post the login information
+            .usernameParameter("j_username") //the username parameter in the queryString, default is 'username'
+            .passwordParameter("j_password") //the password parameter in the queryString, default is 'password'
+            .successHandler(this::loginSuccessHandler)
+            .failureHandler(this::loginFailureHandler)
+            .permitAll()
+        .and()
+            .logout()
+            .logoutUrl("/logout") //the URL on which the clients should post if they want to logout
+            .logoutSuccessHandler(this::logoutSuccessHandler)
+            .invalidateHttpSession(true)
+        .and()
 			.csrf()
-			.disable();
+			.disable()
+		 	.cors()
+		 	.disable();
 	}
 	
 	@Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(doctorDetailsService)
-                .passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(doctorDetailsService);
 	}
 	
-	@Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("OPTIONS");
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("POST");
-        config.addAllowedMethod("PUT");
-        config.addAllowedMethod("DELETE");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+	private void loginSuccessHandler(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        Authentication authentication) throws IOException {
+ 
+		System.out.println("Uspesno logInovanje!");
+        response.setStatus(HttpStatus.OK.value());
+    }
+	 
+    private void loginFailureHandler(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        AuthenticationException e) throws IOException {
+ 
+    	System.out.println("Neuspesno logInovanje!");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    }
+	 
+    private void logoutSuccessHandler(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        Authentication authentication) throws IOException {
+ 
+    	System.out.println("Uspesno logOutovanje!");
+        response.setStatus(HttpStatus.OK.value());
     }
 }

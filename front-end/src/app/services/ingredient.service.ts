@@ -21,8 +21,8 @@ export class IngredientService {
     return this.http.get('http://localhost:8080/api/ingredients/'+id, this.headers);
   }
 
-  post(i: Ingredient): Observable<any>{
-    return this.http.post('http://localhost:8080/api/ingredients', i, this.headers);
+  post(i: any): Observable<any>{
+    return this.http.post('http://localhost:8080/api/ingredients', JSON.stringify(i), this.headers);
   }
 
   put(i: Ingredient, id: number): Observable<any>{

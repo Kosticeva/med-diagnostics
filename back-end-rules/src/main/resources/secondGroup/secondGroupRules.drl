@@ -30,7 +30,7 @@ rule "Hipertenzija"
         )
     then
     	System.out.println("Salience je "+$cc.intValue()*1000);
-       	Disease d = new Disease(4, "Hipertenzija", null);
+       	Disease d = new Disease(4, "Hipertenzija" );
     	insert(d);
 		System.out.println("U pitanju je hipertenzija ");
 end
@@ -49,7 +49,7 @@ rule "Dijabetes"
     	)
     then
     	System.out.println("Salience je "+$count.intValue()*10000/4);
-        Disease d = new Disease(5, "Dijabetes", null);
+        Disease d = new Disease(5, "Dijabetes" );
     	insert(d);
 		System.out.println("U pitanju je dijabetes");
 

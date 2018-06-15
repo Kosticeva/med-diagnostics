@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +21,16 @@ public class DoctorDetailsService implements UserDetailsService {
 	@Autowired
 	private DoctorRepository doctorRepository;
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
-	}
+	private final PasswordEncoder passwordEncoder;
 	
-	public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    public DoctorDetailsService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		System.out.println("Autentifikacija sa korisnickim imenom: "+username);
-		Doctor user = doctorRepository.findByUsername(username);
+		Doctor user = doctorRepository.findByUsername(username).get(0);
 	
 		if(user == null) {
 			throw new UsernameNotFoundException("Ne postoji doktor sa unesenim imenom "+username);
@@ -43,7 +44,7 @@ public class DoctorDetailsService implements UserDetailsService {
 			auths.add(new DoctorAuthority("REGULAR"));
 		}
 		
-		return new DoctorDetails(user.getUsername(), passwordEncoder().encode(user.getPassword()), auths, user);
+		return new User(user.getUsername(), passwordEncoder.encode("password"), auths);
 	}
 
 }

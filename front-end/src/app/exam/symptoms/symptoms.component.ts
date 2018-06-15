@@ -13,6 +13,7 @@ export class SymptomsComponent implements OnInit {
   allSymptoms: Symptom[];
   @Input() symptoms: Symptom[];
   query: string;
+  searching: boolean;
 
   constructor(
     private symptomService: SymptomService
@@ -21,9 +22,10 @@ export class SymptomsComponent implements OnInit {
   ngOnInit() {
     this.formShown = false;
     this.query = '';
-    this.symptomService.getAll().subscribe(
-      (data) => this.allSymptoms = data
-    );
+    this.searching = false;
+    //this.symptomService.getAll().subscribe(
+    //  (data) => this.allSymptoms = data
+    //);
   }
 
   public showForm() {
@@ -31,18 +33,49 @@ export class SymptomsComponent implements OnInit {
   }
 
   findSymptoms(){
-    this.symptomService.getByName(this.query).subscribe(
-      (data) => this.allSymptoms = data
-    );
+    if(this.query.length > 0){
+      this.searching = true;
+      this.symptomService.getByName(this.query).subscribe(
+        (data) => {
+          this.allSymptoms = data;
+          this.searching = false;
+        }
+      );
+    }
   }
 
   addSymptom(symptom: Symptom) {
-    this.symptoms.push(symptom);
+    if(this.checkIfIn) {
+      this.symptoms.push(symptom);
+    }
   }
 
   removeSymptom(symptom: Symptom) {
-    this.symptoms.splice(this.symptoms.indexOf(symptom), 1);
+    for(let i=0; i<this.symptoms.length; i++) {
+      if(this.symptoms[i].id === symptom.id){
+        this.symptoms.splice(i, 1);
+      }
+    }
   }
 
+  checkIfIn(symptom: Symptom): boolean{
+    for(let i=0; i<this.symptoms.length; i++) {
+      if(this.symptoms[i].id === symptom.id){
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  checkIfOut(symptom: Symptom){
+    for(let i=0; i<this.symptoms.length; i++) {
+      if(this.symptoms[i].id === symptom.id){
+        return false;
+      }
+    }
+
+    return true;
+  }
 
 }

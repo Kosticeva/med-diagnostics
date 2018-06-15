@@ -6,19 +6,20 @@
           <button class="btn btn-success float-right" (click)="showForm()">
               <i class="fa fa-user-plus"></i>
               Novi simptom
-            </button>
+          </button>
+          <h5 class="text-warning" *ngIf="searching">Pretraga ...</h5>
           <form class="form-group">
             <input type="text" class="form-control w-75" placeholder="Pronadji simptom" name="query" [(ngModel)]="query" (change)="findSymptoms()"/>
           </form>
         </div>
         <div class="list-group-and-forms">
           <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
-            <h5>Uneti simptomi</h5>
+            <h5>Svi simptomi</h5>
             <li *ngFor="let symptom of allSymptoms" class="list-group-item d-flex justify-content-between">
               {{symptom.name}}
               <span class="btn-group">
-                  <button class="btn btn-sm btn-success"><i class="fa fa-check" (click)="addSymptom(symptom)"></i></button>
-                  <button class="btn btn-sm btn-danger"><i class="fa fa-trash" (click)="removeSymptom(symptom)"></i></button>
+                  <button class="btn btn-sm btn-success" *ngIf="!checkIfIn(symptom)" (click)="addSymptom(symptom)"><i class="fa fa-check"></i></button>
+                  <button class="btn btn-sm btn-danger" *ngIf="!checkIfOut(symptom)" (click)="removeSymptom(symptom)"><i class="fa fa-trash" ></i></button>
               </span>
             </li>
           </ul>

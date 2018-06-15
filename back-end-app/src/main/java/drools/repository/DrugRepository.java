@@ -9,5 +9,5 @@ import drools.model.Drug;
 
 @Repository
 public interface DrugRepository extends JpaRepository<Drug, Integer>{
-	List<Drug> findByNameStartingWith(String name);
+	List<Drug> findByNameStartingWithIgnoreCase(String name);
 }

@@ -11,4 +11,5 @@ import drools.model.Disease;
 public interface DiseaseRepository extends JpaRepository<Disease, Integer>{
 
 	List<Disease> findByName(String name);
+	List<Disease> findByNameStartingWithIgnoreCase(String name);
 }

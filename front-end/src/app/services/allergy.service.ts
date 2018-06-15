@@ -21,8 +21,8 @@ export class AllergyService {
     return this.http.get('http://localhost:8080/api/allergys/'+id, this.headers);
   }
 
-  post(a: Allergen): Observable<any>{
-    return this.http.post('http://localhost:8080/api/allergys', a, this.headers);
+  post(a: any): Observable<any>{
+    return this.http.post('http://localhost:8080/api/allergys', JSON.stringify(a), this.headers);
   }
 
   put(a: Allergen, id: number): Observable<any>{

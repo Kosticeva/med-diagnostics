@@ -3,14 +3,18 @@
     <div class="card">
       <div class="card-body">
         <div class="card-title">
+          <h5 class='text-warning' *ngIf="searching">Pretraga ...</h5>
           <div class="form-group">
-            <input type="text" class="form-control w-75" placeholder="Unesi lek ..." name="query" [(ngModel)]="query" (change)="findDrug()"/>
+            <input type="text" class="form-control w-100" placeholder="Unesi lek ..." name="query" [(ngModel)]="query" (change)="findDrug()"/>
           </div>
         </div>
         <div class="list-group-and-forms">
           <ul class="list-group float-left container-fluid" [ngClass]="{'w-50': formShown, '': formShown}">
-            <li *ngFor="let drug of drugs" class="list-group-item d-flex justify-content-between" (click)="chooseDrug(drug)">{{drug.name}}
-                <small>{{drug.ingredients}}</small>
+            <li *ngFor="let drug of drugs" class="list-group-item d-flex justify-content-between"
+              [ngClass]="{'active': drug.id === prescription.drug.id}">
+              {{drug.name}}
+                <small>( {{ingredientsToString(drug.ingredients)}} )</small>
+                <button class="btn btn-success"  (click)="chooseDrug(drug)"><i class="fa fa-check"></i></button>
             </li>
           </ul>
         </div>

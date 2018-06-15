@@ -2,14 +2,14 @@
   <br />
   <div class="card-header row">
         <h6 class="col-2">Pregled obavio: </h6>
-        <span class="col-6"></span>
+        <span class="col-6">dr. {{exam.doctor.lastName}}, {{exam.doctor.firstName}}</span>
         <h6 class="col-2">Datum pregleda: </h6>
-        <span class="col-2"><b></b></span>
+        <span class="col-2"><b>{{exam.date}}</b></span>
   </div>
   <div class="card-body container-fluid">
     <div class="card-title row">
         <h6 class="col-2">Pacijent: </h6>
-        <span class="col-8"></span>
+        <span class="col-8"><h4>{{chart.patient.firstName}} {{chart.patient.lastName}}</h4></span>
         <button class="btn btn-success float-right col-2" (click)="goToChart()">
             <i class="fa fa fa-file"></i> &nbsp;
             Karton</button>
@@ -25,7 +25,7 @@
                     <li *ngFor="let symptom of exam.symptoms" class="list-group-item d-flex justify-content-between">{{symptom.name}} <span class="btn-group"><button class="btn btn-danger" (click)="removeSymptom(symptom)"><i class="fa fa-trash"></i></button></span></li>
                 </ul>
             </div>
-            <button class="btn btn-primary d-inline col-2 h-50"  (click)="openSymps()">Dodaj simptom</button>
+            <button class="btn btn-primary d-inline col-2 h-50"  (click)="openSymps()"><i class="fa fa-plus"></i>&nbsp;Dodaj simptom</button>
         </div>
         <app-symptoms *ngIf="sympsOpen" [symptoms]="exam.symptoms"></app-symptoms>
         <br />
@@ -33,22 +33,23 @@
         <br >
         <div class="d-flex justify-content-between row">
             <h6 class="d-inline col-2">Dijagnoza: </h6>
-            <h6 class="d-inline w-75 col-8"></h6>
-            <button class="btn btn-primary d-inline col-2" (click)="openDiag()">Postavi dijagnozu</button>
+            <h4 class="d-inline w-75 col-8" *ngIf="exam.disease!== null">{{exam.disease.name}}</h4>
+            <button class="btn btn-primary d-inline col-2" (click)="openDiag()"><i class="fa fa-plus"></i>&nbsp;Postavi dijagnozu</button>
         </div>
-        <app-diagnose *ngIf="diagOpen" [disease]="exam.diagnose" [symptoms]="exam.symptoms"></app-diagnose>
+        <app-diagnose *ngIf="diagOpen" [exam]="exam"></app-diagnose>
         <br />
         <hr />
         <br >
         <div class="d-flex justify-content-between row">
             <h6 class="d-inline col-2">Terapija: </h6>
-            <h6 class="d-inline w-75 col-8"></h6>
-            <button class="btn btn-primary d-inline col-2" (click)="openTher()">Odredi terapiju</button>
+            <h4 class="d-inline w-75 col-8" *ngIf="exam.prescription!== null">{{exam.prescription.drug.name}}<br/>{{exam.prescription.plan}}</h4>
+            <button class="btn btn-primary d-inline col-2" (click)="openTher()"><i class="fa fa-plus"></i>&nbsp;Odredi terapiju</button>
         </div>
-        <app-therapy *ngIf="therOpen" [prescription]="exam.therapy"></app-therapy>
+        <app-therapy *ngIf="therOpen" [prescription]="exam.prescription"></app-therapy>
     </div>
   </div>
-  <button class="btn btn-lg btn-success container-fluid" (click)="finishExam()">
+  <button class="btn btn-lg btn-success container-fluid" (click)="finishExam()"
+    [ngClass]="{'disabled': exam.prescription === null || exam.disease === null || exam.symptoms.length===0 }">
         <i class="fa fa-lg fa-check"></i>
         Zavrsi</button>
 </div>

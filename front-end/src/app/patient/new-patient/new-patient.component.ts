@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PatientService } from '../../services/patient.service';
 import { ChartService } from '../../services/chart.service';
 import { Patient } from '../../model/patient';
 import { AllergyService } from '../../services/allergy.service';
 import { Allergen } from '../../model/allergen';
+import { Chart } from '../../model/chart';
 
 @Component({
   selector: 'app-new-patient',
@@ -18,7 +19,8 @@ export class NewPatientComponent implements OnInit {
   }
   patient: Patient;
   allergens: string;
-  realAllergens: Allergen[];
+  realAllergens: any[];
+  @Input() currChart: Chart; 
 
   constructor(
     private patientService: PatientService,
@@ -32,7 +34,12 @@ export class NewPatientComponent implements OnInit {
       lastName: ''
     };
 
-    this.patient = null;
+    this.patient = {
+      firstName: '',
+      lastName: '',
+      allergens: [],
+      id: null
+    };
     this.allergens = "";
     this.realAllergens = [];
   }
@@ -56,16 +63,32 @@ export class NewPatientComponent implements OnInit {
     let parts = this.allergens.split(',');
     for(let i=0; i<parts.length; i++){
       const part = parts[i].trim();
-      let a = new Allergen(null, part);
-      this.allergyService.post(a).subscribe(
-        (data) => this.realAllergens.push(data)
-      );
+      this.realAllergens.push({'name': part});
     }
 
-    this.patient.allergens = this.realAllergens;
-    this.patientService.post(this.patient).subscribe(
-      (data) => { this.patient = data,
-      error => this.error.firstName = "Nesto je krenulo po zlu" }
+    this.allergyService.post(this.realAllergens).subscribe(
+      (data) => {
+        this.createPatientI(data);
+      }
     );
   }
+
+  createPatientI(allergies: Allergen[]){
+    this.patient.allergens = allergies;
+    this.patientService.post(this.patient).subscribe(
+      (data) => { 
+        this.patient = data;
+        this.currChart.patient = this.patient;
+        this.currChart.examinations = [];
+        this.currChart.id = null;
+        this.chartService.post(this.currChart).subscribe(
+          (data) => {
+            this.currChart = data;
+          }
+        )
+      },
+      error => this.error.firstName = "Nesto je krenulo po zlu"
+    );
+  }
+
 }

@@ -26,7 +26,12 @@ export class DrugService {
   }
 
   post(d: Drug): Observable<any>{
-    return this.http.post('http://localhost:8080/api/drugs', d, this.headers);
+    return this.http.post('http://localhost:8080/api/drugs', 
+      JSON.stringify({
+        'name': d.name,
+        'drugType': d.drugType,
+        'ingredients': d.ingredients
+      }), this.headers);
   }
 
   put(d: Drug, id: number): Observable<any>{

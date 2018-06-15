@@ -17,16 +17,21 @@ export class ChartService {
     private http: HttpClient
   ) { }
 
-  get(id: number): Observable<any> {
+  get(id: any): Observable<any> {
     return this.http.get('http://localhost:8080/api/charts/'+id, this.headers);
   }
 
   post(c: Chart): Observable<any>{
-    return this.http.post('http://localhost:8080/api/charts', c, this.headers);
+    return this.http.post('http://localhost:8080/api/charts', 
+      JSON.stringify({
+        'patient': c.patient,
+        'examinations': c.examinations
+      })
+    , this.headers);
   }
 
   put(c: Chart, id: number): Observable<any>{
-    return this.http.put('http://localhost:8080/api/charts/'+id, c, this.headers);
+    return this.http.put('http://localhost:8080/api/charts/'+id, JSON.stringify(c), this.headers);
   }
 
   delete(id: number): Observable<any>{

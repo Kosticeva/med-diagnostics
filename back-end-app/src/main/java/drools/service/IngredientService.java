@@ -2,6 +2,7 @@ package drools.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -19,7 +20,12 @@ public class IngredientService {
 	
 	@Transactional
 	public Ingredient findById(int id) {
-		return ingredientRepository.getOne(id);
+		Optional<Ingredient> i = ingredientRepository.findById(id);
+		if(i.isPresent()) {
+			return i.get();
+		}
+		
+		return null;
 	}
 	
 	@Transactional

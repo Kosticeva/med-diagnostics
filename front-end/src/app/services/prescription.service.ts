@@ -26,7 +26,11 @@ export class PrescriptionService {
   }
 
   post(p: Prescription): Observable<any>{
-    return this.http.post('http://localhost:8080/api/prescriptions', p, this.headers);
+    return this.http.post('http://localhost:8080/api/prescriptions', JSON.stringify({
+      'drug': p.drug,
+      'plan': p.plan
+    }), 
+    this.headers);
   }
 
   put(p: Prescription, id: number): Observable<any>{

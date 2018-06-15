@@ -22,7 +22,7 @@ public class Allergy implements Serializable{
 	@Column(name="allergy_id")
 	private Integer id;
 	
-	@Column(nullable = false, name="allergy_name")
+	@Column(nullable = false, name="allergy_name", unique = true)
 	private String name;
 	
 	/*@ManyToMany(mappedBy = "patient")

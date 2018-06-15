@@ -24,7 +24,7 @@ rule "Prehlada"
         )
     then
     	System.out.println("Salience je: "+$count.intValue()*10000/5);
-    	Disease d = new Disease(0, "Prehlada", null);
+    	Disease d = new Disease(0, "Prehlada" );
     	insert(d);
         System.out.println("U pitanju je prehlada");
 
@@ -46,7 +46,7 @@ rule "Groznica"
         )
 	then
 		System.out.println("Salience je "+$count.intValue()*10000/7);
-		Disease d = new Disease(1, "Groznica", null);
+		Disease d = new Disease(1, "Groznica" );
     	insert(d);
 		System.out.println("U pitanju je groznica");
 end
@@ -66,7 +66,7 @@ rule "Upala krajnika"
         )
     then
     	System.out.println("Salience je "+($count.intValue()*10000/8));
-        Disease d = new Disease(2, "Upala krajnika", null);
+        Disease d = new Disease(2, "Upala krajnika" );
     	insert(d);
 		System.out.println("U pitanju je upala krajnika");
 
@@ -96,7 +96,7 @@ rule "Sinusna infekcija"
         eval($count.intValue() + $specCount.intValue() >= 4)
 	then
 		System.out.println("Salience je "+($count.intValue()*10000/7 + $specCount.intValue()*10000/7) +" (spec count je "+$specCount.intValue()+")");
-		Disease d = new Disease(3, "Sinusna infekcija", null);
+		Disease d = new Disease(3, "Sinusna infekcija");
     	insert(d);
 		System.out.println("U pitanju je sinusna infekcija");
 end

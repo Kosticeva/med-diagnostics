@@ -2,6 +2,7 @@ package drools.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -23,7 +24,12 @@ public class PrescriptionService {
 	
 	@Transactional
 	public Prescription findById(int id) {
-		return prescriptionRepository.getOne(id);
+		Optional<Prescription> p = prescriptionRepository.findById(id);
+		if(p.isPresent()) {
+			return p.get();
+		}
+		
+		return null;
 	}
 	
 	@Transactional

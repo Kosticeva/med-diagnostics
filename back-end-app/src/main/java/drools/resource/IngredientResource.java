@@ -1,8 +1,8 @@
 package drools.resource;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import drools.model.Ingredient;
 import drools.service.IngredientService;
 
-@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class IngredientResource {
 
@@ -44,17 +44,24 @@ public class IngredientResource {
 	
 	@RequestMapping(value = "/api/ingredients", method = RequestMethod.POST, 
 		produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	public ResponseEntity<Ingredient> newIngredient(@RequestBody Ingredient ingredient) throws URISyntaxException {
-		if(ingredient.getId() != null) {
-			return ResponseEntity.badRequest().body(null);
+	public List<Ingredient> newIngredient(@RequestBody List<Ingredient> ingredients) throws URISyntaxException {
+		
+		List<Ingredient> retVal = new ArrayList<Ingredient>();
+		for(Ingredient ingredient: ingredients){
+			if(ingredient.getId() != null) {
+				return null;
+			}
+
+			Ingredient i = ingredientService.createNewIngredient(ingredient);
+			if(i!=null) {
+				//
+				retVal.add(i);
+			}else{
+				return null;
+			}
 		}
 		
-		Ingredient i = ingredientService.createNewIngredient(ingredient);
-		if(i!=null) {
-			return ResponseEntity.created(new URI("/api/ingredients/"+i.getId())).body(i);
-		}
-		
-		return ResponseEntity.unprocessableEntity().body(i);
+		return retVal;
 	}
 	
 	@RequestMapping(value = "/api/ingredients/{id}", method = RequestMethod.PUT, 

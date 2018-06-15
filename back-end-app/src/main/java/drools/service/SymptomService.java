@@ -2,6 +2,7 @@ package drools.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -19,12 +20,17 @@ public class SymptomService {
 	
 	@Transactional
 	public Symptom findById(int id) {
-		return symptomRepository.getOne(id);
-	}
+		Optional<Symptom> s = symptomRepository.findById(id);
+		if(s.isPresent()) {
+			return s.get();
+		}
+		
+		return null;
+	} 
 	
 	@Transactional
 	public List<Symptom> findByName(String name){
-		return symptomRepository.findByName(name);
+		return symptomRepository.findByNameStartingWithIgnoreCase(name);
 	}
 	
 	@Transactional

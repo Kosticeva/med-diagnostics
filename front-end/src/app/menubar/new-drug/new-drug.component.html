@@ -10,13 +10,12 @@
                     <div class="col">
                         <label for="name">Naziv: </label>
                         <input type="text" id="name" class="form-control" name="name" [(ngModel)]="drug.name"/>
-                        <small class="text-danger">{{error}}</small>
                     </div>
                 </div>
                 <div class="form-field row">
                   <div class="col">
                       <label for="type">Vrsta leka: </label>
-                      <select id="type" class="form-control" [(ngModel)]="drug.drugType">
+                      <select id="type" class="form-control" name="type" [(ngModel)]="drug.drugType">
                         <option value="ANALGESIC">Analgetik</option>
                         <option value="ANTIBIOTIC">Antibiotik</option>
                         <option value="OTHER">Ostalo</option>
@@ -26,14 +25,16 @@
           </div>
           <div class="form-field col-8">
               <label for="smyps">Sastojci: </label>
-              <textarea id="smyps" class="form-control d-flex h-100" placeholder="Npr aspirin ..." [(ngModel)]="ingredients"></textarea>
+              <textarea id="smyps" class="form-control d-flex h-100" name="smyps" placeholder="Npr aspirin ..." [(ngModel)]="ingredients"></textarea>
           </div>
         </div>
         <br />
         <hr />
       </form>
       <div class="form-field d-flex justify-content-end">
-        <button class="btn btn-success btn-lg" (click)="createDrug()">Zavrsi</button>
+        <button class="btn btn-success btn-lg" (click)="createDrug()"><i class="fa fa-lg fa-check"></i>Zavrsi</button>
       </div>
+      <small class="text-danger">{{error}}</small>
+      <small class="text-success">{{success}}</small>
     </div>
 </div>

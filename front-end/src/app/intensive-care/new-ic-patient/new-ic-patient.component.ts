@@ -33,25 +33,29 @@ export class NewIcPatientComponent implements OnInit {
     this.icService.addToIc(id).subscribe(
       (data) => {
         this.query = "";
-        this.getPatients();
+        this.patients = [];
+        //this.getPatients();
+        this.icPatients.push(data);
       }
     );
   }
 
   getPatients() {
-    this.patients = [];
-    for(let i=0; i<this.realPatients.length; i++){
-      if(this.realPatients[i].firstName.startsWith(this.query) || this.realPatients[i].lastName.startsWith(this.query)){
-        let flag = false;
-        for(let j=0; j<this.icPatients.length; j++) {
-          if(this.icPatients[j].id === this.realPatients[i].id){
-            flag = true;
-            break;
+    if(this.query.length > 0){
+      this.patients = [];
+      for(let i=0; i<this.realPatients.length; i++){
+        if(this.realPatients[i].firstName.startsWith(this.query) || this.realPatients[i].lastName.startsWith(this.query)){
+          let flag = false;
+          for(let j=0; j<this.icPatients.length; j++) {
+            if(this.icPatients[j].id === this.realPatients[i].id){
+              flag = true;
+              break;
+            }
           }
-        }
 
-        if(!flag){
-          this.patients.push(this.realPatients[i]);
+          if(!flag){
+            this.patients.push(this.realPatients[i]);
+          }
         }
       }
     }

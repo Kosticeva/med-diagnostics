@@ -15,13 +15,15 @@
     </button>
   </div>
   <br />
+  <span [ngClass]="{'text-warning': searching}" *ngIf="searching">Pretraga...</span>
   <app-new-ic-patient [icPatients]="icPatients" class="w-50 float-right" *ngIf="newPatientOpen"></app-new-ic-patient>
   <div class="row justify-content-start pt-5 pb-5" [ngClass]="{'w-50': newPatientOpen, '': !newPatientOpen}">
+    <button class="btn btn-primary btn-lg container-fluid ml-20 mr-20" (click)="doRefresh()">Osvezi prikaz</button>
     <div *ngFor="let patient of icPatients" class="col-4 mb-2">
       <div class="card">
         <div class="card-header d-flex justify-content-between">
-            <span>{{patient.firstName}} {{patient.lastName}}</span>
-            <button class="btn btn-sm btn-light" (click)="removeIcPatient(patient.id)">
+            <span>{{patient.chart.patient.firstName}} {{patient.chart.patient.lastName}}</span>
+            <button class="btn btn-sm btn-light" (click)="removeIcPatient(patient.chart.patient.id)">
               <i class="fa fa-user-times"></i>
               Skloni
             </button>
@@ -29,30 +31,30 @@
           <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-between">Broj otkucaja srca
                 <span class="btn-group" role="group">
-                  <button class="btn btn-sm btn-success" disabled>
+                  <button *ngIf='patient.heartOk' class="btn btn-sm btn-success" disabled>
                       <i class="fa fa-smile-o"></i>
                   </button>
-                  <button class="btn btn-sm btn-danger" disabled>
+                  <button *ngIf='!patient.heartOk' class="btn btn-sm btn-danger" disabled>
                     <i class="fa fa-frown-o"></i>
                   </button>
                 </span>
               </li>
               <li class="list-group-item d-flex justify-content-between">Nivo kiseonika u krvi
                 <span class="btn-group" role="group">
-                    <button class="btn btn-sm btn-success" disabled> 
+                    <button *ngIf="patient.oxygenOk" class="btn btn-sm btn-success" disabled> 
                         <i class="fa fa-smile-o"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" disabled>
+                    <button *ngIf="!patient.oxygenOk" class="btn btn-sm btn-danger" disabled>
                       <i class="fa fa-frown-o"></i>
                     </button>
                   </span>
               </li>
               <li class="list-group-item d-flex justify-content-between">Kolicina mokrace
                 <span class="btn-group" role="group">
-                    <button class="btn btn-sm btn-success" disabled>
+                    <button *ngIf="patient.urinOk" class="btn btn-sm btn-success" disabled>
                         <i class="fa fa-smile-o"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" disabled>
+                    <button *ngIf="!patient.urinOk" class="btn btn-sm btn-danger" disabled>
                       <i class="fa fa-frown-o"></i>
                     </button>
                   </span>

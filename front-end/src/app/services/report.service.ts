@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Drug } from '../model/drug';
 
 @Injectable()
 export class ReportService {
@@ -30,8 +31,8 @@ export class ReportService {
     return this.http.get('http://localhost:8080/api/reports/chronics', this.headers);
   }
 
-  public allergies(): Observable<any>{
-    return this.http.put('http://localhost:8080/api/reports/allergies', this.headers);
+  public allergies(drug: Drug, id: number): Observable<any>{
+    return this.http.put('http://localhost:8080/api/reports/allergies/'+id, JSON.stringify(drug), this.headers);
   }
 
 

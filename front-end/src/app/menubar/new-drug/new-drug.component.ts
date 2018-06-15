@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Drug } from '../../model/drug';
 import { Ingredient } from '../../model/ingredient';
 import { DrugService } from '../../services/drug.service';
 import { IngredientService } from '../../services/ingredient.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-drug',
@@ -12,17 +13,21 @@ import { IngredientService } from '../../services/ingredient.service';
 export class NewDrugComponent implements OnInit {
 
   error: String;
+  success: String;
   ingredients: String;
   drug: Drug;
-  realIngredients: Ingredient[];
+  realIngredients: any[];
+  @Input() open: boolean;
 
   constructor(
     private drugService: DrugService,
-    private ingredientService: IngredientService
+    private ingredientService: IngredientService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.error = "";
+    this.success = "";
     this.ingredients = "";
     this.drug = {
       id: undefined,
@@ -34,6 +39,7 @@ export class NewDrugComponent implements OnInit {
   }
 
   createDrug() {
+    this.success = "";
     if(this.drug.name === ""){
       this.error = "Morate uneti ime za lek";
       return;
@@ -46,16 +52,28 @@ export class NewDrugComponent implements OnInit {
     let parts = this.ingredients.split(',');
     for(let i=0; i<parts.length; i++){
       const part = parts[i].trim();
-      let ii = new Ingredient(null, part);
-      this.ingredientService.post(ii).subscribe(
-        (data) => this.realIngredients.push(data)
-      );
+      this.realIngredients.push({'name': part});
     }
+    
+    this.ingredientService.post(this.realIngredients).subscribe(
+      (data) => {
+        this.createDrugII(data)
+      }
+    );
+  }
 
-    this.drug.ingredients = this.realIngredients;
+  createDrugII(ings: Ingredient[]){
+    this.drug.ingredients = ings;
     this.drugService.post(this.drug).subscribe(
-      (data) => this.drug = data,
-      error => this.error = "Vec postoji lek sa tim imenom"
+      (data) => {
+        this.drug = data;
+        this.success = "Lek "+this.drug.name+" uspesno kreiran!";
+        this.error = "";
+      },
+      error => {
+        this.error = "Vec postoji lek sa tim imenom";
+        this.success = "";
+      }
     );
   }
 }

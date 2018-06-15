@@ -12,6 +12,7 @@ export class NewDoctorComponent implements OnInit {
 
   doctor: Doctor;
   docId: number;
+  success: string;
 
   errorMessage: {
     username: string,
@@ -33,6 +34,7 @@ export class NewDoctorComponent implements OnInit {
       licenceId: undefined
     }
 
+    this.success = "";
     this.errorMessage = {
       username: '',
       password: ''
@@ -42,6 +44,7 @@ export class NewDoctorComponent implements OnInit {
   }
 
   createDoctor() {
+    this.success = "";
     if(this.doctor.username === ""){
       this.errorMessage.username = "Morate uneti korisnicko ime";
       return;
@@ -64,9 +67,9 @@ export class NewDoctorComponent implements OnInit {
 
     this.doctorService.post(this.doctor).subscribe(
       (data) => {
-        alert(data);
-        //this.router.navigate(['/home']);
         this.errorMessage.username = "";
+        this.errorMessage.password = "";
+        this.success = "Doktor "+this.doctor.username+" uspesno kreiran!";
       },
       error => this.errorMessage.username = "Korisnicko ime je zauzeto. Odaberite novo."
     );
@@ -97,9 +100,8 @@ export class NewDoctorComponent implements OnInit {
 
     this.doctorService.put(this.doctor, this.docId).subscribe(
       (data) => {
-        alert(data);
-        //this.router.navigate(['/home']);
         this.errorMessage.username = "";
+        this.errorMessage.password = "";
       },
       error => this.errorMessage.username = "Korisnicko ime je zauzeto ili nema doktora sa tim idjem. Odaberite novo."
     )

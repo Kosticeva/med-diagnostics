@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import drools.model.Chart;
 import drools.service.ChartService;
 
-@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class ChartResource {
 
@@ -32,8 +32,11 @@ public class ChartResource {
 		if(id != null) {
 			Chart c = chartService.findById(id);
 			
+			System.out.println("CHART GET ID OK");
 			return ResponseEntity.ok().body(c);
 		}
+		
+		System.out.println("CHART GET ID BAD");
 		return ResponseEntity.badRequest().body(null);
 	}
 	
@@ -46,14 +49,17 @@ public class ChartResource {
 		produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
 	public ResponseEntity<Chart> newChart(@RequestBody Chart chart) throws URISyntaxException {
 		if(chart.getId() != null) {
+			System.out.println("CHART POST ID BAD");
 			return ResponseEntity.badRequest().body(null);
 		}
 		
 		Chart c = chartService.createNewChart(chart);
 		if(c!=null) {
+			System.out.println("CHART POST OK");
 			return ResponseEntity.created(new URI("/api/charts/"+c.getId())).body(c);
 		}
 		
+		System.out.println("CHART POST BAD");
 		return ResponseEntity.unprocessableEntity().body(c);
 	}
 	
@@ -67,9 +73,11 @@ public class ChartResource {
 		
 		Chart c = chartService.updateChart(chart);
 		if(c != null) {
+			System.out.println("CHART PUT OK");
 			return ResponseEntity.ok().body(c);
 		}
 		
+		System.out.println("CHART PUT BAD");
 		return ResponseEntity.unprocessableEntity().body(c);
 	}
 	
@@ -82,6 +90,7 @@ public class ChartResource {
 			return ResponseEntity.badRequest().body(null);
 		}
 		
+		System.out.println("CHART DELETE OK");
 		return ResponseEntity.ok().body(null);
 	}
 
@@ -89,6 +98,11 @@ public class ChartResource {
 			params="name")
 	public List<Chart> getByPatientsName(@RequestParam("name") String name) {
 		return chartService.findByPatientName(name);
+	}
+
+	@RequestMapping(value = "/api/charts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON, params = "exam_id")
+	public Chart getChartFromExam(@RequestParam("exam_id") Integer examId){
+		return chartService.findByExamId(examId);
 	}
 	
 }

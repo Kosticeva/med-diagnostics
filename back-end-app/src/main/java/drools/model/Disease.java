@@ -30,7 +30,7 @@ public class Disease  implements Serializable{
 	
 	public Disease() {}
 
-	public Disease(int id, String name, List<Symptom> symptoms) {
+	public Disease(Integer id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -41,7 +41,7 @@ public class Disease  implements Serializable{
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

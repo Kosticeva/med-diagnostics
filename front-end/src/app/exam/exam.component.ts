@@ -35,9 +35,72 @@ export class ExamComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.exam = {
+      date: null,
+      disease: {
+        id: null,
+        name: ''
+      },
+      symptoms: [],
+      prescription: {
+        drug: {
+          name: '',
+          id: null,
+          ingredients: [],
+          drugType: 0
+        },
+        id: null,
+        plan: ''
+      },
+      doctor: {
+        firstName: '',
+        lastName: '',
+        licenceId: null,
+        username: '',
+        password: '',
+        type: "REGULAR"
+      },
+      id: null
+    };
+    this.chart = {
+      id: null,
+      patient: {
+        firstName: '',
+        lastName: '',
+        id: null,
+        allergens: []
+      },
+      examinations: []
+    };
     this.sympsOpen = false;
     this.diagOpen = false;
     this.therOpen = false;
+    let loc = window.location.href;
+    const parts = loc.split('/');
+    this.examService.get(parts[parts.length-1]).subscribe(
+      (data) => {
+        this.exam = data;
+        this.exam.prescription = {
+          drug: {
+            name: '',
+            id: null,
+            ingredients: [],
+            drugType: 0
+          },
+          id: null,
+          plan: ''
+        };
+        this.exam.disease = {
+          id: null,
+          name: ''
+        };
+        this.examService.getChartOfExam(this.exam.id).subscribe(
+          (data) => {
+            this.chart = data
+          }
+        );
+      }
+    )
   }
 
   goToChart() {
@@ -57,12 +120,12 @@ export class ExamComponent implements OnInit {
   }
 
   finishExam() {
-    this.reportsService.allergies().subscribe(
+    this.reportsService.allergies(this.exam.prescription.drug, this.chart.id).subscribe(
       (data) => {
         if(data.length != 0){
           let allergies = '';
           for(let i=0; i<data.length; i++){
-            allergies += data[i].name + '\n';
+            allergies += '\n\t - ' + data[i].name;
           }
 
           alert("Pacijent ima alergiju na "+ allergies);
@@ -70,11 +133,11 @@ export class ExamComponent implements OnInit {
           this.prescriptionService.post(this.exam.prescription).subscribe(
             (data) => {
               this.exam.prescription = data;
-              this.examService.post(this.exam).subscribe(
+              this.examService.put(this.exam, this.exam.id).subscribe(
                 (data) => {
                   this.exam = data;
                   this.chart.examinations.push(this.exam);
-                  this.chartService.post(this.chart).subscribe(
+                  this.chartService.put(this.chart, this.chart.id).subscribe(
                     (data) => {
                       this.chart = data;
                       this.router.navigate(["./home"]);

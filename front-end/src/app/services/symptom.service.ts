@@ -8,8 +8,7 @@ export class SymptomService {
 
   private headers = {
     headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': 'my-auth-token'
+      'Content-Type':  'application/json'
     })
   };
 
@@ -25,8 +24,8 @@ export class SymptomService {
     return this.http.get('http://localhost:8080/api/symptoms?name='+name, this.headers);
   }
 
-  post(s: Symptom): Observable<any>{
-    return this.http.post('http://localhost:8080/api/symptoms', s, this.headers);
+  post(s: any[]): Observable<any>{
+    return this.http.post('http://localhost:8080/api/symptoms', JSON.stringify(s), this.headers);
   }
 
   put(s: Symptom, id: number): Observable<any>{
