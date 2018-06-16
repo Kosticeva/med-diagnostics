@@ -32,7 +32,7 @@ public class Prescription implements Serializable{
 	
 	public Prescription() {}
 	
-	public Prescription(int id, String plan, Drug drug) {
+	public Prescription(Integer id, String plan, Drug drug) {
 		super();
 		this.id = id;
 		this.plan = plan;

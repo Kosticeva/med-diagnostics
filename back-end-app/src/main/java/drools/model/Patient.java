@@ -42,7 +42,7 @@ public class Patient implements Serializable{
 	
 	public Patient() {}
 	
-	public Patient(String firstName, String lastName, int id, List<Allergy> allergens) {
+	public Patient(String firstName, String lastName, Integer id, List<Allergy> allergens) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;

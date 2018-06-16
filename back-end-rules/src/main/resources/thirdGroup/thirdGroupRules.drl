@@ -14,8 +14,8 @@ import drools.model.Drug;
 //declare any global variables here
 
 rule "Hronicna bubrezna bolest"
-	salience $count.intValue()*10000/7+$diabetes.intValue()*10000/7+$hyperTens.intValue()*10000/7
-	//activation-group "x"
+	salience $count.intValue()*10000/7+$diabC.intValue()*10000/7+$hypC.intValue()*10000/7
+	activation-group "x"
 	agenda-group "diagnose"
     when
         Chart($exams: examinations)
@@ -31,6 +31,10 @@ rule "Hronicna bubrezna bolest"
 			Disease(name == "Dijabetes") from $dis,
     		count(1)
     	)
+    	$diabC: Number(intValue >= 0) from accumulate (
+    		Number() from $diabetes,
+    		count(1)
+    	)
     	$hyperTens: Number(intValue > -1) from accumulate (
         	Examination(
         		this != $exam,
@@ -40,7 +44,11 @@ rule "Hronicna bubrezna bolest"
         	Disease(name == "Hipertenzija") from $diag,
         	count(1)
     	)
-    	eval($diabetes.intValue()+$hyperTens.intValue() > 0)
+    	$hypC: Number(intValue >= 0) from accumulate (
+    		Number() from $hyperTens,
+    		count(1)
+    	)
+    	eval(($diabC.intValue()+$hypC.intValue()) > 0)
     then
     	System.out.println("Salience je "+($count.intValue()*10000/7+$diabetes.intValue()*10000/7+$hyperTens.intValue()*10000/7));
     	System.out.println("Count: "+$count.intValue()+", diabetes: "+$diabetes.intValue()+", hyperTens: "+$hyperTens.intValue());
@@ -52,8 +60,8 @@ end
 
 rule "Akutna bubrezna povreda"
     //include attributes such as "salience" here...
-    salience ($count.intValue()*10000/8+$postOp.intValue()*10000/8+$highTemp.intValue()*10000/8+$antiBio.intValue()*10000/8)
-    //activation-group "x"
+    salience ($count.intValue()*10000/8+$pC.intValue()*10000/8+$hC.intValue()*10000/8+$aC.intValue()*10000/8)
+    activation-group "x"
     agenda-group "diagnose"
     when
         Chart($exams: examinations)
@@ -68,6 +76,10 @@ rule "Akutna bubrezna povreda"
     		Symptom(name=="Oporavlja se od operacije") from $symptoms,
     		count(1)
     	)
+    	$pC: Number(intValue >= 0) from accumulate (
+    		Number() from $postOp,
+    		count(1)
+    	)
     	$highTemp: Number(intValue > -1) from accumulate (
     		Examination(
         		this != $exam,
@@ -75,6 +87,10 @@ rule "Akutna bubrezna povreda"
         		this meets[14d] $exam) from $exams and
         	Symptom(name == "Temperatura veca od 38" || name == "Temperatura od 40 do 41") from $symptoms1,
         	count(1)
+    	)
+    	$hC: Number(intValue >= 0) from accumulate (
+    		Number() from $highTemp,
+    		count(1)
     	)
     	$antiBio: Number(intValue > -1) from accumulate (
     		Examination(
@@ -86,7 +102,11 @@ rule "Akutna bubrezna povreda"
         	Drug(drugType == DrugType.ANTIBIOTIC) from $drug,
         	count(1)
     	)
-    	eval($postOp.intValue() + $highTemp.intValue() + $antiBio.intValue() > 0)
+    	$aC: Number(intValue >= 0) from accumulate (
+    		Number() from $antiBio,
+    		count(1)
+    	)
+    	eval(($hC.intValue()+$aC.intValue()+$pC.intValue()) > 0)
     then
     	System.out.println("Salience je "+ ($count.intValue()*10000/8+$postOp.intValue()*10000/8+$highTemp.intValue()*10000/8+$antiBio.intValue()*10000/8));
     	System.out.println("Count: "+$count.intValue()+", postOp: "+$postOp.intValue()+", highTemp: "+$highTemp.intValue()+", antiBio: "+$antiBio.intValue()); 

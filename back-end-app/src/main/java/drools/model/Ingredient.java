@@ -26,7 +26,7 @@ public class Ingredient implements Serializable{
 	
 	public Ingredient() {}
 	
-	public Ingredient(int id, String name) {
+	public Ingredient(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 	}

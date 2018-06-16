@@ -1,4 +1,4 @@
-insert into patient(patient_first_name, patient_last_name) values ("Bolesnik", "Bolesnic");
+insert into patient(patient_first_name, patient_last_name, patient_id) values ("Bolesnik", "Bolesnic", 7);
 insert into chart(chart_id, patient_patient_id) values (7, 7);
 
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (71, "2017-09-01", 5, 4, 1);

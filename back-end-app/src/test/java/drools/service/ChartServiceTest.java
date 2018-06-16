@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -22,7 +21,6 @@ import drools.model.Chart;
 import drools.model.Doctor;
 import drools.model.Examination;
 import drools.model.Patient;
-import drools.model.enums.DoctorType;
 import drools.repository.ChartRepository;
 
 @RunWith(SpringRunner.class)
@@ -100,7 +98,6 @@ public class ChartServiceTest {
 		c = chartRepository.saveAndFlush(c);
 		em.detach(c);
 		
-		List<Chart> allChartsBefore = chartRepository.findAll();
 		assertThat(chartService.updateChart(c)).isNull();
 		
 		Patient p = new Patient("pp", "mm", 555, null);

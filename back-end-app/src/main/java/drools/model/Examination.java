@@ -62,7 +62,7 @@ public class Examination  implements Serializable{
 	
 	public Examination() {}
 
-	public Examination(int id, Date date, Doctor doctor, List<Symptom> symptoms, Disease disease,
+	public Examination(Integer id, Date date, Doctor doctor, List<Symptom> symptoms, Disease disease,
 			Prescription prescription) {
 		super();
 		this.id = id;

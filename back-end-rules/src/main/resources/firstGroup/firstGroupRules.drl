@@ -12,7 +12,7 @@ import java.util.Date;
 
 rule "Prehlada"
 	salience $count.intValue()*10000/5
-	//activation-group "x"
+	activation-group "x"
 	agenda-group "diagnose"
     when
         Chart()
@@ -33,7 +33,7 @@ end
 
 rule "Groznica"
 	salience $count.intValue()*10000/7
-	//activation-group "x"
+	activation-group "x"
 	agenda-group "diagnose"
 	when
 		Chart()
@@ -53,7 +53,7 @@ end
 
 rule "Upala krajnika"
     salience ($count.intValue()*10000/8)
-    //activation-group "x"
+    activation-group "x"
     agenda-group "diagnose"
     when
         Chart()
@@ -73,8 +73,8 @@ rule "Upala krajnika"
 end
 
 rule "Sinusna infekcija"
-	salience $count.intValue()*10000/7 + $specCount.intValue()*10000/7
-	//activation-group "x"
+	salience $count.intValue()*10000/7 + $sC.intValue()*10000/7
+	activation-group "x"
 	agenda-group "diagnose"
 	when
 		Chart($exams: examinations)
@@ -93,7 +93,11 @@ rule "Sinusna infekcija"
         	Disease( name == "Prehlada" || name == "Groznica"),
         	count(1)
         )
-        eval($count.intValue() + $specCount.intValue() >= 4)
+        $sC: Number(intValue >= 0) from accumulate (
+        	Number() from $specCount,
+        	count(1)
+        )
+        eval(($count.intValue() + $sC.intValue()) >= 4)
 	then
 		System.out.println("Salience je "+($count.intValue()*10000/7 + $specCount.intValue()*10000/7) +" (spec count je "+$specCount.intValue()+")");
 		Disease d = new Disease(3, "Sinusna infekcija");

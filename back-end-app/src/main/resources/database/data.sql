@@ -34,55 +34,55 @@ insert into symptom (symptom_id, symptom_name) values (23, "Dijareja");
 insert into symptom (symptom_id, symptom_name) values (24, "Oporavlja se od operacije");
 
 
-insert into link(disease_disease_id, symptom_symptom_id) values (2, 1);
-insert into link(disease_disease_id, symptom_symptom_id) values (2, 2);
-insert into link(disease_disease_id, symptom_symptom_id) values (2, 3);
-insert into link(disease_disease_id, symptom_symptom_id) values (2, 4);
-insert into link(disease_disease_id, symptom_symptom_id) values (2, 5);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (2, 1, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (2, 2, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (2, 3, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (2, 4, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (2, 5, 0);
 
-insert into link(disease_disease_id, symptom_symptom_id) values (3, 2);
-insert into link(disease_disease_id, symptom_symptom_id) values (3, 3);
-insert into link(disease_disease_id, symptom_symptom_id) values (3, 1);
-insert into link(disease_disease_id, symptom_symptom_id) values (3, 4);
-insert into link(disease_disease_id, symptom_symptom_id) values (3, 5);
-insert into link(disease_disease_id, symptom_symptom_id) values (3, 6);
-insert into link(disease_disease_id, symptom_symptom_id) values (3, 7);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (3, 2, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (3, 3, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (3, 1, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (3, 4, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (3, 5, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (3, 6, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (3, 7, 0);
 
-insert into link(disease_disease_id, symptom_symptom_id) values (4, 3);
-insert into link(disease_disease_id, symptom_symptom_id) values (4, 8);
-insert into link(disease_disease_id, symptom_symptom_id) values (4, 9);
-insert into link(disease_disease_id, symptom_symptom_id) values (4, 1);
-insert into link(disease_disease_id, symptom_symptom_id) values (4, 6);
-insert into link(disease_disease_id, symptom_symptom_id) values (4, 10);
-insert into link(disease_disease_id, symptom_symptom_id) values (4, 11);
-insert into link(disease_disease_id, symptom_symptom_id) values (4, 12);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (4, 3, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (4, 8, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (4, 9, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (4, 1, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (4, 6, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (4, 10, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (4, 11, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (4, 12, 0);
 
-insert into link(disease_disease_id, symptom_symptom_id) values (5, 13);
-insert into link(disease_disease_id, symptom_symptom_id) values (5, 1);
-insert into link(disease_disease_id, symptom_symptom_id) values (5, 3);
-insert into link(disease_disease_id, symptom_symptom_id) values (5, 7);
-insert into link(disease_disease_id, symptom_symptom_id) values (5, 11);
-insert into link(disease_disease_id, symptom_symptom_id) values (5, 5);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (5, 13, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (5, 1, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (5, 3, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (5, 7, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (5, 11, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (5, 5, 0);
 
-insert into link(disease_disease_id, symptom_symptom_id) values (6, 14);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (6, 14, 0);
 
-insert into link(disease_disease_id, symptom_symptom_id) values (7, 15);
-insert into link(disease_disease_id, symptom_symptom_id) values (7, 16);
-insert into link(disease_disease_id, symptom_symptom_id) values (7, 17);
-insert into link(disease_disease_id, symptom_symptom_id) values (7, 18);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (7, 15, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (7, 16, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (7, 17, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (7, 18, 0);
 
-insert into link(disease_disease_id, symptom_symptom_id) values (8, 17);
-insert into link(disease_disease_id, symptom_symptom_id) values (8, 20);
-insert into link(disease_disease_id, symptom_symptom_id) values (8, 19);
-insert into link(disease_disease_id, symptom_symptom_id) values (8, 21);
-insert into link(disease_disease_id, symptom_symptom_id) values (8, 22);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (8, 17, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (8, 20, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (8, 19, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (8, 21, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (8, 22, 0);
 
-insert into link(disease_disease_id, symptom_symptom_id) values (9, 17);
-insert into link(disease_disease_id, symptom_symptom_id) values (9, 19);
-insert into link(disease_disease_id, symptom_symptom_id) values (9, 21);
-insert into link(disease_disease_id, symptom_symptom_id) values (9, 22);
-insert into link(disease_disease_id, symptom_symptom_id) values (9, 23);
-insert into link(disease_disease_id, symptom_symptom_id) values (9, 24);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (9, 17, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (9, 19, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (9, 21, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (9, 22, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (9, 23, 0);
+insert into link(disease_disease_id, symptom_symptom_id, type) values (9, 24, 1);
 
 
 insert into ingredient(ingredient_id, ingredient_name) values (1, "Penicilin");
@@ -191,9 +191,9 @@ insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_di
 insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (5, "2017-6-22", 1, 2, 5);
 insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (6, "2017-5-21", 2, 5, 6);
 insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (7, "2017-4-20", 3, 2, 7);
-insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (8, "2017-3-19", 4, 6, 8);
-insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (9, "2017-2-18", 1, 2, 9);
-insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (10, "2017-1-17", 2, 7, 10);
+insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (8, "2017-3-19", 3, 6, 8);
+insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (9, "2017-2-18", 3, 2, 9);
+insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (10, "2017-1-17", 3, 7, 10);
 insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (11, "2016-12-16", 3, 2, 11);
 insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (12, "2016-11-15", 4, 8, 12);
 insert into examination(exam_id, exam_date, doctor_doctor_licence_id, disease_disease_id, prescription_prescription_id) values (13, "2016-10-14", 1, 2, 13);
