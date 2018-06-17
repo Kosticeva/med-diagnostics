@@ -1,24 +1,25 @@
 <div>
   <nav class="navbar navbar-dark bg-success d-flex justify-content-between">
-      <div class="dropdown">
-        <a class="nav-link dropdown-toggle btn btn-lg btn-outline-light" data-toggle="dropdown" id="navbarDropdown" role="button" (click)="openDropdown()">
-          Dodaj
-        </a>
-        <div class="dropdown-menu" [ngStyle]="{'z-index': dropdownOpen? '1' : '-1' }">
-          <a class="dropdown-item" (click)="openNewDisease()">Bolest</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" (click)="openNewDoctor()">Doktor</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" (click)="openNewDrug()">Lek</a>
-        </div>
-      </div>
-      <a class="navbar-brand d-flex flex-row" href="../home">
+      <span class="btn-group">
+            <a class="nav-link dropdown-toggle btn btn-lg btn-outline-light" data-toggle="dropdown" id="navbarDropdown" role="button" (click)="openDropdown()">
+            Dodaj
+            </a>
+            <a class="nav-link dropdown-toggle btn btn-lg btn-outline-light" data-toggle="dropdown" id="navbarDropdown1" role="button" (click)="openDropdownEdit()">
+                Izmeni
+            </a>
+        </span>
+      <a class="navbar-brand d-flex flex-row" routerLink="/home">
         <h1><i class="fa fa-home"></i>
           &nbsp;&nbsp;Pocetna</h1>
       </a>
-      <a class="nav-link btn btn-lg btn-outline-light" (click)="logout()" id="navbarLogout" role="button">
-          Izadji
-      </a>
+      <span class="btn-group">
+            <a class="nav-link btn btn-lg btn-outline-light" (click)="editData()" id="navbarButton" role="button">
+                Profil
+            </a>
+          <a class="nav-link btn btn-lg btn-outline-light" (click)="logout()" id="navbarLogout" role="button">
+            Izadji
+        </a></span>
+      
   </nav>
   <div class="optional-menu container-fluid" *ngIf="dropdownOpen">
       <div class="row">
@@ -30,10 +31,43 @@
               </ul>
           </div>
           <div class="col-9 pl-5 pr-5">
-              <app-new-doctor *ngIf="newDoctorOpen && !newDiseaseOpen && !newDrugOpen"></app-new-doctor>
-              <app-new-disease *ngIf="!newDoctorOpen && newDiseaseOpen && !newDrugOpen"></app-new-disease>
-              <app-new-drug *ngIf="!newDoctorOpen && !newDiseaseOpen && newDrugOpen"></app-new-drug>
+              <app-new-doctor *ngIf="newDoctorOpen && !newDiseaseOpen && !newDrugOpen" [doctor]="newDoct"></app-new-doctor>
+              <app-new-disease *ngIf="!newDoctorOpen && newDiseaseOpen && !newDrugOpen" [disease]=""></app-new-disease>
+              <app-new-drug *ngIf="!newDoctorOpen && !newDiseaseOpen && newDrugOpen" [drug]=""></app-new-drug>
           </div> 
       </div>
+  </div>
+  <div class="optional-menu container-fluid" *ngIf="profileOpen">
+    <app-new-doctor [doctor]="doctor"></app-new-doctor>
+  </div>
+  <div class="optional-menu container-fluid" *ngIf="editOpen">
+    <div class="row">
+        <div class="col-3">
+            <ul class="list-group">
+                <li class="list-group-item" [ngClass]="{'active': searchFor === 1}" (click)="openSearchDisease()">Bolest</li>
+                <li class="list-group-item" [ngClass]="{'active': searchFor === 2}" (click)="openSearchDrug()">Lek</li>
+            </ul>
+        </div>
+        <div class="col-9 pl-5 pr-5" *ngIf="searchFor !== -1 && !startDisEdit && !startDrugEdit">
+            <br />
+            <form class="form-group">
+                <input type="text" class="form-control w-100" placeholder="Pronadji ..." name="query" [(ngModel)]="query" (change)="getData()"/>
+            </form>
+            <ul class="list-group" *ngIf="searchFor === 1">
+                <li class="list-group-item d-flex justify-content-between" *ngFor="let disease of data" (click)="editDisease(disease)">{{disease.name}}
+                    <button class="btn btn-warning" (click)="editDisease(disease)"><i class="fa fa-pencil"></i>Izmeni</button>
+                </li>
+            </ul>
+            <ul class="list-group" *ngIf="searchFor === 2">
+                <li class="list-group-item d-flex justify-content-between" *ngFor="let drug of data">{{drug.name}}
+                    <button class="btn btn-warning" (click)="editDrug(drug)"><i class="fa fa-pencil"></i>Izmeni</button>
+                </li>
+            </ul>
+        </div>
+        <div class="col-9 pl-5 pr-5" *ngIf="startDisEdit || startDrugEdit">
+            <app-new-disease *ngIf="startDisEdit" [disease]="disease"></app-new-disease>
+            <app-new-drug *ngIf="startDrugEdit" [drug]="drug"></app-new-drug>
+        </div> 
+    </div>
   </div>
 </div>

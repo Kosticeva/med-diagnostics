@@ -9,11 +9,14 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.KieSession;
 
 import drools.model.Chart;
 import drools.model.Examination;
 import drools.model.Patient;
 import drools.repository.ChartRepository;
+import drools.resource.AuthenticationResource;
 
 @Service
 public class ChartService {
@@ -100,7 +103,12 @@ public class ChartService {
 	
 	@Transactional
 	public Chart updateChart(Chart chart) {
-		
+		KieSession ks = AuthenticationResource.getKieSessionOf();
+		FactHandle f = null;
+		if(ks != null){
+			f = ks.getFactHandle(findById(chart.getId()));
+		}
+
 		if(chart.getPatient() == null) {
 			System.out.println("Nema pacijenta");
 			return null;
@@ -140,6 +148,10 @@ public class ChartService {
 		
 		chart.setExaminations(newExams);
 		
+		if(f != null){
+			ks.update(f, chart);
+		}
+
 		return chartRepository.save(chart);
 	}
 	

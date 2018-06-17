@@ -4,6 +4,7 @@ import { Disease } from '../../model/disease';
 import { Symptom } from '../../model/symptom';
 import { SymptomService } from '../../services/symptom.service';
 import { LinkService } from '../../services/link.service';
+import { QueryService } from '../../services/query.service';
 
 @Component({
   selector: 'app-new-disease',
@@ -15,25 +16,47 @@ export class NewDiseaseComponent implements OnInit {
   error: string;
   success: string;
   symptoms: string;
-  disease: Disease;
+  @Input() disease: Disease;
   realSymptoms: any[];
   @Input() open: boolean;
+  mode: boolean;
+
+  beforeSymptoms: Symptom[];
 
   constructor(
     private diseaseService: DiseaseService,
     private symptomService: SymptomService,
-    private linkService: LinkService
+    private linkService: LinkService,
+    private queryService: QueryService
   ) { }
 
   ngOnInit() {
     this.error = "";
     this.success = "";
     this.symptoms= "";
-    this.disease = {
-      id: undefined,
-      name: ''
-    };
+    this.beforeSymptoms = [];
+    if(this.disease.id === -1){
+      this.mode = true;
+    }else{
+      this.mode = false;
+    }
     this.realSymptoms = [];
+    this.queryService.findAllSymptoms(this.disease).subscribe(
+      (data) => {
+        this.stringifySymps(data);
+      }
+    )
+  }
+
+  stringifySymps(data: Symptom[]) {
+    this.symptoms = "";
+    for(let i=0; i<data.length; i++){
+      this.symptoms += data[i].name;
+      if(i !== data.length-1){
+        this.symptoms += ",";
+      }
+    }
+    this.beforeSymptoms = data;
   }
 
   createDisease() {
@@ -62,26 +85,44 @@ export class NewDiseaseComponent implements OnInit {
   }
 
   createDiseaseII(symps: any[]) {
-    this.diseaseService.post(this.disease).subscribe(
-      (data) => {
-        this.disease = data;
-        this.createLinks(data, symps);
-      },
-      error => { this.error = "Nesto je krenulo po zlu"; }
-    );
+    if(this.mode){
+      this.diseaseService.post(this.disease).subscribe(
+        (data) => {
+          this.disease = data;
+          this.createLinks(data, symps);
+        },
+        error => { this.error = "Nesto je krenulo po zlu"; }
+      );
+    }else {
+      this.diseaseService.put(this.disease, this.disease.id).subscribe(
+        (data) => {
+          this.disease = data;
+          this.createLinks(data, symps);
+        },
+        error => { this.error = "Nesto je krenulo po zlu"; }
+      );
+    }
   }
 
   createLinks(d: Disease, symptoms: Symptom[]) {
-    for(let i=0; i<symptoms.length; i++) {
-      this.linkService.putLink(d.id, symptoms[i].id).subscribe(
-        data => {
-          this.error = "";
-          this.success = "Bolest "+d.name+" uspesno kreirana!";
-        },
-        error => {
-          this.error = "Nesto je krenulo po zlu";
-          this.success = "";
-        });
-    }
+
+    this.linkService.removeLink(d.id, this.beforeSymptoms).subscribe(
+      (data) => {
+        this.linkService.putLink(d.id, symptoms).subscribe(
+          data => {
+            this.error = "";
+            if(this.mode)
+              this.success = "Bolest "+d.name+" uspesno kreirana!";
+            else
+            this.success = "Bolest "+d.name+" uspesno izmenjena!";
+          },
+          error => {
+            this.error = "Nesto je krenulo po zlu";
+            this.success = "";
+          });
+      }
+    );
+
+    
   }
 }

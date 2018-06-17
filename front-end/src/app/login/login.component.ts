@@ -16,10 +16,7 @@ export class LoginComponent implements OnInit {
     main: string
   };
 
-  data: {
-    username: string,
-    password: string
-  }
+  data: Doctor;
 
   constructor(
     private loginService: LoginService,
@@ -28,10 +25,13 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.data = {
+      licenceId: -1,
       username: '',
-      password: ''
+      password: '',
+      firstName: '',
+      lastName: '',
+      type: 'REGULAR'
     };
-
     this.errors = {
       username: '',
       password: '',
@@ -54,16 +54,6 @@ export class LoginComponent implements OnInit {
 
     this.errors.password = "";
     
-    this.loginService.login(this.data).subscribe(
-      data => {
-        console.log(data);
-        this.router.navigate(['/home']);
-      },
-      errors => {
-        this.errors.username = "";
-        this.errors.password = "";
-        this.errors.main = "Kombinacija korisnickog imena i sifre nije dobra.";
-      }
-    );
+    this.loginService.login(this.data);
   }
 }

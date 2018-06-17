@@ -1,29 +1,19 @@
 package drools.security;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 
 @Configuration
 @EnableWebSecurity
 @Order(SecurityProperties.BASIC_AUTH_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-	@Autowired
-	DoctorDetailsService doctorDetailsService;
+	/*@Autowired
+	DoctorDetailsService doctorDetailsService;*/
 
 	/*@Bean
     public DoctorUsernamePasswordAuthenticationFilter authenticationFilter() throws Exception {
@@ -38,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception{
 		
 		http
-			.authorizeRequests()
-	        .anyRequest().authenticated()
+			/*.authorizeRequests()
+	        .anyRequest()//.authenticated()
 		 .and()
             .formLogin()
             .loginPage("http://localhost:4200/login")
@@ -54,14 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .logoutUrl("/logout") //the URL on which the clients should post if they want to logout
             .logoutSuccessHandler(this::logoutSuccessHandler)
             .invalidateHttpSession(true)
-        .and()
+        .and()*/
 			.csrf()
 			.disable()
-		 	.cors()
-		 	.disable();
+		 	/*.cors()
+		 	.disable()*/;
 	}
 	
-	@Override
+	/*@Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(doctorDetailsService);
 	}
@@ -91,5 +81,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
  
     	System.out.println("Uspesno logOutovanje!");
         response.setStatus(HttpStatus.OK.value());
-    }
+    }*/
 }

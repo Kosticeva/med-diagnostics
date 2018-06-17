@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import drools.model.Symptom;
 import drools.service.SymptomService;
 
-//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class SymptomResource {
 
@@ -48,11 +48,6 @@ public class SymptomResource {
 
 		List<Symptom> retVal = new ArrayList<Symptom>();
 		for(Symptom symptom: symptoms){
-			if(symptom.getId() != null) {
-				System.out.println("post smyp - IMA ID");
-				return null;
-			}
-			
 			Symptom s = symptomService.createNewSymptom(symptom);
 			if(s!=null) {
 				retVal.add(s);

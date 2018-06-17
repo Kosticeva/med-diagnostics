@@ -2,12 +2,12 @@ insert into patient(patient_first_name, patient_last_name, patient_id) values ("
 insert into chart(chart_id, patient_patient_id) values (6, 6);
 
 
-insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (61, "2017-02-01", 3, 1, 2);
-insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (62, "2016-02-15", 4, 2, 7);
-insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (63, "2017-03-01", 9, 3, 10);
-insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (64, "2017-03-15", 3, 2, 7);
-insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (65, "2017-04-01", 4, 3, 10);
-insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (66, "2017-04-15", 9, 1, 2);
+insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (61, "2018-02-01", 3, 1, 2);
+insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (62, "2018-02-15", 4, 2, 7);
+insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (63, "2018-03-01", 9, 3, 10);
+insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (64, "2018-03-15", 3, 2, 7);
+insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (65, "2018-04-01", 4, 3, 10);
+insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (66, "2018-04-15", 9, 1, 2);
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (67, "2018-05-01", 3, 3, 10);
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (68, "2018-05-15", 4, 1, 2);
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (69, "2018-06-01", 9, 2, 7);

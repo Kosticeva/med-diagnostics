@@ -20,7 +20,7 @@ import drools.model.Allergy;
 import drools.service.AllergyService;
 
 
-//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class AllergyResource {
 
@@ -51,9 +51,6 @@ public class AllergyResource {
 		List<Allergy> retVal = new ArrayList<Allergy>();
 
 		for(Allergy allergy: allergies){
-			if(allergy.getId() != null) {
-				return null;
-			}
 			
 			Allergy a = allergyService.createNewAllergy(allergy);
 			if(a!=null) {

@@ -11,6 +11,8 @@ import { Chart } from '../model/chart';
 import { ExamService } from '../services/exam.service';
 import { ChartService } from '../services/chart.service';
 import { ReportService } from '../services/report.service';
+import { LoginService } from '../services/login.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-exam',
@@ -31,10 +33,26 @@ export class ExamComponent implements OnInit {
     private prescriptionService: PrescriptionService,
     private examService: ExamService,
     private chartService: ChartService,
-    private reportsService: ReportService
+    private reportsService: ReportService,
+    private loginService: LoginService,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
+    this.http.get('http://localhost:8080/authenticate/'+this.loginService.getDoctor()).subscribe(
+      (data) => {
+          if(this.loginService.getDoctor() === undefined){
+            this.loginService.setDoctor();
+          }
+          this.start();
+        },
+      error => {
+        this.router.navigate(['/login']);
+      }
+    );
+  }
+
+  start() {
     this.exam = {
       date: null,
       disease: {
@@ -100,7 +118,7 @@ export class ExamComponent implements OnInit {
           }
         );
       }
-    )
+    );
   }
 
   goToChart() {
@@ -136,13 +154,7 @@ export class ExamComponent implements OnInit {
               this.examService.put(this.exam, this.exam.id).subscribe(
                 (data) => {
                   this.exam = data;
-                  this.chart.examinations.push(this.exam);
-                  this.chartService.put(this.chart, this.chart.id).subscribe(
-                    (data) => {
-                      this.chart = data;
-                      this.router.navigate(["./home"]);
-                    }
-                  );
+                  this.router.navigate(["./home"]);
                 }
               );
             }

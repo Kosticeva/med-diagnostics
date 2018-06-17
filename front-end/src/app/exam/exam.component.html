@@ -49,7 +49,7 @@
     </div>
   </div>
   <button class="btn btn-lg btn-success container-fluid" (click)="finishExam()"
-    [ngClass]="{'disabled': exam.prescription === null || exam.disease === null || exam.symptoms.length===0 }">
+    [ngClass]="{'disabled': exam.prescription.drug.name === '' || exam.disease.name === '' || exam.symptoms.length===0 }">
         <i class="fa fa-lg fa-check"></i>
         Zavrsi</button>
 </div>

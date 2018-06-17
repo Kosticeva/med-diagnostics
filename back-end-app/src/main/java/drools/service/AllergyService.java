@@ -8,16 +8,19 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.KieSession;
 
 import drools.model.Allergy;
 import drools.repository.AllergyRepository;
+import drools.resource.AuthenticationResource;
 
 @Service
 public class AllergyService {
 
 	@Autowired
 	AllergyRepository allergyRepository;
-	
+
 	@Transactional
 	public Allergy findById(int id) {
 		Optional<Allergy> a = allergyRepository.findById(id);
@@ -50,6 +53,12 @@ public class AllergyService {
 	
 	@Transactional
 	public Allergy updateAllergy(Allergy allergy) {
+		KieSession ks = AuthenticationResource.getKieSessionOf();
+		FactHandle f = null;
+		if(ks != null){
+			f = ks.getFactHandle(findById(allergy.getId()));
+		}
+
 		if(allergy.getName() == null || allergy.getName().equals("")) {
 			System.out.println("Nema naziva alergije");
 			return null;
@@ -69,7 +78,10 @@ public class AllergyService {
 			}
 		}
 		
-		
+		if(f != null){
+			ks.update(f, allergy);
+		}
+
 		return allergyRepository.save(allergy);
 	}
 	

@@ -3,28 +3,25 @@ package drools.security;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import drools.model.Doctor;
 import drools.model.enums.DoctorType;
 import drools.repository.DoctorRepository;
 
-@Service
+//@Service
 public class DoctorDetailsService implements UserDetailsService {
 
-	@Autowired
+	//@Autowired
 	private DoctorRepository doctorRepository;
 
-	private final PasswordEncoder passwordEncoder;
+	//private final PasswordEncoder passwordEncoder;
 	
-    public DoctorDetailsService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+    public DoctorDetailsService(/*PasswordEncoder passwordEncoder*/) {
+       // this.passwordEncoder = passwordEncoder;
     }
 	
 	@Override
@@ -44,7 +41,7 @@ public class DoctorDetailsService implements UserDetailsService {
 			auths.add(new DoctorAuthority("REGULAR"));
 		}
 		
-		return new User(user.getUsername(), passwordEncoder.encode("password"), auths);
+		return new User(user.getUsername(), /*passwordEncoder.encode("*/user.getPassword()/*")*/, auths);
 	}
 
 }

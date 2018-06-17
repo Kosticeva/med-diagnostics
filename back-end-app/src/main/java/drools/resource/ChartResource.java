@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import drools.model.Chart;
 import drools.service.ChartService;
 
-//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class ChartResource {
 

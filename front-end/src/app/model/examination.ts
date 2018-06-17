@@ -8,7 +8,7 @@ export class Examination {
     constructor(
         public id: number,
         public date: any,
-        public doctor: Doctor,
+        public doctor: any,
         public disease: Disease,
         public prescription: Prescription,
         public symptoms: Symptom[]

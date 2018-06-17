@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReportService } from '../services/report.service';
 import { Patient } from '../model/patient';
+import { LoginService } from '../services/login.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-reports',
@@ -16,12 +18,30 @@ export class ReportsComponent implements OnInit {
   finished: number;
 
   constructor(
-    private reportsService: ReportService
+    private reportsService: ReportService,
+    private loginService: LoginService,
+    private http: HttpClient,
+    private router: Router
   ) { 
-    this.finished = 0;
   }
 
   ngOnInit() {
+    
+    this.finished = 0;
+    this.http.get('http://localhost:8080/authenticate/'+this.loginService.getDoctor()).subscribe(
+      (data) => {
+          if(this.loginService.getDoctor() === undefined){
+            this.loginService.setDoctor();
+          }
+          this.start();
+        },
+      error => {
+        this.router.navigate(['/login']);
+      }
+    );
+  }
+
+  start() {
     this.reportsService.addicts().subscribe(
       (data) => {
         this.addicts = data

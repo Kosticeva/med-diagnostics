@@ -7,6 +7,8 @@ import { ExamService } from '../services/exam.service';
 import { Chart } from '../model/chart';
 import { Examination } from '../model/examination';
 import { Doctor } from '../model/doctor';
+import { HttpClient } from '@angular/common/http';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-start-exam',
@@ -26,7 +28,9 @@ export class StartExamComponent implements OnInit {
     private router: Router,
     private chartService: ChartService,
     private patientService: PatientService,
-    private examService: ExamService
+    private examService: ExamService,
+    private http: HttpClient,
+    private loginService: LoginService
   ) { }
 
   ngOnInit() {
@@ -36,7 +40,14 @@ export class StartExamComponent implements OnInit {
     this.searching = false;
     this.exam = {
       id: null,
-      doctor: null,
+      doctor: {
+        licenceId: null,
+        firstName: '',
+        lastName: '',
+        username: '',
+        password: '',
+        type: "REGULAR"
+      },
       date: null,
       prescription: null,
       symptoms: [],
@@ -47,11 +58,17 @@ export class StartExamComponent implements OnInit {
       patient: null,
       examinations: []
     };
-    /*this.chartService.getAll().subscribe(
+    this.http.get('http://localhost:8080/authenticate/'+this.loginService.getDoctor()).subscribe(
       (data) => {
-        this.patients = data;
+          if(this.loginService.getDoctor() === undefined){
+            this.loginService.setDoctor();
+          }
+          this.exam.doctor.licenceId = data;
+        },
+      error => {
+        this.router.navigate(['/login']);
       }
-    )*/
+    );
   }
 
   showForm() {
@@ -59,7 +76,6 @@ export class StartExamComponent implements OnInit {
   }
 
   goForward() {
-    this.exam.doctor = new Doctor("c", "d", "k", "a", "REGULAR", 1);
     this.examService.post(this.exam).subscribe(
       (data) => {
         this.exam = data;

@@ -17,7 +17,11 @@ export class LinkService {
     private http: HttpClient
   ) { }
 
-  putLink(d: number, s: number): Observable<any>{
-    return this.http.post('http://localhost:8080/api/diseases/'+d+'/symptoms/'+s, null, this.headers);
+  putLink(d: number, s: Symptom[]): Observable<any>{
+    return this.http.post('http://localhost:8080/api/diseases/'+d+'/symptoms', JSON.stringify(s), this.headers);
+  }
+
+  removeLink(d: number, s: Symptom[]): Observable<any>{
+    return this.http.put('http://localhost:8080/api/diseases/'+d+'/symptoms', JSON.stringify(s) ,this.headers);
   }
 }

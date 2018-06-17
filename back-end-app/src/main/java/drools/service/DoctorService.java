@@ -8,10 +8,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.KieSession;
 
 import drools.model.Doctor;
 import drools.repository.DoctorRepository;
-
+import drools.resource.AuthenticationResource;
 
 @Service
 public class DoctorService {
@@ -71,6 +73,13 @@ public class DoctorService {
 	
 	@Transactional
 	public Doctor updateDoctor(Doctor doctor) {
+
+		KieSession ks = AuthenticationResource.getKieSessionOf();
+		FactHandle f = null;
+		if(ks != null){
+			f = ks.getFactHandle(findById(doctor.getLicenceId()));
+		}
+
 		if(doctor.getFirstName() == null || doctor.getFirstName().equals("")) {
 			System.out.println("Nema imena za doktora");
 			return null;
@@ -101,6 +110,10 @@ public class DoctorService {
 			return null;
 		}
 		
+		if(f != null){
+			ks.update(f, doctor);
+		}
+
 		return doctorRepository.save(doctor);
 	}
 	

@@ -9,11 +9,13 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import drools.SampleApp;
+import org.kie.api.runtime.rule.FactHandle;
+
 import drools.model.Allergy;
 import drools.model.Chart;
 import drools.model.Drug;
 import drools.model.Patient;
+import drools.model.reports.PatientReport;
 
 @Service
 public class ReportsService {
@@ -27,92 +29,103 @@ public class ReportsService {
 	@Autowired
 	DrugService drugService;
 	
-	public List<Patient> findChronics(){
+	public List<Patient> findChronics(KieSession ks){
 		
-		KieSession ks = SampleApp.kieContainer().newKieSession();
 		ks.getAgenda().getAgendaGroup("reports-chronics").setFocus();
 		
 		List<Chart> charts = chartService.findAll();
-		
+		List<FactHandle> chartsF = new ArrayList<>();
+
 		for(Chart c: charts) {
-			ks.insert(c);
+			chartsF.add(ks.insert(c));
 		}
+
+		List<Patient> chronics = new ArrayList<>();
+		ks.setGlobal("chronics", chronics);
 		
 		ks.fireAllRules();
+
+		ks.setGlobal("chronics", null);
 		
-		Collection<?> coll = ks.getObjects(new ClassObjectFilter(Patient.class));
-		
-		List<Patient> chronics = new ArrayList<Patient>();
-		for(Object w: coll.toArray()) {
-			chronics.add((Patient)w);
+		for(FactHandle ff: chartsF){
+			ks.delete(ff);
 		}
 		
 		return chronics;
 	}
 	
-	public List<Patient> findAddicts(){
+	public List<Patient> findAddicts(KieSession ks){
 		
-		KieSession ks = SampleApp.kieContainer().newKieSession();
 		ks.getAgenda().getAgendaGroup("reports-addicts").setFocus();
 		
 		List<Chart> charts = chartService.findAll();
-		
+		List<FactHandle> chartsF = new ArrayList<>();
+
 		for(Chart c: charts) {
-			ks.insert(c);
+			chartsF.add(ks.insert(c));
+			System.out.println(c);
 		}
-		
+
+		List<Patient> addicts = new ArrayList<>();
+		ks.setGlobal("addicts", addicts);
+
 		ks.fireAllRules();
 		
-		Collection<?> coll = ks.getObjects(new ClassObjectFilter(Patient.class));
-		
-		List<Patient> addicts = new ArrayList<Patient>();
-		for(Object w: coll.toArray()) {
-			addicts.add((Patient)w);
+		ks.setGlobal("addicts", null);
+		for(FactHandle ff: chartsF){
+			ks.delete(ff);
 		}
+
+		System.out.println("XXX");
+		for(Patient addict: addicts){
+			System.out.println(addict);
+		}
+		System.out.println("XXX");
 		
 		return addicts;
 	}
 	
-	public List<Patient> findWeaks(){
+	public List<Patient> findWeaks(KieSession ks){
 		
-		KieSession ks = SampleApp.kieContainer().newKieSession();
 		ks.getAgenda().getAgendaGroup("reports-weaks").setFocus();
 		
 		List<Chart> charts = chartService.findAll();
-		
+		List<FactHandle> chartsF = new ArrayList<>();
+
 		for(Chart c: charts) {
-			ks.insert(c);
+			chartsF.add(ks.insert(c));
 		}
+		
+		List<Patient> weaks = new ArrayList<>();
+		ks.setGlobal("weaks", weaks);
 		
 		ks.fireAllRules();
 		
-		Collection<?> coll = ks.getObjects(new ClassObjectFilter(Patient.class));
-		
-		List<Patient> weaks = new ArrayList<Patient>();
-		for(Object w: coll.toArray()) {
-			weaks.add((Patient)w);
+		ks.setGlobal("weaks", null);
+		for(FactHandle ff: chartsF){
+			ks.delete(ff);
 		}
 		
 		return weaks;
 	}
 	
-	public List<Allergy> checkAllergyWarnings(Integer id, Drug drug){
-		KieSession ks = SampleApp.kieContainer().newKieSession();
+	public List<Allergy> checkAllergyWarnings(Integer id, Drug drug, KieSession ks){
 		ks.getAgenda().getAgendaGroup("allergy-warning").setFocus();
 		
 		Patient p = patientService.findById(id);
 		drug = drugService.findById(drug.getId());
-		ks.insert(drug);
-		ks.insert(p);
-		
+		FactHandle fd = ks.insert(drug);
+		FactHandle fp = ks.insert(p);
+
+		List<Allergy> allergies = new ArrayList<>();
+		ks.setGlobal("allergyCont", allergies);
+
 		ks.fireAllRules();
-		
-		Collection<?> coll = ks.getObjects(new ClassObjectFilter(Allergy.class));
-		
-		List<Allergy> allergies = new ArrayList<Allergy>();
-		for(Object w: coll.toArray()) {
-			allergies.add((Allergy)w);
-		}
+
+		ks.setGlobal("allergyCont", null);
+
+		ks.delete(fd);
+		ks.delete(fp);
 		
 		return allergies;
 	}

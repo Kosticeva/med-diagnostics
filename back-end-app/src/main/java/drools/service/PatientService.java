@@ -9,10 +9,13 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.KieSession;
 
 import drools.model.Allergy;
 import drools.model.Patient;
 import drools.repository.PatientRepository;
+import drools.resource.AuthenticationResource;
 
 @Service
 public class PatientService {
@@ -45,7 +48,13 @@ public class PatientService {
 	
 	@Transactional
 	public Patient savePatient(Patient patient) {
-		
+
+		KieSession ks = AuthenticationResource.getKieSessionOf();
+		FactHandle f = null;
+		if(ks != null && patient.getId()!= null){
+			f = ks.getFactHandle(findById(patient.getId()));
+		}
+
 		if(patient.getFirstName() == null || patient.getFirstName().equals("")) {
 			System.out.println("Nema prvog imena za pacijenta");
 			return null;
@@ -69,7 +78,11 @@ public class PatientService {
 		}
 		
 		patient.setAllergens(newAlgs);
-		
+
+		if(f != null){
+			ks.update(f, patient);
+		}
+
 		return patientRepository.save(patient);
 	}
 

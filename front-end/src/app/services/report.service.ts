@@ -28,7 +28,7 @@ export class ReportService {
   }
 
   public weaks(): Observable<any>{
-    return this.http.get('http://localhost:8080/api/reports/chronics', this.headers);
+    return this.http.get('http://localhost:8080/api/reports/weaks', this.headers);
   }
 
   public allergies(drug: Drug, id: number): Observable<any>{

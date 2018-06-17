@@ -8,9 +8,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.KieSession;
 
 import drools.model.Ingredient;
 import drools.repository.IngredientRepository;
+import drools.resource.AuthenticationResource;
 
 @Service
 public class IngredientService {
@@ -56,6 +59,12 @@ public class IngredientService {
 	
 	@Transactional
 	public Ingredient updateIngredient(Ingredient ingredient) {
+		KieSession ks = AuthenticationResource.getKieSessionOf();
+		FactHandle f = null;
+		if(ks != null){
+			f = ks.getFactHandle(findById(ingredient.getId()));
+		}
+
 		if(ingredient.getName() == null || ingredient.getName().equals("")) {
 			System.out.println("Nema imena za sastojak");
 			return null;
@@ -72,6 +81,10 @@ public class IngredientService {
 				System.out.println("Vec zauzeto ime");
 				return null;
 			}
+		}
+
+		if(f != null){
+			ks.update(f, ingredient);
 		}
 		
 		return ingredientRepository.save(ingredient);

@@ -7,10 +7,11 @@ import drools.model.Examination;
 import drools.model.Symptom;
 import drools.model.Disease;
 import java.util.Date;
+import java.util.List;
 
 
 //declare any global variables here
-
+global List<Disease> diseaseCont;
 
 rule "Hipertenzija"
 	agenda-group "diagnose"
@@ -30,8 +31,7 @@ rule "Hipertenzija"
         )
     then
     	System.out.println("Salience je "+$cc.intValue()*1000);
-       	Disease d = new Disease(4, "Hipertenzija" );
-    	insert(d);
+       	diseaseCont.add(new Disease(6, "Hipertenzija"));
 		System.out.println("U pitanju je hipertenzija ");
 end
 
@@ -41,7 +41,7 @@ rule "Dijabetes"
     salience $count.intValue()*10000/4
     when
        	Chart()
-    	$exam: Examination($symptoms: symptoms)
+    	Examination($symptoms: symptoms)
     	$count: Number(intValue == 4) from accumulate (
     		Symptom(name=="Cesto uriniranje" || name=="Gubitak telesne tezine"
     			|| name=="Zamor" || name=="Mucnina i povracanje") from $symptoms,
@@ -49,8 +49,7 @@ rule "Dijabetes"
     	)
     then
     	System.out.println("Salience je "+$count.intValue()*10000/4);
-        Disease d = new Disease(5, "Dijabetes" );
-    	insert(d);
+        diseaseCont.add(new Disease(7, "Dijabetes"));
 		System.out.println("U pitanju je dijabetes");
 
 end

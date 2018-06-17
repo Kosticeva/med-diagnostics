@@ -8,9 +8,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.KieSession;
 
 import drools.model.Symptom;
 import drools.repository.SymptomRepository;
+import drools.resource.AuthenticationResource;
 
 @Service
 public class SymptomService {
@@ -56,6 +59,12 @@ public class SymptomService {
 	
 	@Transactional
 	public Symptom updateSymptom(Symptom symptom) {
+
+		KieSession ks = AuthenticationResource.getKieSessionOf();
+		FactHandle f = null;
+		if(ks != null){
+			f = ks.getFactHandle(findById(symptom.getId()));
+		}
 		
 		if(symptom.getName() == null || symptom.getName().equals("")) {
 			System.out.println("Nema imena");
@@ -75,6 +84,10 @@ public class SymptomService {
 			}
 		}
 		
+		if(f != null){
+			ks.update(f, symptom);
+		}
+
 		return symptomRepository.save(symptom);
 	}
 	

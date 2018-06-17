@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import drools.model.Ingredient;
 import drools.service.IngredientService;
 
-//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class IngredientResource {
 
@@ -48,9 +48,6 @@ public class IngredientResource {
 		
 		List<Ingredient> retVal = new ArrayList<Ingredient>();
 		for(Ingredient ingredient: ingredients){
-			if(ingredient.getId() != null) {
-				return null;
-			}
 
 			Ingredient i = ingredientService.createNewIngredient(ingredient);
 			if(i!=null) {

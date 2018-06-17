@@ -6,26 +6,61 @@ import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class LoginService{
+
+    private doctor: any
+    public loginMsg: string;
+
     constructor(
         private router: Router,
         private http: HttpClient) {
     }
 
-    login(doctor: any):  Observable<any>{
+    login(doctor: Doctor){
         let header = { 
             headers: new HttpHeaders({
-                'Content-Type': 'application/x-www-form-urlencoded'//,
-//                'j_username': doctor.username,
-  //              'j_password': doctor.password
+                'Content-Type': 'application/json'
             })
         };
-        return this.http.post('http://localhost:8080/login', 'j_username='+doctor.username+'&j_password='+doctor.password, header);
+        this.http.post('http://localhost:8080/login', JSON.stringify(doctor), header).subscribe(
+            (data) => {
+                this.doctor = data;
+                this.router.navigate(['/home']);
+            },
+            (error) => {
+                this.loginMsg = "Kombinacija korisnickog imena i sifre nije dobra.";
+            }
+        );
     }
 
     logout(){
-        this.http.get('http://localhost:8080/logout').subscribe(data => {
+        let header = { 
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        this.http.post('http://localhost:8080/applogout', null, header).subscribe(data => {
             console.log(data);
             this.router.navigate(['/login']);
         });
     }
+
+    public getDoctor(): any{
+        if(this.doctor === undefined)
+            return '';
+        return this.doctor;
+    }
+
+    public setDoctor() {
+        let header = { 
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        this.http.get('http://localhost:8080/authenticate/'+this.doctor, header).subscribe(
+            (data) => {
+                this.doctor = data;
+            }
+        );
+    }
+
 }

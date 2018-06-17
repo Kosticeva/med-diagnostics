@@ -23,8 +23,10 @@ import drools.repository.LinkRepository;
 import drools.repository.SymptomRepository;
 import drools.service.DiseaseService;
 import drools.service.LinkService;
+import drools.model.Symptom;
+import java.util.ArrayList;
 
-//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 public class DiseaseResource {
 
@@ -110,25 +112,26 @@ public class DiseaseResource {
 		return ResponseEntity.ok().body(null);
 	}
 	
-	@RequestMapping(value="/api/diseases/{id}/symptoms/{id1}", method = RequestMethod.POST)
-	public ResponseEntity<Link> addSymptomToDisease(@PathVariable("id") Integer id, @PathVariable("id1") Integer symptomId){
-		Link l = linkService.connect(id, symptomId);
-		
-		if(l != null) {
-			return ResponseEntity.ok().body(l);
+	@RequestMapping(value="/api/diseases/{id}/symptoms", method = RequestMethod.POST)
+	public List<Link> addSymptomToDisease(@PathVariable("id") Integer id, @RequestBody List<Symptom> symptoms){
+		List<Link> retVal = new ArrayList<Link>();
+
+		for(Symptom s: symptoms){
+			Link l = linkService.connect(id, s.getId());
+
+			if(l != null) {
+				retVal.add(l);
+			}
 		}
 		
-		return ResponseEntity.badRequest().body(null);
+		return retVal;
 	}
 	
-	@RequestMapping(value="/api/diseases/{id}/symptoms/{id1}", method = RequestMethod.DELETE)
-	public ResponseEntity<Link> removeSymptomFromDisease(@PathVariable("id") Integer id, @PathVariable("id1") Integer symptomId){
-		Link l = linkService.disconnect(id, symptomId);
-		
-		if(l != null) {
-			return ResponseEntity.ok().body(l);
+	@RequestMapping(value="/api/diseases/{id}/symptoms", method = RequestMethod.PUT)
+	public void removeSymptomFromDisease(@PathVariable("id") Integer id, @RequestBody List<Symptom> symptoms){
+
+		for(Symptom s: symptoms){
+			Link l = linkService.disconnect(id, s.getId());
 		}
-		
-		return ResponseEntity.badRequest().body(null);
 	}
 }

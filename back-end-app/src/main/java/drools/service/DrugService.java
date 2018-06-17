@@ -8,10 +8,13 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.KieSession;
 
 import drools.model.Drug;
 import drools.model.Ingredient;
 import drools.repository.DrugRepository;
+import drools.resource.AuthenticationResource;
 
 @Service
 public class DrugService {
@@ -44,6 +47,12 @@ public class DrugService {
 	
 	@Transactional
 	public Drug saveDrug(Drug drug) {
+		KieSession ks = AuthenticationResource.getKieSessionOf();
+		FactHandle f = null;
+		if(ks != null && drug.getId()!= null){
+			f = ks.getFactHandle(findById(drug.getId()));
+		}
+
 		if(drug.getName() == null || drug.getName().equals("")) {
 			System.out.println("Nema imena za lek");
 			return null;
@@ -68,6 +77,11 @@ public class DrugService {
 		}
 		
 		drug.setIngredients(newIgns);
+		
+		if(f != null){
+			ks.update(f, drug);
+		}
+
 		return drugRepository.save(drug);
 	}
 	

@@ -68,11 +68,12 @@ public class ExaminationServiceTest {
 		Examination e = new Examination();
 		e.setId(null);
 		e.setDoctor(doctorService.findAll().get(0));
+		e.setSymptoms(new ArrayList<>());
 		
 		List<Examination> allExamsMiddle = examRepository.findAll();
 		
 		Examination ee = examService.createNewExamination(e);
-		assertThat(ee.getId()).isNotNull();
+		assertThat(ee).isNotNull();
 		
 		List<Examination> allExamsAfter = examRepository.findAll();
 		assertEquals(allExamsAfter.size(),allExamsMiddle.size()+1);
@@ -137,6 +138,9 @@ public class ExaminationServiceTest {
 		DD = doctorService.findAll().get(0);
 		e.setDoctor(DD);
 		
+		assertThat(examService.createNewExamination(e)).isNull();
+
+		e.setSymptoms(new ArrayList<>());
 		e = examService.createNewExamination(e);
 		assertThat(e).isNotNull();
 		
@@ -164,9 +168,6 @@ public class ExaminationServiceTest {
 		
 		p = prescriptionService.savePrescription(p);
 		e.setPrescription(p);
-		assertThat(examService.updateExamination(e)).isNull();
-		
-		e.setSymptoms(new ArrayList<>());
 		assertThat(examService.updateExamination(e)).isNull();
 		
 		Symptom sss = new Symptom("fgewrjt", 98);
@@ -210,6 +211,7 @@ public class ExaminationServiceTest {
 		
 		assertEquals(examService.findById(e.getId()), e);
 		assertThat(examService.findById(NON_EX_ALLERGY_ID)).isNull();
+		examRepository.delete(e);
 	}
 	
 	@Test
@@ -221,17 +223,21 @@ public class ExaminationServiceTest {
 		e.setId(null);
 		e.setDoctor(doctorService.findAll().get(0));
 		e.setDate(new Date());
+		e.setSymptoms(new ArrayList<>());
 		
 		Examination e1 = new Examination();
 		e1.setId(null);
 		e1.setDoctor(doctorService.findAll().get(0));
 		e1.setDate(new Date());
+		e1.setSymptoms(new ArrayList<>());
 		
 		e = examRepository.saveAndFlush(e);
 		e1 = examRepository.saveAndFlush(e1);
 		
 		List<Examination> allAllergiesAfter = examRepository.findAll();
 		assertEquals(allAllergiesAfter.size(),allAllergiesBefore.size()+2);
+		examRepository.delete(e);
+		examRepository.delete(e1);
 		
 	}
 }

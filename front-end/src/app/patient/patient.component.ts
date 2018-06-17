@@ -6,6 +6,10 @@ import { Chart } from '../model/chart';
 import { Allergen } from '../model/allergen';
 import { AllergyService } from '../services/allergy.service';
 import { Examination } from '../model/examination';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { LoginService } from '../services/login.service';
+import { ExamService } from '../services/exam.service';
 
 @Component({
   selector: 'app-patient',
@@ -28,7 +32,11 @@ export class PatientComponent implements OnInit {
   constructor(
     private patientService: PatientService,
     private chartService: ChartService,
-    private allergyService: AllergyService
+    private allergyService: AllergyService,
+    private loginService: LoginService,
+    private http: HttpClient,
+    private router: Router,
+    private examService: ExamService
   ) { }
 
   ngOnInit() {
@@ -48,6 +56,20 @@ export class PatientComponent implements OnInit {
       examinations: [],
       id: null
     };
+    this.http.get('http://localhost:8080/authenticate/'+this.loginService.getDoctor()).subscribe(
+      (data) => {
+          if(this.loginService.getDoctor() === undefined){
+            this.loginService.setDoctor();
+          }
+          this.start();
+        },
+      error => {
+        this.router.navigate(['/login']);
+      }
+    );
+  }
+
+  start() {
     let loc = window.location.href;
     const parts = loc.split('/');
     this.chartService.get(parts[parts.length-1]).subscribe(
@@ -71,7 +93,6 @@ export class PatientComponent implements OnInit {
   }
 
   openChangeForm() {
-    this.newPatient = new Patient(this.chart.patient.firstName, this.chart.patient.lastName, this.chart.patient.allergens, this.chart.patient.id);
     this.changeFormOpen = !this.changeFormOpen;
   }
 
@@ -99,39 +120,17 @@ export class PatientComponent implements OnInit {
     )
   }
 
-  addAllergy() {
-    this.error.firstName = "";
-    this.newPatient.allergens = [];
-
-    let parts = this.allergies.split(',');
-    for(let i=0; i<parts.length; i++){
-      const part = parts[i].trim();
-      let a = new Allergen(null, part);
-      this.allergyService.post(a).subscribe(
-        (data) => this.newPatient.allergens.push(data)
-      );
-    }
-
-    this.patientService.put(this.newPatient, this.newPatient.id).subscribe(
-      (data) => {
-        this.chart.patient = data;
-        this.newPatient = data;
-      },
-      error => this.error.firstName = "Nesto je krenulo po zlu");
-
-    this.newAllergyOpen = false;
-  }
-
-  editPatient() {
-
-  }
-
-  changeExam(ex: Examination) {
-
-  }
-
   deleteExam(ex: Examination) {
-
+    this.examService.delete(ex.id).subscribe(
+      (data) => {
+        this.chart.examinations.splice(this.chart.examinations.indexOf(ex), 1);
+        this.chartService.put(this.chart, this.chart.id).subscribe(
+          (data) => {
+            this.chart = data;
+          }
+        )
+      }
+    )
   }
 
 }

@@ -8,7 +8,7 @@
         <li *ngFor="let patient of patients" class="list-group-item d-flex justify-content-between">
           {{patient.firstName}} {{patient.lastName}}
           <span class="btn-group">
-            <button class="btn btn-sm btn-success" (click)="addToIC(patient.id)"><i class="fa fa-check"></i></button>
+            <button class="btn btn-sm btn-success" (click)="addToIC(patient.id)" *ngIf="!checkIfInIc(patient)" ><i class="fa fa-check"></i></button>
            </span>
         </li>
       </ul>

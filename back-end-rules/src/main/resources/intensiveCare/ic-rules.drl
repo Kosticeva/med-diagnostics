@@ -14,11 +14,12 @@ rule "Oxygen Level Alert"
 	no-loop
 	agenda-group "alerts"
     when
-    	$ol1: OxygenEvent($lvl: oxygenBloodLevel, oxygenBloodLevel < 70, $chart: chart)
-    	$icReport: IntensiveCareReport(chart == $chart)
+    	$ol1: OxygenEvent($lvl: oxygenBloodLevel, oxygenBloodLevel < 70, chart != null, $chart: chart)
+    	$icReport: IntensiveCareReport(chart != null, chart == $chart)
     	Number(intValue == 0) from accumulate (
     		$ol2: OxygenEvent(
     			this != $ol1,
+				chart != null,
     			chart == $chart,
     			oxygenBloodLevel < $lvl,
     			this meets[15m] $ol1
@@ -36,11 +37,12 @@ rule "Tachycardia"
 	no-loop
 	agenda-group "alerts"
     when
-    	$hb1: HeartBeatEvent($chart: chart)
-    	$icReport: IntensiveCareReport(chart == $chart)
+    	$hb1: HeartBeatEvent(chart != null,$chart: chart)
+    	$icReport: IntensiveCareReport(chart != null,chart == $chart)
         Number(intValue >= 25) from accumulate(
         	$hb2: HeartBeatEvent(
         		this != $hb1,
+				chart != null,
         		chart == $chart,
         		this meets[10s] $hb2
         	),
@@ -57,10 +59,11 @@ rule "Urgent  dialysis"
 	no-loop
 	agenda-group "alerts"
     when
-		$dl1: DialysisEvent($chart: chart)
+		$dl1: DialysisEvent(chart != null, $chart: chart)
     	Number(doubleValue < 100) from accumulate (
     		$dl2: DialysisEvent(
     			this != $dl1,
+				chart != null,
     			chart == $chart,
     			this meets [12h] $dl1,
     			$q: urineQuantity
@@ -68,18 +71,19 @@ rule "Urgent  dialysis"
     		sum($q)
     	)
         Number(intValue >= 10) from accumulate(
-    		$hb1: HeartBeatEvent(chart == $chart) and
+    		$hb1: HeartBeatEvent(chart != null,chart == $chart) and
         	$hb2: HeartBeatEvent(
         		this != $hb1,
+				chart != null,
         		chart == $chart,
         		this meets[10s] $hb1
         	),
         	count(1)
         )
-        $icReport: IntensiveCareReport(chart == $chart)
+        $icReport: IntensiveCareReport(chart != null, chart == $chart)
         Number(intValue > 0) from accumulate(
-        	Chart($exams: examinations) from $chart and
-        	$exam: Examination($diag: disease, disease != null) from $exams and
+        	Chart(examinations != null, $exams: examinations) from $chart and
+        	Examination(disease != null, $diag: disease) from $exams and
         	Disease(name == "Hronicna bubrezna bolest") from $diag,
         	count(1)
         )

@@ -21,6 +21,9 @@ export class NewPatientComponent implements OnInit {
   allergens: string;
   realAllergens: any[];
   @Input() currChart: Chart; 
+  mode: boolean;
+  success: string;
+  errorr: string;
 
   constructor(
     private patientService: PatientService,
@@ -34,17 +37,43 @@ export class NewPatientComponent implements OnInit {
       lastName: ''
     };
 
+    this.success = "";
+    this.errorr = "";
+
+    if(this.currChart.patient.id === -1){
+      this.mode = true;
+    }else{
+      this.mode = false;
+    }
+
     this.patient = {
-      firstName: '',
-      lastName: '',
-      allergens: [],
-      id: null
-    };
+      firstName: this.currChart.patient.firstName,
+      lastName: this.currChart.patient.lastName,
+      id: this.currChart.patient.id,
+      allergens: this.currChart.patient.allergens
+    }
+
     this.allergens = "";
+    this.realAllergens = [];
+
+    this.stringifyAllergies(this.patient.allergens);
+  }
+
+  stringifyAllergies(data: any) {
+    for(let i=0; i<data.length; i++){
+      this.allergens += data[i].name;
+      if(i !== data.length-1){
+        this.allergens += ",";
+      }
+    }
     this.realAllergens = [];
   }
 
+
   createPatient() {
+    this.errorr = "";
+    this.success = "";
+
     this.error.firstName = "";
 
     if(this.patient.firstName === ""){
@@ -75,20 +104,45 @@ export class NewPatientComponent implements OnInit {
 
   createPatientI(allergies: Allergen[]){
     this.patient.allergens = allergies;
-    this.patientService.post(this.patient).subscribe(
-      (data) => { 
-        this.patient = data;
-        this.currChart.patient = this.patient;
-        this.currChart.examinations = [];
-        this.currChart.id = null;
-        this.chartService.post(this.currChart).subscribe(
-          (data) => {
-            this.currChart = data;
-          }
-        )
-      },
-      error => this.error.firstName = "Nesto je krenulo po zlu"
-    );
+
+    if(this.mode){
+      this.patientService.post(this.patient).subscribe(
+        (data) => { 
+          this.patient = data;
+          this.currChart.patient = this.patient;
+          this.currChart.examinations = [];
+          this.currChart.id = null;
+          this.chartService.post(this.currChart).subscribe(
+            (data) => {
+              this.currChart = data;
+              this.success = "Pacijent uspesno kreiran!";
+            }
+          )
+        },
+        error => {
+          this.success = "";
+          this.errorr = "Nesto je krenulo po zlu";
+        }
+      );
+    }else{
+      this.patientService.put(this.patient, this.patient.id).subscribe(
+        (data) => {
+          this.patient = data;
+          this.currChart.patient = this.patient;
+          this.chartService.put(this.currChart, this.currChart.id).subscribe(
+            (data) => {
+              this.currChart = data;
+              this.success = "Pacijent uspesno izmenjen!";
+              this.errorr = "";
+            },
+            error => {
+              this.success = "";
+              this.errorr = "";
+            }
+          )
+        }
+      )
+    }
   }
 
 }

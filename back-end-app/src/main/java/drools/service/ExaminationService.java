@@ -10,6 +10,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.KieSession;
 
 import drools.model.Disease;
 import drools.model.Doctor;
@@ -17,6 +19,7 @@ import drools.model.Examination;
 import drools.model.Prescription;
 import drools.model.Symptom;
 import drools.repository.ExaminationRepository;
+import drools.resource.AuthenticationResource;
 
 @Service
 public class ExaminationService {
@@ -101,9 +104,13 @@ public class ExaminationService {
 		
 		examination.setPrescription(PP);*/
 		
-		if(examination.getSymptoms() != null && examination.getSymptoms().size() != 0) {
-			System.out.println("Ima simptoma");
+		if(examination.getSymptoms() == null/* && examination.getSymptoms().size() != 0*/) {
+			System.out.println("Los update");
 			return null;
+		}
+
+		if(examination.getSymptoms().size() != 0){
+			System.out.println("Simptom koji se kreira ne sme da ima simptome");
 		}
 		
 		/*List<Symptom> newSymps = new ArrayList<Symptom>();
@@ -127,6 +134,13 @@ public class ExaminationService {
 	
 	@Transactional
 	public Examination updateExamination(Examination examination) {
+
+		KieSession ks = AuthenticationResource.getKieSessionOf();
+		FactHandle f = null;
+		if(ks != null){
+			f = ks.getFactHandle(findById(examination.getId()));
+		}
+
 		if(examination.getDate() == null) {
 			System.out.println("Nepostojeci datum za pregled");
 			return null;
@@ -192,6 +206,10 @@ public class ExaminationService {
 		
 		examination.setSymptoms(newSymps);
 		
+		if(f != null){
+			ks.update(f, examination);
+		}
+
 		return examinationRepository.save(examination);
 	}
 	

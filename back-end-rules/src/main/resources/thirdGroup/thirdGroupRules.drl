@@ -10,8 +10,10 @@ import java.util.Date;
 import drools.model.Prescription;
 import drools.model.enums.DrugType;
 import drools.model.Drug;
+import java.util.List;
 
 //declare any global variables here
+global List<Disease> diseaseCont;
 
 rule "Hronicna bubrezna bolest"
 	salience $count.intValue()*10000/7+$diabC.intValue()*10000/7+$hypC.intValue()*10000/7
@@ -26,8 +28,8 @@ rule "Hronicna bubrezna bolest"
     			name=="Bol u grudima") from $symptoms,
     		count(1)
     	)
-    	$diabetes: Number(intValue > -1) from accumulate (
-			Examination($dis: disease, $dis != null) from $exams and
+    	$diabetes: Number(intValue > 0) from accumulate (
+			Examination($dis: disease) from $exams and
 			Disease(name == "Dijabetes") from $dis,
     		count(1)
     	)
@@ -35,11 +37,10 @@ rule "Hronicna bubrezna bolest"
     		Number() from $diabetes,
     		count(1)
     	)
-    	$hyperTens: Number(intValue > -1) from accumulate (
+    	$hyperTens: Number(intValue > 0) from accumulate (
         	Examination(
         		this != $exam,
         		$diag: disease, 
-        		disease != null,
         		this meets[180d] $exam) from $exams and
         	Disease(name == "Hipertenzija") from $diag,
         	count(1)
@@ -52,15 +53,14 @@ rule "Hronicna bubrezna bolest"
     then
     	System.out.println("Salience je "+($count.intValue()*10000/7+$diabetes.intValue()*10000/7+$hyperTens.intValue()*10000/7));
     	System.out.println("Count: "+$count.intValue()+", diabetes: "+$diabetes.intValue()+", hyperTens: "+$hyperTens.intValue());
-        Disease d = new Disease(6, "Hronicna bubrezna bolest" );
-    	insert(d);
+        diseaseCont.add(new Disease(6, "Hronicna bubrezna bolest" ));
         System.out.println("U pitanju je hronicna bubrezna bolest");
 
 end
 
 rule "Akutna bubrezna povreda"
     //include attributes such as "salience" here...
-    salience ($count.intValue()*10000/8+$pC.intValue()*10000/8+$hC.intValue()*10000/8+$aC.intValue()*10000/8)
+    salience $count.intValue()*10000/8+$pC.intValue()*10000/8+$hC.intValue()*10000/8+$aC.intValue()*10000/8
     activation-group "x"
     agenda-group "diagnose"
     when
@@ -72,15 +72,15 @@ rule "Akutna bubrezna povreda"
     			name=="Bol u grudima") from $symptoms,
     		count(1)
     	)
-    	$postOp: Number(intValue > -1) from accumulate (
+    	$postOp: Number(intValue >= 0) from accumulate (
     		Symptom(name=="Oporavlja se od operacije") from $symptoms,
     		count(1)
     	)
     	$pC: Number(intValue >= 0) from accumulate (
-    		Number() from $postOp,
+    		Number(intValue > 0) from $postOp,
     		count(1)
     	)
-    	$highTemp: Number(intValue > -1) from accumulate (
+    	$highTemp: Number(intValue >= 0) from accumulate (
     		Examination(
         		this != $exam,
         		$symptoms1: symptoms,
@@ -89,29 +89,27 @@ rule "Akutna bubrezna povreda"
         	count(1)
     	)
     	$hC: Number(intValue >= 0) from accumulate (
-    		Number() from $highTemp,
+    		Number(intValue > 0) from $highTemp,
     		count(1)
     	)
-    	$antiBio: Number(intValue > -1) from accumulate (
+    	$antiBio: Number(intValue >= 0) from accumulate (
     		Examination(
         		this != $exam,
         		$prescr: prescription,
-        		prescription != null,
         		this meets[14d] $exam) from $exams and
         	Prescription($drug: drug) from $prescr and
         	Drug(drugType == DrugType.ANTIBIOTIC) from $drug,
         	count(1)
     	)
     	$aC: Number(intValue >= 0) from accumulate (
-    		Number() from $antiBio,
+    		Number(intValue > 0) from $antiBio,
     		count(1)
     	)
     	eval(($hC.intValue()+$aC.intValue()+$pC.intValue()) > 0)
     then
     	System.out.println("Salience je "+ ($count.intValue()*10000/8+$postOp.intValue()*10000/8+$highTemp.intValue()*10000/8+$antiBio.intValue()*10000/8));
     	System.out.println("Count: "+$count.intValue()+", postOp: "+$postOp.intValue()+", highTemp: "+$highTemp.intValue()+", antiBio: "+$antiBio.intValue()); 
-        Disease d = new Disease(7, "Akutna bubrezna povreda" );
-    	insert(d);
+        diseaseCont.add(new Disease(7, "Akutna bubrezna povreda"));
         System.out.println("U pitanju je akutna bubrezna povreda");
 
 end

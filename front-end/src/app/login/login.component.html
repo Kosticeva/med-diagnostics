@@ -5,7 +5,7 @@
 </div>
 <div class="card">
   <div class="card-body">
-    <p class="text-danger">{{errors.main}}</p>
+    <p class="text-danger">{{loginService.loginMsg}}</p>
     <form class="form" (ngSubmit)="logIn()" #dataForm="ngForm">
         <div class="form-group">
           <label for="username">Korisnicko ime: </label>

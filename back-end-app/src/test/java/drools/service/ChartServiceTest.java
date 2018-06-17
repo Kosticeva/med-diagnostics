@@ -70,16 +70,17 @@ public class ChartServiceTest {
 	public void testUpdateNewChart() {
 		
 		Chart c = new Chart();
+		c.setPatient(patientService.findAll().get(0));
 		c.setExaminations(new ArrayList<>());
 		c = chartRepository.saveAndFlush(c);
 		em.detach(c);
-		
-		c.setPatient(patientService.findAll().get(0));
 		
 		Examination e1 = new Examination();
 		e1.setId(52465);
 		Doctor ddddd = doctorService.findAll().get(0);
 		e1.setDoctor(ddddd);
+		e1.setSymptoms(new ArrayList<>());
+
 		e1 = examinationService.createNewExamination(e1);
 		c.getExaminations().add(e1);
 		
@@ -100,7 +101,7 @@ public class ChartServiceTest {
 		
 		assertThat(chartService.updateChart(c)).isNull();
 		
-		Patient p = new Patient("pp", "mm", 555, null);
+		Patient p = new Patient("pp", "mm", 555, new ArrayList<>());
 		c.setPatient(p);
 		assertThat(chartService.updateChart(c)).isNull();
 		
@@ -122,6 +123,7 @@ public class ChartServiceTest {
 		
 		c.getExaminations().remove(e1);
 		e1.setDate(null);
+		e1.setSymptoms(new ArrayList<>());
 		e1 = examinationService.createNewExamination(e1);
 		c.getExaminations().add(e1);
 		
@@ -157,6 +159,7 @@ public class ChartServiceTest {
 		
 		assertEquals(chartService.findById(c.getId()), c);
 		assertThat(chartService.findById(NON_EX_CHART_ID)).isNull();
+		chartRepository.delete(c);
 	}
 	
 	@Test
@@ -172,6 +175,8 @@ public class ChartServiceTest {
 		
 		List<Chart> allChartsAfter = chartRepository.findAll();
 		assertEquals(allChartsAfter.size(),allChartsBefore.size()+2);
+		chartRepository.delete(c1);
+		chartRepository.delete(c2);
 		
 	}
 }

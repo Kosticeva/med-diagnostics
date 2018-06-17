@@ -1,23 +1,9 @@
 <div class="card container-fluid">
   <div class="card-header d-flex justify-content-between">
     <h5 class="w-20">{{chart.patient.firstName}} {{chart.patient.lastName}}</h5>
-    <form class="d-flex form w-50" *ngIf="changeFormOpen">
-      <div class="row">
-        <div class="form-field col-5">
-            <label for="fName">Ime: </label>
-            <input type="text" id="fName" class="form-control" name="firstName" [(ngModel)]="chart.patient.firstName"/>
-            <small class="text-danger">{{error.firstName}}</small>
-          </div>
-          <div class="form-field col-5">
-            <label for="lName">Prezime: </label>
-            <input type="text" id="lName" class="form-control" name="lastName" [(ngModel)]="chart.patient.lastName"/>
-            <small class="text-danger">{{error.lastName}}</small>
-          </div>
-        <button class="btn btn-success" (click)="editPatient()"><i class="fa fa-check"></i>Zavrsi</button>
-      </div>
-    </form>
-    <button class="btn btn-lg btn-primary w-30" (click)="openChangeForm()"><i class="fa fa-lg fa-pencil"></i>&nbsp;&nbsp;Izmeni</button> 
+    <button class="btn btn-lg btn-primary" (click)="openChangeForm()"><i class="fa fa-lg fa-pencil"></i>&nbsp;&nbsp;Izmeni</button> 
   </div>
+  <app-new-patient *ngIf="changeFormOpen" [currChart]="chart"></app-new-patient>
   <div class="card-body d-flex justify-content-between">
     <h6 class="float-left w-15">Alergije: </h6>
     <div style="border: 1px solid green" class="w-100 ml-2 mr-2 container">
@@ -27,27 +13,14 @@
         </div>
       </div>
     </div>
-    <!--<div class="float-right w-50 card">
-      <div class="card-header">
-        <button class="btn btn-success" role="button" (click)="openNewAllergy()"><i class="fa fa-plus"></i>&nbsp;&nbsp;Nova alergija</button>
-      </div>
-      <div class="card-body">
-        <form *ngIf="newAllergyOpen" class="form form-group">
-          <textarea class="form-control" placeholder="Nova alergija" name="allergy" [(ngModel)]="allergies"></textarea>
-          <br />
-          <button role="button" class="btn btn-success" (click)="addAllergy()"><i class="fa fa-check"></i>&nbsp;Dodaj</button>
-        </form>
-      </div>
-    </div>-->
   </div>
   <hr />
   <div class="card-body container">
     <div class="row">
       <div *ngFor="let exam of chart.examinations" class="col-4 mb-2">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-end">
               <span class="btn-group">
-                <button class="btn btn-sm btn-warning" (click)="changeExam(exam)"><i class="fa fa-pencil fa-sm"></i>&nbsp;&nbsp;Izmeni</button>
                 <button class="btn btn-sm btn-danger" (click)="deleteExam(exam)"><i class="fa fa-trash fa-sm"></i>&nbsp;&nbsp;Obrisi</button>
               </span>
             </div>

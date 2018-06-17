@@ -87,7 +87,7 @@ public class SymptomServiceTest {
 	@Test
 	@Transactional
 	public void testCorrectSymptomPersistence() {
-		Symptom s = new Symptom();
+		Symptom s = new Symptom("", -1);
 		
 		List<Symptom> allSymptomsBefore = symptomRepository.findAll();
 		assertThat(symptomService.updateSymptom(s)).isNull();

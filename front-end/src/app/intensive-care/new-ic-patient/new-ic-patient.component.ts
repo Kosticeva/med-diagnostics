@@ -13,7 +13,7 @@ export class NewIcPatientComponent implements OnInit {
   patients: Patient[];
   query: string;
   realPatients: Patient[];
-  @Input() icPatients: Patient[];
+  @Input() icPatients: any[];
 
   constructor(
     private patientService: PatientService,
@@ -38,6 +38,14 @@ export class NewIcPatientComponent implements OnInit {
         this.icPatients.push(data);
       }
     );
+  }
+
+  checkIfInIc(pat: any){
+    if(this.icPatients.indexOf(pat) !== -1){
+      return true;
+    }
+
+    return false;
   }
 
   getPatients() {

@@ -5,12 +5,13 @@ insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_li
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (72, "2017-10-01", 4, 4, 1);
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (73, "2017-11-01", 4, 4, 1);
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (74, "2017-12-01", 5, 4, 1);
-insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (75, "2017-01-01", 5, 4, 1);
+insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (75, "2018-01-01", 5, 4, 1);
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (76, "2018-02-01", 4, 4, 1);
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (77, "2018-03-01", 4, 4, 1);
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (78, "2018-04-01", 5, 4, 1);
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (79, "2018-05-01", 5, 4, 1);
 insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (80, "2018-06-01", 4, 4, 1);
+insert into examination(exam_id, exam_date, disease_disease_id, doctor_doctor_licence_id, prescription_prescription_id) values  (81, "2018-07-01", 7, 4, 1);
 
 insert into exam_symptoms(exam_id, symptoms_id) values (71, 1);
 insert into exam_symptoms(exam_id, symptoms_id) values (71, 5);
@@ -62,6 +63,12 @@ insert into exam_symptoms(exam_id, symptoms_id) values (80, 5);
 insert into exam_symptoms(exam_id, symptoms_id) values (80, 7);
 insert into exam_symptoms(exam_id, symptoms_id) values (80, 11);
 
+insert into exam_symptoms(exam_id, symptoms_id) values (81, 1);
+insert into exam_symptoms(exam_id, symptoms_id) values (81, 5);
+insert into exam_symptoms(exam_id, symptoms_id) values (81, 7);
+insert into exam_symptoms(exam_id, symptoms_id) values (81, 11);
+
+
 insert into chart_exams(chart_id, exam_id) values (7, 71);
 insert into chart_exams(chart_id, exam_id) values (7, 72);
 insert into chart_exams(chart_id, exam_id) values (7, 73);
@@ -72,3 +79,4 @@ insert into chart_exams(chart_id, exam_id) values (7, 77);
 insert into chart_exams(chart_id, exam_id) values (7, 78);
 insert into chart_exams(chart_id, exam_id) values (7, 79);
 insert into chart_exams(chart_id, exam_id) values (7, 80);
+insert into chart_exams(chart_id, exam_id) values (7, 81);

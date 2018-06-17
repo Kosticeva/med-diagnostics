@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -31,6 +32,7 @@ import drools.repository.LinkRepository;
 import drools.repository.PatientRepository;
 import drools.repository.PrescriptionRepository;
 import drools.repository.SymptomRepository;
+import drools.resource.AuthenticationResource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SampleApp.class)
@@ -64,9 +66,15 @@ public class QueryServiceTest {
 	PrescriptionRepository presciptionRepository;
 	//with data.sql
 	
+	@Autowired
+	AuthenticationResource authResource;
+			
 	@Test
 	@Transactional
 	public void checkAllPossibleDiseases() {
+		
+		authResource.login(doctorRepository.findAll().get(0));
+
 		List<Disease> diseases = diseaseRepository.findByNameStartingWithIgnoreCase("H");
 		
 		List<Link> links = linkRepository.findAll();
@@ -91,13 +99,16 @@ public class QueryServiceTest {
 			}
 		}
 		
-		List<Disease> foundDiseases = queryService.getAllPossibleDiseases(chosenSymptoms);
+		List<Disease> foundDiseases = queryService.getAllPossibleDiseases(chosenSymptoms, AuthenticationResource.getKieSessionOf());
 		assertEquals(foundDiseases.size(), allLinkedDiseases.size());
 	}
 	
 	@Test
 	@Transactional
 	public void checkSymptomsOfDisease() {
+
+		authResource.login(doctorRepository.findAll().get(0));
+
 		Disease d = diseaseRepository.findAll().get(0);
 		
 		List<Link> links = linkRepository.findAll();
@@ -109,13 +120,15 @@ public class QueryServiceTest {
 			}
 		}
 		
-		assertEquals(queryService.getDiseaseSymptoms(d).size(), foundSymptoms.size());
+		assertEquals(queryService.getDiseaseSymptoms(d, AuthenticationResource.getKieSessionOf()).size(), foundSymptoms.size());
 	}
 	
 	@Test
 	@Transactional
 	public void findMostPossibleDiseaseGroup1() {
 		
+		authResource.login(doctorRepository.findAll().get(0));
+
 		List<Symptom> s14 = symptomRepository.findByNameStartingWithIgnoreCase("Bol");
 		List<Symptom> s23 = symptomRepository.findByNameStartingWithIgnoreCase("K");
 		List<Symptom> s5 = symptomRepository.findByNameStartingWithIgnoreCase("Curenje");
@@ -139,7 +152,7 @@ public class QueryServiceTest {
 		ch = chartRepository.saveAndFlush(ch);
 		System.out.println("PREGLED 1\n"+ch);
 		
-		Disease most = queryService.getMostProbable(ex);
+		Disease most = queryService.getMostProbable(ex, AuthenticationResource.getKieSessionOf());
 		System.out.println(most);
 		assertEquals(most.getName(), "Prehlada");
 	}
@@ -147,6 +160,8 @@ public class QueryServiceTest {
 	@Test
 	@Transactional
 	public void findMostPossibleDiseaseGroup2() {
+		authResource.login(doctorRepository.findAll().get(0));
+
 		List<Symptom> s = symptomRepository.findByNameStartingWithIgnoreCase("Povisen krvni pritisak");
 		List<Symptom> nonimpS = symptomRepository.findByNameStartingWithIgnoreCase("Zamor");
 		List<Symptom> nonimpS2 = symptomRepository.findByNameStartingWithIgnoreCase("Drhtavica");
@@ -189,7 +204,7 @@ public class QueryServiceTest {
 		ch = chartRepository.saveAndFlush(ch);
 		System.out.println("PREGLED 2\n"+ch);
 		
-		Disease most = queryService.getMostProbable(ch.getExaminations().get(0));
+		Disease most = queryService.getMostProbable(ch.getExaminations().get(0), AuthenticationResource.getKieSessionOf());
 		System.out.println(most);
 		assertEquals(most.getName(), "Hipertenzija");
 	}
@@ -243,8 +258,7 @@ public class QueryServiceTest {
 		
 		System.out.println("PREGLED 3\n"+ch);
 		
-		
-		Disease most = queryService.getMostProbable(ch.getExaminations().get(0));
+		Disease most = queryService.getMostProbable(ch.getExaminations().get(2), AuthenticationResource.getKieSessionOf());
 		System.out.println(most);
 		assertEquals(most.getName(), "Akutna bubrezna povreda");
 	}

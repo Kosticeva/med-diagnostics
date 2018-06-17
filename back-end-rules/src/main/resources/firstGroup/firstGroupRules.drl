@@ -7,8 +7,10 @@ import drools.model.Examination;
 import drools.model.Symptom;
 import drools.model.Disease;
 import java.util.Date;
+import java.util.List;
 
 //declare any global variables here
+global List<Disease> diseaseCont;
 
 rule "Prehlada"
 	salience $count.intValue()*10000/5
@@ -24,8 +26,7 @@ rule "Prehlada"
         )
     then
     	System.out.println("Salience je: "+$count.intValue()*10000/5);
-    	Disease d = new Disease(0, "Prehlada" );
-    	insert(d);
+    	diseaseCont.add(new Disease(2, "Prehlada" ));
         System.out.println("U pitanju je prehlada");
 
 end
@@ -46,8 +47,7 @@ rule "Groznica"
         )
 	then
 		System.out.println("Salience je "+$count.intValue()*10000/7);
-		Disease d = new Disease(1, "Groznica" );
-    	insert(d);
+		diseaseCont.add(new Disease(3, "Groznica" ));
 		System.out.println("U pitanju je groznica");
 end
 
@@ -66,8 +66,7 @@ rule "Upala krajnika"
         )
     then
     	System.out.println("Salience je "+($count.intValue()*10000/8));
-        Disease d = new Disease(2, "Upala krajnika" );
-    	insert(d);
+        diseaseCont.add(new Disease(4, "Upala krajnika" ));
 		System.out.println("U pitanju je upala krajnika");
 
 end
@@ -90,17 +89,16 @@ rule "Sinusna infekcija"
         		this meets[60d] $exam,
         		$disease: disease
         	) from $exams and
-        	Disease( name == "Prehlada" || name == "Groznica"),
+        	Disease( name == "Prehlada" || name == "Groznica") from $disease,
         	count(1)
         )
         $sC: Number(intValue >= 0) from accumulate (
-        	Number() from $specCount,
+        	Number(intValue > 0) from $specCount,
         	count(1)
         )
         eval(($count.intValue() + $sC.intValue()) >= 4)
 	then
 		System.out.println("Salience je "+($count.intValue()*10000/7 + $specCount.intValue()*10000/7) +" (spec count je "+$specCount.intValue()+")");
-		Disease d = new Disease(3, "Sinusna infekcija");
-    	insert(d);
+		diseaseCont.add(new Disease(5, "Sinusna infekcija"));
 		System.out.println("U pitanju je sinusna infekcija");
 end

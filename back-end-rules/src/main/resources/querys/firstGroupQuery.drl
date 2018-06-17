@@ -6,20 +6,23 @@ import drools.model.Symptom;
 import drools.model.Disease;
 import java.util.List;
 
+global List<Symptom> sympCont;
+
 rule "All diseases for symptom"
 	agenda-group "symptom-bc"
-	salience $c.size()
+	//salience $c.size()
     when
        	$s: Symptom()
-       	$c: List() from accumulate(
-       		isSymptomOf(disease, $s, type; ),
-       		collectList(disease)
-       	)
+       	//$c: List() from accumulate(
+       		isSymptomOf(disease, $s, type; )
+       //		collectList(disease)
+       	//)
     then
-    	for(int i=0; i<$c.size(); i++){
-        	System.out.println($s.getName() + " je simptom " + $c.get(i));
-        	insert($c.get(i));
-    	}
+    	//for(int i=0; i<$c.size(); i++){
+        	//System.out.println($s.getName() + " je simptom " + $c.get(i));
+			System.out.println($s.getName() + " je simptom " + disease);
+        	insert(disease);
+    	//}
 end
 
 query isSymptomOf(Disease d, Symptom s, int type)
@@ -33,8 +36,18 @@ rule "All spec symptoms for disease"
        	$d: Disease()
        	isSymptomOf($d, symptom, 1;)
     then
+		System.out.println("simptom: "+symptom.getName());
+		System.out.println("disease: "+$d);
         System.out.println(symptom.getName() + " uzrokuje " + $d.getName());
-        insert(symptom);
+		if(sympCont == null){
+			System.out.println("Kontejner je nula :/");
+		}else{
+			for(Object ss: sympCont){
+				System.out.print(ss+", ");
+			}
+        	sympCont.add(symptom);
+		}
+		
 end
 
 rule "All gen symptoms for disease"
@@ -44,7 +57,16 @@ rule "All gen symptoms for disease"
 		$d: Disease()
 		isSymptomOf($d, symptom, 0;)
 	then
+        System.out.println("simptom: "+symptom.getName());
+		System.out.println("disease: "+$d);
         System.out.println(symptom.getName() + " uzrokuje " + $d.getName());
-        insert(symptom);
+		if(sympCont == null){
+			System.out.println("Kontejner je nula :/");
+		}else{
+			for(Object ss: sympCont){
+				System.out.print(ss+", ");
+			}
+        	sympCont.add(symptom);
+		}
 end
 	

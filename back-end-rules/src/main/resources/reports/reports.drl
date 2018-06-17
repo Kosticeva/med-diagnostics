@@ -12,10 +12,14 @@ import drools.model.Patient;
 import java.util.List;
 import drools.model.Doctor;
 
+global List<Patient> chronics;
+global List<Patient> addicts;
+global List<Patient> weaks;
+
 rule "Hronicna oboljenja"
 	agenda-group "reports-chronics"
     when
-        Chart($exams: examinations, $patient: patient)
+        Chart( $exams: examinations, $patient: patient)
         $maxDate: Number() from accumulate (
         	Examination($date: date, $dis: disease) from $exams and
         	Disease(name != "Prehlada", name != "Groznica") from $dis and
@@ -31,9 +35,8 @@ rule "Hronicna oboljenja"
 	        count(1)
         )
     then
-        System.out.println($patient+" moguce boluje od hronicne bolesti ("+$c+") "+$ex+", "+$ex.getId());
-        //System.out.println($maxDate);
-        insert($patient);
+        System.out.println($patient.getFirstName()+" moguce boluje od hronicne bolesti ("+$c+") "+$ex.getId()+", "+$ex);
+        chronics.add($patient);
 end
 
 rule "Zavisnici"
@@ -47,8 +50,8 @@ rule "Zavisnici"
         )
         $ex: Examination($date: date) from $exams
         Date(time == $maxDate) from $date
-        $c: List(size > 2) from accumulate(
-	       	$xx: Examination(this meets[180d] $ex, $pres1: prescription, $dd: doctor) from $exams and
+        $c: List(size > 5) from accumulate(
+	       	Examination(this != $ex, this meets[180d] $ex, $pres1: prescription, $dd: doctor) from $exams and
 	        Prescription($drug1: drug) from $pres1 and
 	        Drug(drugType == DrugType.ANALGESIC) from $drug1,
 	        collectList($dd)
@@ -60,8 +63,7 @@ rule "Zavisnici"
         	count(1)
         )
     then
-        System.out.println($patient+" je moguci zavisnikK ("+$c.size()+") "+$ex.getId()+", "+$ex.getDate());
-		insert($patient);
+        addicts.add($patient);
 end
 
 rule "Oslabljen imunitet"
@@ -69,19 +71,19 @@ rule "Oslabljen imunitet"
     when
         Chart($exams: examinations, $patient: patient)
         $maxDate: Number() from accumulate (
-        	Examination($date: date) from $exams and
+        	Examination(date != null, $date: date) from $exams and
         	Date($time: time) from $date,
         	max($time)
         )
         $ex: Examination($date: date) from $exams
         Date(time == $maxDate) from $date
-        $analgDis: List(size >= 0) from accumulate (
+        $analgDis: List(size >= 10) from accumulate (
         	Examination(this != $ex, this meets[365d] $ex, $pres: prescription, $dis: disease) from $exams and
         	Prescription($drug: drug) from $pres and
         	Drug(drugType == DrugType.ANTIBIOTIC) from $drug,
         	collectList($dis)
         )
-        $allDis: List(size >= 0) from accumulate (
+        $allDis: List(size >= 10) from accumulate (
         	Examination(this != $ex, this meets[365d] $ex, $dis: disease) from $exams,
         	collectList($dis)
         )
@@ -92,9 +94,8 @@ rule "Oslabljen imunitet"
         )
         eval($analgDis.size() == $allDis.size())
     then
-    	//System.out.println($analgDis.size() + " vs " + $allDis.size());
-        System.out.println($patient+" moguce ima oslabljen imunitet ("+$analgDis+" vs "+$allDis+")");
-		insert($patient);
+        System.out.println($patient.getFirstName()+" moguce ima oslabljen imunitet ("+$analgDis+" vs "+$allDis+")");
+		weaks.add($patient);
 end
 
 

@@ -14,6 +14,9 @@ import drools.model.Allergy;
 import drools.model.Prescription;
 import drools.model.Drug;
 import drools.model.Ingredient;
+import java.util.List;
+
+global List<Allergy> allergyCont;
 
 rule "Drug allergy"
 	agenda-group "allergy-warning"
@@ -25,8 +28,8 @@ rule "Drug allergy"
     		count(1)
     	)
     then
-        System.out.println($pat + " ima alergiju na "+$dr.getName());
-        insert(new Allergy(0, $dr.getName()));
+        System.out.println($pat.getFirstName() + " ima alergiju na "+$dr.getName());
+        allergyCont.add(new Allergy(0, $dr.getName()));
 end
 
 rule "Ingredient allergy"
@@ -40,6 +43,6 @@ rule "Ingredient allergy"
     		count(1)
     	)
     then
-        System.out.println($pat + " ima alergiju na "+$in.getName());
-        insert(new Allergy(0, $in.getName()));
+        System.out.println($pat.getFirstName() + " ima alergiju na "+$in.getName());
+        allergyCont.add(new Allergy(0, $in.getName()));
 end

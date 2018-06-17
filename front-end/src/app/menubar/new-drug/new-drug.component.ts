@@ -15,9 +15,10 @@ export class NewDrugComponent implements OnInit {
   error: String;
   success: String;
   ingredients: String;
-  drug: Drug;
+  @Input() drug: Drug;
   realIngredients: any[];
   @Input() open: boolean;
+  mode: boolean;
 
   constructor(
     private drugService: DrugService,
@@ -28,18 +29,30 @@ export class NewDrugComponent implements OnInit {
   ngOnInit() {
     this.error = "";
     this.success = "";
-    this.ingredients = "";
-    this.drug = {
-      id: undefined,
-      name: '',
-      drugType: '',
-      ingredients: []
-    };
-    this.realIngredients = [];
+    if(this.drug.id === -1){
+      this.mode = true;
+    }else{
+      this.mode = false;
+    }
+
+    this.realIngredients = this.drug.ingredients;
+    this.stringifyIngrs();
   }
+
+  stringifyIngrs() {
+    this.ingredients = "";
+    for(let i=0; i<this.drug.ingredients.length; i++){
+      this.ingredients += this.drug.ingredients[i].name;
+      if(i !== this.drug.ingredients.length-1){
+        this.ingredients += ",";
+      }
+    }
+  }
+
 
   createDrug() {
     this.success = "";
+    this.realIngredients = [];
     if(this.drug.name === ""){
       this.error = "Morate uneti ime za lek";
       return;
@@ -64,16 +77,30 @@ export class NewDrugComponent implements OnInit {
 
   createDrugII(ings: Ingredient[]){
     this.drug.ingredients = ings;
-    this.drugService.post(this.drug).subscribe(
-      (data) => {
-        this.drug = data;
-        this.success = "Lek "+this.drug.name+" uspesno kreiran!";
-        this.error = "";
-      },
-      error => {
-        this.error = "Vec postoji lek sa tim imenom";
-        this.success = "";
-      }
-    );
+    if(this.mode){
+      this.drugService.post(this.drug).subscribe(
+        (data) => {
+          this.drug = data;
+          this.success = "Lek "+this.drug.name+" uspesno kreiran!";
+          this.error = "";
+        },
+        error => {
+          this.error = "Vec postoji lek sa tim imenom";
+          this.success = "";
+        }
+      );
+    }else{
+      this.drugService.put(this.drug, this.drug.id).subscribe(
+        (data) => {
+          this.drug = data;
+          this.success = "Lek "+this.drug.name+" uspesno izmenjen!";
+          this.error = "";
+        },
+        error => {
+          this.error = "Vec postoji lek sa tim imenom";
+          this.success = "";
+        }
+      );
+    }
   }
 }

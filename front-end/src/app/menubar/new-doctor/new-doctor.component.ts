@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DoctorService } from '../../services/doctor.service';
 import { Doctor } from '../../model/doctor';
 import { Router } from '@angular/router';
@@ -10,9 +10,9 @@ import { Router } from '@angular/router';
 })
 export class NewDoctorComponent implements OnInit {
 
-  doctor: Doctor;
-  docId: number;
+  @Input() doctor: Doctor;
   success: string;
+  mode: boolean;
 
   errorMessage: {
     username: string,
@@ -25,22 +25,17 @@ export class NewDoctorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.doctor = {
-      firstName: '',
-      lastName: '',
-      username: '',
-      password: '',
-      type: false,
-      licenceId: undefined
-    }
-
     this.success = "";
     this.errorMessage = {
       username: '',
       password: ''
     };
 
-    this.docId = 0;
+    if(this.doctor.licenceId === -1){
+      this.mode = true;
+    }else{
+      this.mode = false;
+    }
   }
 
   createDoctor() {
@@ -65,74 +60,24 @@ export class NewDoctorComponent implements OnInit {
       this.doctor.type = "REGULAR";
     }
 
-    this.doctorService.post(this.doctor).subscribe(
-      (data) => {
-        this.errorMessage.username = "";
-        this.errorMessage.password = "";
-        this.success = "Doktor "+this.doctor.username+" uspesno kreiran!";
-      },
-      error => this.errorMessage.username = "Korisnicko ime je zauzeto. Odaberite novo."
-    );
-  }
-
-  updateDoctor(){
-    if(this.doctor.username === ""){
-      this.errorMessage.username = "Morate uneti korisnicko ime";
-      return;
+    if(this.mode){
+      this.doctorService.post(this.doctor).subscribe(
+        (data) => {
+          this.errorMessage.username = "";
+          this.errorMessage.password = "";
+          this.success = "Doktor "+this.doctor.username+" uspesno kreiran!";
+        },
+        error => this.errorMessage.username = "Korisnicko ime je zauzeto. Odaberite novo."
+      );
     }else{
-      this.errorMessage.username = "";
+      this.doctorService.put(this.doctor, this.doctor.licenceId).subscribe(
+        (data) => {
+          this.errorMessage.username = "";
+          this.errorMessage.password = "";
+          this.success = "Doktor "+this.doctor.username+" uspesno izmenjen!";
+        },
+        error => this.errorMessage.username = "Korisnicko ime je zauzeto. Odaberite novo."
+      );
     }
-
-    if(this.doctor.password === ""){
-      this.errorMessage.password = "Morate uneti sifru";
-      return;
-    }else{
-      this.errorMessage.password = "";
-    }
-
-    if(this.doctor.type == true){
-      this.doctor.type = "ADMINISTRATOR";
-    }else{
-      this.doctor.type = "REGULAR";
-    }
-
-    this.doctor.licenceId = this.docId;
-
-    this.doctorService.put(this.doctor, this.docId).subscribe(
-      (data) => {
-        this.errorMessage.username = "";
-        this.errorMessage.password = "";
-      },
-      error => this.errorMessage.username = "Korisnicko ime je zauzeto ili nema doktora sa tim idjem. Odaberite novo."
-    )
   }
-
-  deleteDoctor(){
-    this.doctorService.delete(this.docId).subscribe(
-      (data) => {
-        this.errorMessage.username = "";
-      },
-      error => this.errorMessage.username = "Nema doktora sa tim idjem. Odaberite novo."
-    )
-  }
-
-  getDoctor(){
-    this.doctorService.get(this.docId).subscribe(
-      (data) => {
-        alert(data);
-        this.errorMessage.username = "";
-      },
-      error => this.errorMessage.username = "Nema doktora sa tim idjem. Odaberite novo."
-    )
-  }
-
-  allDocs() {
-    this.doctorService.getAll().subscribe(
-      (data) => {
-        alert(data);
-        this.errorMessage.username = "";
-      }
-    )
-  }
-
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import drools.model.IntensiveCareReport;
 import drools.service.IntensiveCareService;
 
-//@CrossOrigin(value="http://localhost:4200", maxAge=1800)
+@CrossOrigin(value="http://localhost:4200", maxAge=1800)
 @RestController
 //@Scope(value="application", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class IntensiveCareResource {
