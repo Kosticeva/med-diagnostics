@@ -14,10 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.JoinColumn;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import drools.model.enums.DrugType;
 
 @Entity
+@JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer"})
 public class Drug implements Serializable{
 	
 	/**

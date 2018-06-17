@@ -77,7 +77,7 @@ public class ReportsServiceTest {
 		
 
 	
-	/*@Test
+	@Test
 	@Transactional
 	public void findPossibleAddicts() {
 
@@ -85,7 +85,7 @@ public class ReportsServiceTest {
 		//run addict-patients.sql
 		List<Patient> addictPatients = reportsService.findAddicts(AuthenticationResource.getKieSessionOf());
 		assertEquals(addictPatients.size(), 1);
-	}*/
+	}
 	
 	@Test
 	@Transactional
@@ -107,7 +107,7 @@ public class ReportsServiceTest {
 		assertEquals(weakPatients.size(), 1);
 	}
 	
-	/*@Test
+	@Test
 	@Transactional
 	public void checkAllergies() {
 		
@@ -155,6 +155,6 @@ public class ReportsServiceTest {
 		
 		assertEquals(reportsService.checkAllergyWarnings(p.getId(), dg, AuthenticationResource.getKieSessionOf()).size(), 1);
 		
-	}*/
+	}
 	
 }

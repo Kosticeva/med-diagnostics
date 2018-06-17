@@ -9,10 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import org.kie.api.definition.type.Position;
 
 @Entity
+@JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer"})
 public class Link implements Serializable{
 
 	/**

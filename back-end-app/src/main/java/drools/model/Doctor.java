@@ -9,10 +9,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import drools.model.enums.DoctorType;
 
 @Entity
+@JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer"})
 public class Doctor implements Serializable{
 	
 	/**

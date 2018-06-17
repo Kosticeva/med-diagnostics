@@ -17,13 +17,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.kie.api.definition.type.Role;
 import org.kie.api.definition.type.Timestamp;
 
 @Entity
 @Role(Role.Type.EVENT)
 @Timestamp("date")
+@JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer"})
 public class Examination  implements Serializable{
 
 	/**

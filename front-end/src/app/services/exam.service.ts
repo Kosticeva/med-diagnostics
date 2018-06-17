@@ -24,7 +24,8 @@ export class ExamService {
   post(e: Examination): Observable<any>{
     return this.http.post('http://localhost:8080/api/examinations', 
       JSON.stringify({
-        'doctor': e.doctor
+        'doctor': e.doctor,
+        'symptoms': e.symptoms
       })
     , this.headers);
   }

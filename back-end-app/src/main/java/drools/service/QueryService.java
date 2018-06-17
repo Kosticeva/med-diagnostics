@@ -99,8 +99,13 @@ public class QueryService {
 	public List<Symptom> getDiseaseSymptoms(Disease disease, KieSession ks){
 		ks.getAgenda().getAgendaGroup("disease-bc").setFocus();
 		
-		FactHandle df =ks.insert(diseaseService.findById(disease.getId()));
-		System.out.println("Simptomi za bolest: " + disease.getId());
+		Disease d = diseaseService.findById(disease.getId());
+		if(d == null){
+			return null;
+		}
+
+		FactHandle df =ks.insert(d);
+		System.out.println("Simptomi za bolest: " + d.getId());
 
 		List<FactHandle> linkHandles = new ArrayList<>();
 		for(Link l: linkService.getAllLinks()) {

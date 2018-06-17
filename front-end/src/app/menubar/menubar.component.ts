@@ -22,16 +22,11 @@ export class MenubarComponent implements OnInit {
   profileOpen: boolean;
 
   doctor: Doctor;
-  newDoct: {
-    firstName: '',
-    lastName: '',
-    username: '',
-    password: '',
-    type: false,
-    licenceId: undefined
-  };
+  newDoct: Doctor;
   disease: Disease;
   drug: Drug;
+  newDrug: Drug;
+  newDisease: Disease;
 
   editOpen: boolean;
   editDoctorOpen: boolean;
@@ -58,6 +53,15 @@ export class MenubarComponent implements OnInit {
     this.dropdownOpen = false;
     this.profileOpen = false;
 
+    this.newDoct = {
+        firstName: '',
+        lastName: '',
+        username: '',
+        password: '',
+        type: false,
+        licenceId: -1
+    };
+
     this.editOpen = false;
     this.editDiseaseOpen = false;
     this.editDrugOpen = false;
@@ -68,7 +72,9 @@ export class MenubarComponent implements OnInit {
     this.startDrugEdit = false;
 
     this.disease = new Disease(-1, "");
+    this.newDisease = new Disease(-1, "");
     this.drug = new Drug(-1, "", "OTHER", []);
+    this.newDrug = new Drug(-1, "", "OTHER", []);
     this.doctorService.get(this.loginService.getDoctor()).subscribe(
       (data) => this.doctor = data
     );
