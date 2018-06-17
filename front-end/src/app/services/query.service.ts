@@ -20,15 +20,15 @@ export class QueryService {
   ) { }
 
   public findMostProbable(e: Examination): Observable<any>{
-    return this.http.put('http://localhost:8080/api/query/most-probable', e, this.headers);
+    return this.http.put('http://localhost:8080/api/query/most-probable', JSON.stringify(e), this.headers);
   }
 
   public findAllPossible(s: Symptom[]): Observable<any>{
-    return this.http.put('http://localhost:8080/api/query/possible', s, this.headers);
+    return this.http.put('http://localhost:8080/api/query/possible', JSON.stringify(s), this.headers);
   }
 
   public findAllSymptoms(d: Disease): Observable<any>{
-    return this.http.put('http://localhost:8080/api/query/symptoms', d, this.headers);
+    return this.http.put('http://localhost:8080/api/query/symptoms', JSON.stringify(d), this.headers);
   }
 
 }

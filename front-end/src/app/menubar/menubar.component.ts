@@ -117,6 +117,19 @@ export class MenubarComponent implements OnInit {
   }
 
   openDropdown() {
+    this.newDoct = {
+      firstName: '',
+      lastName: '',
+      username: '',
+      password: '',
+      type: false,
+      licenceId: -1
+  };
+    this.disease = new Disease(-1, "");
+    this.newDisease = new Disease(-1, "");
+    this.drug = new Drug(-1, "", "OTHER", []);
+    this.newDrug = new Drug(-1, "", "OTHER", []);
+
     this.dropdownOpen = !this.dropdownOpen;
     this.newDiseaseOpen = false;
     this.newDoctorOpen = false;
@@ -131,6 +144,19 @@ export class MenubarComponent implements OnInit {
   }
 
   openDropdownEdit() {
+    this.newDoct = {
+      firstName: '',
+      lastName: '',
+      username: '',
+      password: '',
+      type: false,
+      licenceId: -1
+  };
+    this.disease = new Disease(-1, "");
+    this.newDisease = new Disease(-1, "");
+    this.drug = new Drug(-1, "", "OTHER", []);
+    this.newDrug = new Drug(-1, "", "OTHER", []);
+
     this.dropdownOpen = false;
     this.newDiseaseOpen = false;
     this.newDoctorOpen = false;

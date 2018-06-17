@@ -46,7 +46,7 @@ export class LoginService{
 
     public getDoctor(): any{
         if(this.doctor === undefined)
-            return '';
+            return '-1';
         return this.doctor;
     }
 

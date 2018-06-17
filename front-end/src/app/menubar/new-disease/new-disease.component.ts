@@ -79,6 +79,9 @@ export class NewDiseaseComponent implements OnInit {
 
     this.symptomService.post(this.realSymptoms).subscribe(
       (data) => {
+        if(data == null){
+          data = [];
+        }
         this.createDiseaseII(data)
       }
     );

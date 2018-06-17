@@ -33,7 +33,12 @@ export class NewSymptomComponent implements OnInit {
     this.error = '';
 
     this.symptomService.post([this.symptom]).subscribe(
-      (data) => this.symptom = data
+      (data) => {
+        this.symptom = {
+        name: '',
+        id: undefined
+        }
+      }
     );
   }
 

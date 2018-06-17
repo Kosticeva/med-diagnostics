@@ -70,6 +70,9 @@ export class NewDrugComponent implements OnInit {
     
     this.ingredientService.post(this.realIngredients).subscribe(
       (data) => {
+        if(data == null){
+          data = [];
+        }
         this.createDrugII(data)
       }
     );

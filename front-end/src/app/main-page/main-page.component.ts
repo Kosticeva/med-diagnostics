@@ -19,7 +19,7 @@ export class MainPageComponent implements OnInit {
   ngOnInit() {
    this.http.get('http://localhost:8080/authenticate/'+this.loginService.getDoctor()).subscribe(
       (data) => {
-        //
+        this.loginService.setDoctor();
       },
       error => {
         this.router.navigate(['/login']);

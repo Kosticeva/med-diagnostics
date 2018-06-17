@@ -97,6 +97,9 @@ export class NewPatientComponent implements OnInit {
 
     this.allergyService.post(this.realAllergens).subscribe(
       (data) => {
+        if(data == null){
+          data = [];
+        }
         this.createPatientI(data);
       }
     );

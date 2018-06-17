@@ -55,7 +55,12 @@ export class StartExamComponent implements OnInit {
     };
     this.patient = {
       id: -1,
-      patient: null,
+      patient: {
+        id: -1,
+        firstName: '',
+        lastName: '',
+        allergens: []
+      },
       examinations: []
     };
     this.http.get('http://localhost:8080/authenticate/'+this.loginService.getDoctor()).subscribe(

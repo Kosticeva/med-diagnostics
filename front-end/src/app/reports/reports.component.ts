@@ -42,22 +42,24 @@ export class ReportsComponent implements OnInit {
   }
 
   start() {
-    this.reportsService.addicts().subscribe(
-      (data) => {
-        this.addicts = data
-        this.finished = this.finished +1;
-      }
-    );
-    this.reportsService.weaks().subscribe(
-      (data) => {
-        this.weaks = data
-        this.finished = this.finished +1;
-      }
-    );
+    
+    
     this.reportsService.chronics().subscribe(
       (data) => {
         this.chronics = data
         this.finished = this.finished +1;
+        this.reportsService.weaks().subscribe(
+          (data) => {
+            this.weaks = data
+            this.finished = this.finished +1;
+            this.reportsService.addicts().subscribe(
+              (data) => {
+                this.addicts = data
+                this.finished = this.finished +1;
+              }
+            );
+          }
+        );
       }
     )
   }

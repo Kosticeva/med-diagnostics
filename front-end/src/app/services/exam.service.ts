@@ -25,7 +25,9 @@ export class ExamService {
     return this.http.post('http://localhost:8080/api/examinations', 
       JSON.stringify({
         'doctor': e.doctor,
-        'symptoms': e.symptoms
+        'symptoms': e.symptoms,
+        'disease': null,
+        'prescription': null
       })
     , this.headers);
   }
